@@ -88,10 +88,12 @@
   #slides { height: 100vh; width: 100%; position: relative; z-index: 10; }
   
   .slide { 
-    position: absolute; inset: 0; 
+    position: absolute; 
+    top: 115px; /* فصل المساحة تماماً: الشريحة تبدأ تحت الشريط الثابت */
+    bottom: 0; left: 0; right: 0; 
     display: flex; flex-direction: column; align-items: center; 
-    justify-content: flex-start;
-    padding: 130px 20px 40px; /* المسافة العلوية تحمي الأسئلة من شريط الأقسام */
+    justify-content: flex-start; /* إلغاء الدفع للأعلى للمحتوى الطويل */
+    padding: 30px 20px 40px; /* مسافة أمان من أعلى وأسفل الشريحة */
     opacity: 0; pointer-events: none; transform: scale(0.98) translateY(20px); 
     transition: opacity 0.5s ease, transform 0.5s ease; 
     overflow-y: auto; overflow-x: hidden;
@@ -103,7 +105,7 @@
   .slide-inner { 
     width: 100%; max-width: 640px; display: flex; flex-direction: column; 
     align-items: center; text-align: center; position: relative; z-index: 2; 
-    margin: auto 0;
+    margin: 0 auto; /* إزالة التوسيط العمودي لضمان بقاء العناوين في الأعلى دائماً */
   }
 
   /* ── TEXT & TYPOGRAPHY ── */
@@ -146,7 +148,7 @@
   .btn-edit { background: transparent; border: 1px solid var(--line); color: var(--text-muted); border-radius: 8px; padding: 6px 10px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 4px; font-family: 'Cairo'; font-size: 12px; }
   .btn-edit:hover { border-color: var(--rose-gold); color: var(--rose-gold); background: rgba(221, 167, 165, 0.1); }
 
-/* ── DYNAMIC IN-FLOW NAV BUTTONS ── */
+  /* ── DYNAMIC IN-FLOW NAV BUTTONS ── */
   #bottom-nav { 
     position: relative; 
     margin-top: 40px; 
@@ -154,8 +156,8 @@
     width: 100%; 
     max-width: 500px; 
     display: flex; 
-    flex-direction: column; /* ترتيب الأزرار تحت بعضها بدلاً من بجانب بعضها */
-    gap: 15px; /* المسافة الفاصلة بين زر التالي وزر الرجوع */
+    flex-direction: column; /* ترتيب الأزرار تحت بعضها */
+    gap: 15px; 
     background: transparent; 
     padding: 0;
   }
@@ -163,7 +165,7 @@
   #bottom-nav .btn { 
     width: 100%; /* جعل الزر يأخذ العرض بالكامل ليكون مساوياً لعرض السؤال */
     justify-content: center; /* توسيط النص والأيقونة داخل الزر الواسع */
-    padding: 16px 20px; /* تكبير مساحة الضغط لتكون أسهل على شاشات اللمس */
+    padding: 16px 20px; 
   }
 
   .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 30px; font-family: 'Cairo', sans-serif; font-size: 16px; font-weight: 700; border-radius: 30px; cursor: pointer; transition: all 0.3s; border: none; outline: none; }
@@ -178,7 +180,6 @@
 
   @media (max-width: 600px) { 
     .checkbox-grid { grid-template-columns: 1fr; } 
-    .slide { padding: 120px 20px 40px; }
   }
 </style>
 </head>
@@ -660,10 +661,7 @@
 
 <!-- BOTTOM NAV (DYNAMIC) -->
 <div id="bottom-nav">
-  <!-- تم وضع زر التالي في الأعلى -->
   <button class="btn btn-next" id="btn-next" onclick="goNext()">التالي <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span></button>
-  
-  <!-- تم وضع زر الرجوع تحته -->
   <button class="btn btn-back" id="btn-back" onclick="goBack()"><span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span> رجوع</button>
 </div>
 
@@ -803,7 +801,13 @@
       header.style.display = 'none';
     }
 
-    btnBack.style.visibility = (current > 0 && editingIndex === -1) ? 'visible' : 'hidden';
+    if (current === 0) {
+        bottomNav.style.display = 'none';
+    } else {
+        bottomNav.style.display = 'flex';
+    }
+
+    btnBack.style.display = (current > 0 && editingIndex === -1) ? 'flex' : 'none';
 
     const isLast = current === TOTAL;
     const isSuccess = current === TOTAL + 1;
@@ -813,15 +817,12 @@
       header.style.display = 'none';
     } else if (isLast) {
       btnNext.innerHTML = 'إرسال الاستبيان <span class="material-symbols-outlined" style="font-size: 18px;">send</span>';
-      btnBack.style.visibility = 'visible'; 
+      btnBack.style.display = 'flex'; 
     } else if (editingIndex !== -1 && current === editingIndex) {
       btnNext.innerHTML = 'حفظ والعودة للملخص <span class="material-symbols-outlined" style="font-size: 18px;">check</span>';
-      btnBack.style.visibility = 'hidden';
-    } else if (current === 0) {
-      btnNext.innerHTML = 'نبدأ <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span>';
+      btnBack.style.display = 'none';
     } else {
       btnNext.innerHTML = 'التالي <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span>';
-      btnNext.style.display = '';
       bottomNav.style.display = 'flex';
     }
   }
@@ -835,14 +836,11 @@
     old.classList.remove('active');
     current = next;
 
-    // نقل أزرار التنقل لتكون داخل الشريحة الجديدة مباشرة تحت المحتوى
     nw.querySelector('.slide-inner').appendChild(bottomNav);
 
     setTimeout(() => {
       old.classList.remove('exit-up');
       nw.classList.add('active');
-      const inp = nw.querySelector('input:not([type="radio"]):not([type="checkbox"]), textarea');
-      if (inp && !inp.closest('.other-wrap')) setTimeout(() => inp.focus(), 300);
     }, 50);
 
     updateUI();
@@ -878,11 +876,11 @@
     if (current > 0) transitionTo(current - 1);
   }
 
-function submitForm() {
+  function submitForm() {
     btnNext.disabled = true;
     btnNext.innerHTML = 'جاري الإرسال... <span class="material-symbols-outlined" style="font-size: 18px;">hourglass_empty</span>';
 
-    // 1. إنشاء حاوية لتجميع الملخص كنص مرتب ليوصلك بالإيميل
+    // 1. إنشاء الحاوية لتجميع الملخص كنص مرتب
     let compiledSummary = "✦ ملخص إجابات استبيان الهوية البصرية ✦\n\n";
     
     for(let i=1; i < TOTAL; i++) {
@@ -893,16 +891,14 @@ function submitForm() {
       let val = getFieldValue(slide);
       if(!val) val = 'لم تتم الإجابة';
 
-      // إضافة السؤال والإجابة إلى الملخص
       compiledSummary += `[${qText}]\nالإجابة: ${val}\n-----------------------------------\n`;
     }
 
     // 2. تجهيز البيانات للإرسال
     const data = {
-      "الملخص_الشامل": compiledSummary // هذا الحقل سيصلك كرسالة نصية كاملة ومرتبة
+      "الملخص_الشامل": compiledSummary 
     };
 
-    // إضافة الحقول الفردية أيضاً في حال أردت قراءتها بشكل منفصل
     slides.forEach(slide => {
       const field = slide.dataset.field;
       if (!field) return;
@@ -910,7 +906,7 @@ function submitForm() {
       if (val) data[field] = val;
     });
 
-    // 3. الإرسال التلقائي عبر Formspree
+    // 3. الإرسال عبر Formspree
     fetch('https://formspree.io/f/xzdwpkkv', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -919,7 +915,7 @@ function submitForm() {
     .then(r => r.json())
     .then(res => {
       if (res.ok || res.next) {
-        transitionTo(current + 1); // الانتقال لشريحة "تم بنجاح"
+        transitionTo(current + 1);
       } else {
         btnNext.disabled = false;
         btnNext.innerHTML = 'إرسال الاستبيان <span class="material-symbols-outlined" style="font-size: 18px;">send</span>';
@@ -933,7 +929,6 @@ function submitForm() {
     });
   }
 
-  // معالجة حقل "أخرى" فقط (بدون انتقال تلقائي)
   document.querySelectorAll('.opt input[type="radio"]').forEach(radio => {
     radio.addEventListener('change', () => {
       const group = radio.name;
@@ -972,7 +967,6 @@ function submitForm() {
     });
   });
 
-  // وضع أزرار التنقل في الشريحة الأولى عند تحميل الصفحة
   getSlide(0).querySelector('.slide-inner').appendChild(bottomNav);
   updateUI();
 </script>
