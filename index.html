@@ -49,47 +49,45 @@
     box-shadow: var(--shadow-sm);
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
+    transition: all 0.3s ease;
   }
 
-  #section-tracker {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  /* تنسيق حالة الطي (Collapsed) */
+  #app-header.collapsed { padding: 10px 20px; }
+  #app-header.collapsed #section-tracker { display: none; }
+
+  .header-toggle {
+    display: flex; justify-content: center; align-items: center;
+    color: var(--text-muted); cursor: pointer; height: 20px;
+    transition: color 0.3s;
   }
+  .header-toggle:hover { color: var(--rose-gold); }
+
+  #section-tracker { display: flex; justify-content: space-between; align-items: center; }
 
   .step-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    opacity: 0.5;
-    transition: all 0.4s ease;
-    color: var(--text-muted);
-    position: relative;
-    cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    opacity: 0.5; transition: all 0.4s ease; color: var(--text-muted);
+    position: relative; cursor: pointer;
   }
 
-  .step-item:hover { opacity: 1; color: var(--rose-gold); }
-  .step-item.active { opacity: 1; color: var(--rose-gold); }
+  .step-item:hover, .step-item.active { opacity: 1; color: var(--rose-gold); }
   .step-item .material-symbols-outlined { font-size: 24px; pointer-events: none; }
   .step-item .label { font-size: 11px; font-weight: 700; pointer-events: none; }
 
   .step-dropdown {
-    position: absolute;
-    top: 130%; left: 50%; transform: translateX(-50%);
-    background: rgba(30, 22, 24, 0.95);
-    border: 1px solid var(--rose-gold); border-radius: 12px;
-    padding: 10px; width: max-content; display: none;
-    flex-direction: column; gap: 5px; z-index: 200;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+    position: absolute; top: 130%; left: 50%; transform: translateX(-50%);
+    background: rgba(30, 22, 24, 0.95); border: 1px solid var(--rose-gold); border-radius: 12px;
+    padding: 10px; width: max-content; display: none; flex-direction: column; gap: 5px;
+    z-index: 200; box-shadow: 0 8px 25px rgba(0,0,0,0.6); backdrop-filter: blur(5px);
   }
 
   .step-dropdown.show { display: flex; }
   .drop-item { padding: 8px 12px; font-size: 13px; color: var(--text-main); border-radius: 8px; cursor: pointer; transition: all 0.2s; text-align: right; }
   .drop-item:hover { background: rgba(221, 167, 165, 0.15); color: var(--rose-gold); }
 
-  /* RTL Progress Bar Container */
+  /* RTL Progress Bar */
   .progress-container { width: 100%; height: 6px; background: rgba(255, 255, 255, 0.05); border-radius: 10px; position: relative; overflow: hidden; }
   #progress-bar { position: absolute; top: 0; right: 0; height: 100%; background: var(--rose-gold); border-radius: 10px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 0 10px rgba(221, 167, 165, 0.5); }
 
@@ -100,19 +98,33 @@
 
   /* ── SLIDES CONTAINER ── */
   #slides { height: 100vh; position: relative; z-index: 10; }
-  .slide { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 120px 20px 100px; opacity: 0; pointer-events: none; transform: scale(0.98) translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  
+  .slide { 
+    position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; 
+    /* تعديل البادينغ لضمان عدم التراكب مع القوائم العلوية والسفلية */
+    padding: 140px 20px 130px; 
+    opacity: 0; pointer-events: none; transform: scale(0.98) translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; 
+    overflow-y: auto; /* السماح بالتمرير إذا كان المحتوى طويل */
+  }
+  
   .slide.active { opacity: 1; pointer-events: all; transform: scale(1) translateY(0); }
   .slide.exit-up { opacity: 0; transform: scale(1.02) translateY(-20px); pointer-events: none; }
-  .slide-inner { width: 100%; max-width: 640px; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; z-index: 2; }
+  
+  .slide-inner { width: 100%; max-width: 640px; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; z-index: 2; margin: auto; }
 
   /* ── TEXT & TYPOGRAPHY ── */
   .q-number { font-family: 'Amiri', serif; font-size: 16px; color: var(--rose-gold); margin-bottom: 8px; font-weight: 700; }
   .q-text { font-family: 'Amiri', serif; font-size: clamp(24px, 4.5vw, 34px); font-weight: 700; line-height: 1.5; color: var(--text-main); margin-bottom: 12px; }
   .q-hint { font-size: 15px; color: var(--text-muted); font-weight: 400; line-height: 1.6; margin-bottom: 24px; max-width: 85%; }
 
-  /* ── IMAGE SHOWCASE ── */
+  /* ── IMAGE SHOWCASE (Auto-Crop & Rounded) ── */
   .img-showcase { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin-bottom: 24px; width: 100%; max-width: 550px; }
-  .img-showcase img { max-width: 100%; height: auto; max-height: 180px; border-radius: 12px; border: 1px solid var(--line); object-fit: cover; box-shadow: var(--shadow-sm); transition: transform 0.3s ease; }
+  .img-showcase img { 
+    max-width: 100%; height: 180px; width: 180px; 
+    border: none; border-radius: 20px; 
+    object-fit: cover; /* لقص الصورة تلقائياً لتناسب المربع بدون مط */
+    box-shadow: var(--shadow-sm); transition: transform 0.3s ease; 
+  }
 
   /* ── INPUTS ── */
   .input-wrap { position: relative; width: 100%; max-width: 500px; }
@@ -129,7 +141,7 @@
   .opt span { font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
   .checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px; width: 100%; max-width: 500px; }
 
-  /* ── "OTHER" INPUT LOGIC ── */
+  /* ── "OTHER" INPUT ── */
   .other-wrap { display: none; width: 100%; max-width: 500px; margin-top: 4px; margin-bottom: 8px; }
   .other-wrap.show { display: block; animation: fadeInDown 0.3s ease; }
   .other-input { background: rgba(255, 255, 255, 0.02) !important; border-color: var(--rose-gold) !important; padding: 12px !important; font-size: 15px !important; }
@@ -149,21 +161,26 @@
   .btn-edit:hover { border-color: var(--rose-gold); color: var(--rose-gold); background: rgba(221, 167, 165, 0.1); }
 
   /* ── BOTTOM NAV ── */
-  #bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 50; background: linear-gradient(to top, var(--bg-dark), transparent); }
+  #bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 50; background: linear-gradient(to top, var(--bg-dark) 50%, transparent); }
   .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 30px; font-family: 'Cairo', sans-serif; font-size: 16px; font-weight: 700; border-radius: 30px; cursor: pointer; transition: all 0.3s; border: none; outline: none; }
   .btn-next { background: var(--rose-gold); color: var(--bg-dark); box-shadow: 0 4px 15px rgba(221, 167, 165, 0.3); }
   .btn-next:hover { background: #C48E8C; transform: translateY(-2px); }
   .btn-back { background: transparent; color: var(--text-main); border: 1px solid var(--line); }
   .btn-back:hover { border-color: var(--rose-gold); background: rgba(255, 255, 255, 0.05); }
-
+  .gold-line { width: 50px; height: 2px; background: var(--rose-gold); margin-bottom: 24px; border-radius: 2px; }
   .field-error { font-size: 14px; color: var(--error); margin-top: 10px; font-weight: 600; display: none; }
   .field-error.visible { display: block; }
-  .gold-line { width: 50px; height: 2px; background: var(--rose-gold); margin-bottom: 24px; border-radius: 2px; }
 
-  @media (max-width: 600px) { #bottom-nav { padding: 16px 20px; } .checkbox-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 600px) { 
+    #bottom-nav { padding: 16px 20px; } 
+    .checkbox-grid { grid-template-columns: 1fr; } 
+    .slide { padding: 130px 20px 110px; } 
+  }
 </style>
 </head>
 <body>
+
+<!-- ================== HTML STRUCTURE ================== -->
 
 <header id="app-header" style="display: none;">
   <div id="section-tracker">
@@ -220,8 +237,14 @@
       </div>
     </div>
   </div>
+  
   <div class="progress-container">
     <div id="progress-bar" style="width: 0%"></div>
+  </div>
+
+  <!-- زر التصغير/التكبير -->
+  <div class="header-toggle" onclick="toggleHeader()">
+    <span class="material-symbols-outlined" id="toggle-icon">expand_less</span>
   </div>
 </header>
 
@@ -239,7 +262,7 @@
         لنوصل لهوية بصرية بتعبر عن طابعك الجمالي وتكون مميزة.<br><br>
         ما في أجوبة صح أو غلط — بس حكيلي بصراحة.
       </p>
-      <button class="btn btn-next" onclick="goNext()">نبدأ <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span></button>
+      <button class="btn btn-next" onclick="goNext()" style="margin-top: 15px;">نبدأ <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span></button>
     </div>
   </div>
 
@@ -286,7 +309,7 @@
         <label class="opt"><input type="checkbox" name="services" value="مكياج"><span><span class="material-symbols-outlined">face</span> مكياج</span></label>
         <label class="opt"><input type="checkbox" name="services" value="أظافر"><span><span class="material-symbols-outlined">back_hand</span> أظافر</span></label>
         <label class="opt"><input type="checkbox" name="services" value="عناية بالبشرة"><span><span class="material-symbols-outlined">face_retouching_natural</span> عناية بالبشرة</span></label>
-        <label class="opt"><input type="checkbox" name="services" value="other"><span><span class="material-symbols-outlined">add_circle</span> أخرى</span></label>
+        <label class="opt" style="grid-column: 1 / -1;"><input type="checkbox" name="services" value="other"><span><span class="material-symbols-outlined">add_circle</span> أخرى</span></label>
       </div>
       <div class="other-wrap" id="other-services">
         <input type="text" class="other-input" placeholder="حدد الخدمات الأخرى...">
@@ -559,7 +582,7 @@
         <label class="opt"><input type="checkbox" name="usage" value="لافتة خارجية"><span><span class="material-symbols-outlined">store</span> لافتة خارجية</span></label>
         <label class="opt"><input type="checkbox" name="usage" value="سوشيال ميديا"><span><span class="material-symbols-outlined">smartphone</span> منصات التواصل</span></label>
         <label class="opt"><input type="checkbox" name="usage" value="يونيفورم"><span><span class="material-symbols-outlined">styler</span> زي العمل (يونيفورم)</span></label>
-        <label class="opt"><input type="checkbox" name="usage" value="other"><span><span class="material-symbols-outlined">add_circle</span> أخرى</span></label>
+        <label class="opt" style="grid-column: 1 / -1;"><input type="checkbox" name="usage" value="other"><span><span class="material-symbols-outlined">add_circle</span> أخرى</span></label>
       </div>
       <div class="other-wrap" id="other-usage">
         <input type="text" class="other-input" placeholder="حدد الاستخدامات الأخرى...">
@@ -664,8 +687,19 @@
   const btnBack = document.getElementById('btn-back');
   const progressBar = document.getElementById('progress-bar');
   const header = document.getElementById('app-header');
+  const bottomNav = document.getElementById('bottom-nav');
 
-  // إظهار وإخفاء القوائم المنسدلة
+  // طي وتوسيع القائمة العلوية
+  function toggleHeader() {
+    const icon = document.getElementById('toggle-icon');
+    header.classList.toggle('collapsed');
+    if(header.classList.contains('collapsed')) {
+      icon.innerText = 'expand_more';
+    } else {
+      icon.innerText = 'expand_less';
+    }
+  }
+
   function toggleDropdown(event, sectionNum) {
     event.stopPropagation();
     document.querySelectorAll('.step-dropdown').forEach(d => {
@@ -675,7 +709,6 @@
     if(dropdown) dropdown.classList.toggle('show');
   }
 
-  // إغلاق القوائم عند النقر في أي مكان آخر
   document.addEventListener('click', () => {
     document.querySelectorAll('.step-dropdown').forEach(d => d.classList.remove('show'));
   });
@@ -689,7 +722,6 @@
 
   function getSlide(i) { return slides[i]; }
 
-  // تحديث دالة القراءة لتتعامل مع خيار "أخرى"
   function getFieldValue(slide) {
     const field = slide.dataset.field;
     if (!field) return '';
@@ -785,14 +817,20 @@
       header.style.display = 'none';
     }
 
+    // إخفاء الشريط السفلي في شريحة الترحيب لحل مشكلة الزر المزدوج
+    if (current === 0) {
+        bottomNav.style.display = 'none';
+    } else {
+        bottomNav.style.display = 'flex';
+    }
+
     btnBack.style.visibility = (current > 0 && editingIndex === -1) ? 'visible' : 'hidden';
 
     const isLast = current === TOTAL;
     const isSuccess = current === TOTAL + 1;
 
     if (isSuccess) {
-      btnNext.style.display = 'none';
-      btnBack.style.visibility = 'hidden';
+      bottomNav.style.display = 'none';
       header.style.display = 'none';
     } else if (isLast) {
       btnNext.innerHTML = 'إرسال الاستبيان <span class="material-symbols-outlined" style="font-size: 18px;">send</span>';
@@ -800,8 +838,6 @@
     } else if (editingIndex !== -1 && current === editingIndex) {
       btnNext.innerHTML = 'حفظ والعودة للملخص <span class="material-symbols-outlined" style="font-size: 18px;">check</span>';
       btnBack.style.visibility = 'hidden';
-    } else if (current === 0) {
-      btnNext.innerHTML = 'نبدأ <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span>';
     } else {
       btnNext.innerHTML = 'التالي <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span>';
       btnNext.style.display = '';
@@ -891,7 +927,7 @@
     });
   }
 
-  // معالجة إظهار وإخفاء حقل "أخرى" لأسئلة الـ Radio
+  // Auto-advance للـ Radio buttons + إظهار حقل "أخرى"
   document.querySelectorAll('.opt input[type="radio"]').forEach(radio => {
     radio.addEventListener('change', () => {
       const group = radio.name;
@@ -907,12 +943,17 @@
           otherWrap.querySelector('input').focus();
         } else {
           otherWrap.classList.remove('show');
+          // انتقال تلقائي إذا ما اختار "أخرى"
+          setTimeout(() => { goNext(); }, 400); 
         }
+      } else {
+        // انتقال تلقائي للأسئلة اللي ما فيها "أخرى"
+        setTimeout(() => { goNext(); }, 400);
       }
     });
   });
 
-  // معالجة إظهار وإخفاء حقل "أخرى" لأسئلة الـ Checkbox
+  // إظهار حقل "أخرى" للـ Checkbox
   document.querySelectorAll('.opt input[type="checkbox"]').forEach(cb => {
     cb.addEventListener('change', () => {
       cb.closest('.opt').classList.toggle('selected', cb.checked);
@@ -929,6 +970,15 @@
         }
       }
     });
+  });
+
+  // Auto-advance عند الضغط على Enter في الحقول النصية العادية
+  document.addEventListener('keydown', e => {
+    // نمنع الانتقال التلقائي إذا كان الحقل Textarea مشان يقدر ينزل سطر جديد
+    if (e.key === 'Enter' && e.target.tagName === 'INPUT' && e.target.type === 'text') {
+      e.preventDefault();
+      goNext();
+    }
   });
 
   updateUI();
