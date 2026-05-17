@@ -146,18 +146,26 @@
   .btn-edit { background: transparent; border: 1px solid var(--line); color: var(--text-muted); border-radius: 8px; padding: 6px 10px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 4px; font-family: 'Cairo'; font-size: 12px; }
   .btn-edit:hover { border-color: var(--rose-gold); color: var(--rose-gold); background: rgba(221, 167, 165, 0.1); }
 
-  /* ── DYNAMIC IN-FLOW NAV BUTTONS ── */
+/* ── DYNAMIC IN-FLOW NAV BUTTONS ── */
   #bottom-nav { 
     position: relative; 
     margin-top: 40px; 
+    margin-bottom: 60px; /* مسافة أمان سفلية لكي لا تلتصق الأزرار بأسفل الشاشة */
     width: 100%; 
     max-width: 500px; 
     display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
+    flex-direction: column; /* ترتيب الأزرار تحت بعضها بدلاً من بجانب بعضها */
+    gap: 15px; /* المسافة الفاصلة بين زر التالي وزر الرجوع */
     background: transparent; 
     padding: 0;
   }
+  
+  #bottom-nav .btn { 
+    width: 100%; /* جعل الزر يأخذ العرض بالكامل ليكون مساوياً لعرض السؤال */
+    justify-content: center; /* توسيط النص والأيقونة داخل الزر الواسع */
+    padding: 16px 20px; /* تكبير مساحة الضغط لتكون أسهل على شاشات اللمس */
+  }
+
   .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 30px; font-family: 'Cairo', sans-serif; font-size: 16px; font-weight: 700; border-radius: 30px; cursor: pointer; transition: all 0.3s; border: none; outline: none; }
   .btn-next { background: var(--rose-gold); color: var(--bg-dark); box-shadow: 0 4px 15px rgba(221, 167, 165, 0.3); }
   .btn-next:hover { background: #C48E8C; transform: translateY(-2px); }
@@ -652,8 +660,11 @@
 
 <!-- BOTTOM NAV (DYNAMIC) -->
 <div id="bottom-nav">
-  <button class="btn btn-back" id="btn-back" onclick="goBack()"><span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span> رجوع</button>
+  <!-- تم وضع زر التالي في الأعلى -->
   <button class="btn btn-next" id="btn-next" onclick="goNext()">التالي <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span></button>
+  
+  <!-- تم وضع زر الرجوع تحته -->
+  <button class="btn btn-back" id="btn-back" onclick="goBack()"><span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span> رجوع</button>
 </div>
 
 <form id="main-form" style="display:none;"></form>
