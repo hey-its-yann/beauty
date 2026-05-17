@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -7,27 +7,217 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
-<link rel="stylesheet" href="style.css">
+<style>
+  /* ================== CSS STYLES ================== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg-dark: #1A1416;
+    --bg-gradient: linear-gradient(135deg, #1E1618 0%, #2D1E22 100%);
+    --rose-gold: #DDA7A5;
+    --blush: #734F55;
+    --text-main: #FDF8F7;
+    --text-muted: #BFA7A9;
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --line: rgba(221, 167, 165, 0.2);
+    --error: #E74C3C;
+    --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.3);
+  }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg-gradient);
+    color: var(--text-main);
+    font-family: 'Cairo', sans-serif;
+    direction: rtl;
+  }
+
+  /* ── TOP HEADER & DROPDOWNS ── */
+  #app-header {
+    position: fixed;
+    top: 20px; left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 600px;
+    background: rgba(30, 22, 24, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 15px 25px;
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  #section-tracker {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    opacity: 0.5;
+    transition: all 0.4s ease;
+    color: var(--text-muted);
+    position: relative;
+    cursor: pointer;
+  }
+
+  .step-item:hover { opacity: 1; color: var(--rose-gold); }
+  .step-item.active { opacity: 1; color: var(--rose-gold); }
+  .step-item .material-symbols-outlined { font-size: 24px; pointer-events: none; }
+  .step-item .label { font-size: 11px; font-weight: 700; pointer-events: none; }
+
+  .step-dropdown {
+    position: absolute;
+    top: 130%; left: 50%; transform: translateX(-50%);
+    background: rgba(30, 22, 24, 0.95);
+    border: 1px solid var(--rose-gold); border-radius: 12px;
+    padding: 10px; width: max-content; display: none;
+    flex-direction: column; gap: 5px; z-index: 200;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+  }
+
+  .step-dropdown.show { display: flex; }
+  .drop-item { padding: 8px 12px; font-size: 13px; color: var(--text-main); border-radius: 8px; cursor: pointer; transition: all 0.2s; text-align: right; }
+  .drop-item:hover { background: rgba(221, 167, 165, 0.15); color: var(--rose-gold); }
+
+  /* RTL Progress Bar Container */
+  .progress-container { width: 100%; height: 6px; background: rgba(255, 255, 255, 0.05); border-radius: 10px; position: relative; overflow: hidden; }
+  #progress-bar { position: absolute; top: 0; right: 0; height: 100%; background: var(--rose-gold); border-radius: 10px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 0 10px rgba(221, 167, 165, 0.5); }
+
+  /* ── EDGE BACKGROUND ICONS ── */
+  .slide-bg-edge { position: absolute; font-size: 18vh; color: var(--rose-gold); opacity: 0.08; z-index: 0; pointer-events: none; }
+  .slide-bg-edge.top-right { top: 12%; right: 5%; transform: rotate(20deg); }
+  .slide-bg-edge.bottom-left { bottom: 12%; left: 5%; transform: rotate(-20deg); }
+
+  /* ── SLIDES CONTAINER ── */
+  #slides { height: 100vh; position: relative; z-index: 10; }
+  .slide { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 120px 20px 100px; opacity: 0; pointer-events: none; transform: scale(0.98) translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .slide.active { opacity: 1; pointer-events: all; transform: scale(1) translateY(0); }
+  .slide.exit-up { opacity: 0; transform: scale(1.02) translateY(-20px); pointer-events: none; }
+  .slide-inner { width: 100%; max-width: 640px; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; z-index: 2; }
+
+  /* ── TEXT & TYPOGRAPHY ── */
+  .q-number { font-family: 'Amiri', serif; font-size: 16px; color: var(--rose-gold); margin-bottom: 8px; font-weight: 700; }
+  .q-text { font-family: 'Amiri', serif; font-size: clamp(24px, 4.5vw, 34px); font-weight: 700; line-height: 1.5; color: var(--text-main); margin-bottom: 12px; }
+  .q-hint { font-size: 15px; color: var(--text-muted); font-weight: 400; line-height: 1.6; margin-bottom: 24px; max-width: 85%; }
+
+  /* ── IMAGE SHOWCASE ── */
+  .img-showcase { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin-bottom: 24px; width: 100%; max-width: 550px; }
+  .img-showcase img { max-width: 100%; height: auto; max-height: 180px; border-radius: 12px; border: 1px solid var(--line); object-fit: cover; box-shadow: var(--shadow-sm); transition: transform 0.3s ease; }
+
+  /* ── INPUTS ── */
+  .input-wrap { position: relative; width: 100%; max-width: 500px; }
+  input[type="text"], input[type="email"], textarea { width: 100%; background: var(--card-bg); border: 1px solid var(--line); border-radius: 12px; padding: 16px; font-family: 'Cairo', sans-serif; font-size: 17px; color: var(--text-main); outline: none; transition: all 0.3s; resize: none; text-align: center; }
+  input:focus, textarea:focus { border-color: var(--rose-gold); background: rgba(255, 255, 255, 0.1); box-shadow: 0 0 0 3px rgba(221, 167, 165, 0.15); }
+  input::placeholder, textarea::placeholder { color: var(--text-muted); opacity: 0.6; }
+
+  /* ── OPTIONS ── */
+  .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 8px; width: 100%; max-width: 500px; }
+  .opt { display: flex; align-items: center; justify-content: flex-start; gap: 14px; padding: 16px 20px; border: 1px solid var(--line); background: var(--card-bg); border-radius: 12px; cursor: pointer; transition: all 0.25s; user-select: none; }
+  .opt:hover { border-color: var(--rose-gold); transform: translateY(-2px); }
+  .opt input[type="radio"], .opt input[type="checkbox"] { accent-color: var(--rose-gold); width: 20px; height: 20px; cursor: pointer; }
+  .opt.selected { border-color: var(--rose-gold); background: rgba(221, 167, 165, 0.1); box-shadow: var(--shadow-sm); }
+  .opt span { font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+  .checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px; width: 100%; max-width: 500px; }
+
+  /* ── "OTHER" INPUT LOGIC ── */
+  .other-wrap { display: none; width: 100%; max-width: 500px; margin-top: 4px; margin-bottom: 8px; }
+  .other-wrap.show { display: block; animation: fadeInDown 0.3s ease; }
+  .other-input { background: rgba(255, 255, 255, 0.02) !important; border-color: var(--rose-gold) !important; padding: 12px !important; font-size: 15px !important; }
+  @keyframes fadeInDown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── SUMMARY SECTION ── */
+  .summary-container { width: 100%; max-width: 600px; max-height: 50vh; overflow-y: auto; text-align: right; padding: 10px; background: var(--card-bg); border-radius: 12px; border: 1px solid var(--line); margin-bottom: 20px; }
+  .summary-container::-webkit-scrollbar { width: 6px; }
+  .summary-container::-webkit-scrollbar-track { background: transparent; }
+  .summary-container::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+  .summary-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .summary-item:last-child { border-bottom: none; }
+  .sum-text { flex: 1; }
+  .summary-q { font-size: 13px; color: var(--rose-gold); margin-bottom: 4px; font-weight: bold; }
+  .summary-a { font-size: 15px; color: var(--text-main); font-weight: 600; }
+  .btn-edit { background: transparent; border: 1px solid var(--line); color: var(--text-muted); border-radius: 8px; padding: 6px 10px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 4px; font-family: 'Cairo'; font-size: 12px; }
+  .btn-edit:hover { border-color: var(--rose-gold); color: var(--rose-gold); background: rgba(221, 167, 165, 0.1); }
+
+  /* ── BOTTOM NAV ── */
+  #bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 50; background: linear-gradient(to top, var(--bg-dark), transparent); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 30px; font-family: 'Cairo', sans-serif; font-size: 16px; font-weight: 700; border-radius: 30px; cursor: pointer; transition: all 0.3s; border: none; outline: none; }
+  .btn-next { background: var(--rose-gold); color: var(--bg-dark); box-shadow: 0 4px 15px rgba(221, 167, 165, 0.3); }
+  .btn-next:hover { background: #C48E8C; transform: translateY(-2px); }
+  .btn-back { background: transparent; color: var(--text-main); border: 1px solid var(--line); }
+  .btn-back:hover { border-color: var(--rose-gold); background: rgba(255, 255, 255, 0.05); }
+
+  .field-error { font-size: 14px; color: var(--error); margin-top: 10px; font-weight: 600; display: none; }
+  .field-error.visible { display: block; }
+  .gold-line { width: 50px; height: 2px; background: var(--rose-gold); margin-bottom: 24px; border-radius: 2px; }
+
+  @media (max-width: 600px) { #bottom-nav { padding: 16px 20px; } .checkbox-grid { grid-template-columns: 1fr; } }
+</style>
 </head>
 <body>
 
 <header id="app-header" style="display: none;">
   <div id="section-tracker">
-    <div class="step-item" id="step-1">
+    <!-- القسم 1 -->
+    <div class="step-item" id="step-1" onclick="toggleDropdown(event, 1)">
       <span class="material-symbols-outlined">storefront</span>
       <span class="label">الصالون</span>
+      <div class="step-dropdown" id="dropdown-1">
+        <div class="drop-item" onclick="jumpToSlide(event, 1)">سؤال 1: اسم الصالون</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 2)">سؤال 2: الخبرة</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 3)">سؤال 3: الخدمات</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 4)">سؤال 4: كلمة واحدة</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 5)">سؤال 5: شخصية البراند</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 6)">سؤال 6: الإحساس</div>
+      </div>
     </div>
-    <div class="step-item" id="step-2">
+    
+    <!-- القسم 2 -->
+    <div class="step-item" id="step-2" onclick="toggleDropdown(event, 2)">
       <span class="material-symbols-outlined">target</span>
       <span class="label">السوق</span>
+      <div class="step-dropdown" id="dropdown-2">
+        <div class="drop-item" onclick="jumpToSlide(event, 7)">سؤال 7: الزبون المثالي</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 8)">سؤال 8: الموقع بالسوق</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 9)">سؤال 9: المنافسين</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 10)">سؤال 10: خمس كلمات</div>
+      </div>
     </div>
-    <div class="step-item" id="step-3">
+
+    <!-- القسم 3 -->
+    <div class="step-item" id="step-3" onclick="toggleDropdown(event, 3)">
       <span class="material-symbols-outlined">palette</span>
       <span class="label">البصريات</span>
+      <div class="step-dropdown" id="dropdown-3">
+        <div class="drop-item" onclick="jumpToSlide(event, 11)">سؤال 11: الطابع البصري</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 12)">سؤال 12: الخطوط</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 13)">سؤال 13: شكل الشعار</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 14)">سؤال 14: الألوان</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 15)">سؤال 15: شعارات تعجبك</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 16)">سؤال 16: ما لا يعجبك</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 17)">سؤال 17: ما يزعجك</div>
+      </div>
     </div>
-    <div class="step-item" id="step-4">
+
+    <!-- القسم 4 -->
+    <div class="step-item" id="step-4" onclick="toggleDropdown(event, 4)">
       <span class="material-symbols-outlined">tune</span>
       <span class="label">التفاصيل</span>
+      <div class="step-dropdown" id="dropdown-4">
+        <div class="drop-item" onclick="jumpToSlide(event, 18)">سؤال 18: الاستخدام</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 19)">سؤال 19: الديكور</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 20)">سؤال 20: الاسم الشخصي</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 21)">سؤال 21: تفاصيل إضافية</div>
+      </div>
     </div>
   </div>
   <div class="progress-container">
@@ -39,7 +229,8 @@
 
   <!-- WELCOME -->
   <div class="slide slide-welcome active" data-index="0" data-section="0">
-    <span class="material-symbols-outlined slide-bg-icon">auto_awesome</span>
+    <span class="material-symbols-outlined slide-bg-edge top-right">auto_awesome</span>
+    <span class="material-symbols-outlined slide-bg-edge bottom-left">auto_awesome</span>
     <div class="slide-inner">
       <div class="gold-line"></div>
       <div class="q-text">أهلاً وسهلاً 👋</div>
@@ -54,7 +245,8 @@
 
   <!-- Q1 -->
   <div class="slide" data-index="1" data-section="1" data-required="true" data-field="salon_name">
-    <span class="material-symbols-outlined slide-bg-icon">signature</span>
+    <span class="material-symbols-outlined slide-bg-edge top-right">signature</span>
+    <span class="material-symbols-outlined slide-bg-edge bottom-left">signature</span>
     <div class="slide-inner">
       <div class="q-number">السؤال 1</div>
       <div class="q-text">شو اسم الصالون؟</div>
@@ -68,7 +260,8 @@
 
   <!-- Q2 -->
   <div class="slide" data-index="2" data-section="1" data-required="true" data-field="experience">
-    <span class="material-symbols-outlined slide-bg-icon">hourglass_top</span>
+    <span class="material-symbols-outlined slide-bg-edge top-right">hourglass_top</span>
+    <span class="material-symbols-outlined slide-bg-edge bottom-left">hourglass_top</span>
     <div class="slide-inner">
       <div class="q-number">السؤال 2</div>
       <div class="q-text">من إيمتى عم تشتغل بهالمجال؟</div>
@@ -81,7 +274,8 @@
 
   <!-- Q3 -->
   <div class="slide" data-index="3" data-section="1" data-field="services">
-    <span class="material-symbols-outlined slide-bg-icon">spa</span>
+    <span class="material-symbols-outlined slide-bg-edge top-right">spa</span>
+    <span class="material-symbols-outlined slide-bg-edge bottom-left">spa</span>
     <div class="slide-inner">
       <div class="q-number">السؤال 3</div>
       <div class="q-text">شو الخدمات اللي رح يقدمها الصالون؟</div>
@@ -92,13 +286,18 @@
         <label class="opt"><input type="checkbox" name="services" value="مكياج"><span><span class="material-symbols-outlined">face</span> مكياج</span></label>
         <label class="opt"><input type="checkbox" name="services" value="أظافر"><span><span class="material-symbols-outlined">back_hand</span> أظافر</span></label>
         <label class="opt"><input type="checkbox" name="services" value="عناية بالبشرة"><span><span class="material-symbols-outlined">face_retouching_natural</span> عناية بالبشرة</span></label>
+        <label class="opt"><input type="checkbox" name="services" value="other"><span><span class="material-symbols-outlined">add_circle</span> أخرى</span></label>
+      </div>
+      <div class="other-wrap" id="other-services">
+        <input type="text" class="other-input" placeholder="حدد الخدمات الأخرى...">
       </div>
     </div>
   </div>
 
   <!-- Q4 -->
   <div class="slide" data-index="4" data-section="1" data-required="true" data-field="one_word">
-    <span class="material-symbols-outlined slide-bg-icon">label</span>
+    <span class="material-symbols-outlined slide-bg-edge top-right">label</span>
+    <span class="material-symbols-outlined slide-bg-edge bottom-left">label</span>
     <div class="slide-inner">
       <div class="q-number">السؤال 4</div>
       <div class="q-text">لو لازم توصف صالونك بكلمة وحدة، شو بتقول؟</div>
@@ -111,7 +310,8 @@
 
   <!-- Q5 -->
   <div class="slide" data-index="5" data-section="1" data-required="true" data-field="brand_person">
-    <span class="material-symbols-outlined slide-bg-icon">person_check</span>
+    <span class="material-symbols-outlined slide-bg-edge top-right">person_check</span>
+    <span class="material-symbols-outlined slide-bg-edge bottom-left">person_check</span>
     <div class="slide-inner">
       <div class="q-number">السؤال 5</div>
       <div class="q-text">لو كان الصالون شخص، كيف بتوصف شخصيته؟</div>
@@ -125,7 +325,8 @@
 
   <!-- Q6 -->
   <div class="slide" data-index="6" data-section="1" data-required="true" data-field="feeling">
-    <span class="material-symbols-outlined slide-bg-icon">favorite_border</span>
+    <span class="material-symbols-outlined slide-bg-edge top-right">favorite_border</span>
+    <span class="material-symbols-outlined slide-bg-edge bottom-left">favorite_border</span>
     <div class="slide-inner">
       <div class="q-number">السؤال 6</div>
       <div class="q-text">كيف بدك الزبائن يحسوا لما يشوفوا شعارك؟</div>
@@ -138,7 +339,8 @@
 
   <!-- Q7 -->
   <div class="slide" data-index="7" data-section="2" data-required="true" data-field="ideal_client">
-    <span class="material-symbols-outlined slide-bg-icon">group</span>
+    <span class="material-symbols-outlined slide-bg-edge top-right">group</span>
+    <span class="material-symbols-outlined slide-bg-edge bottom-left">group</span>
     <div class="slide-inner">
       <div class="q-number">السؤال 7</div>
       <div class="q-text">مين هو زبونك المثالي؟</div>
@@ -152,7 +354,8 @@
 
   <!-- Q8 -->
   <div class="slide" data-index="8" data-section="2" data-required="true" data-field="market_position">
-    <span class="material-symbols-outlined slide-bg-icon">diamond</span>
+    <span class="material-symbols-outlined slide-bg-edge top-right">diamond</span>
+    <span class="material-symbols-outlined slide-bg-edge bottom-left">diamond</span>
     <div class="slide-inner">
       <div class="q-number">السؤال 8</div>
       <div class="q-text">وين بيقع صالونك بالسوق مقارنة بغيره؟</div>
@@ -160,6 +363,10 @@
         <label class="opt"><input type="radio" name="market_position" value="فاخر وحصري"><span><span class="material-symbols-outlined">diamond</span> فاخر وحصري</span></label>
         <label class="opt"><input type="radio" name="market_position" value="متوسط راقي"><span><span class="material-symbols-outlined">star</span> متوسط راقي</span></label>
         <label class="opt"><input type="radio" name="market_position" value="شعبي بجودة عالية"><span><span class="material-symbols-outlined">verified</span> ذو جودة وقيمة ممتازة</span></label>
+        <label class="opt"><input type="radio" name="market_position" value="other"><span><span class="material-symbols-outlined">add_circle</span> أخرى</span></label>
+      </div>
+      <div class="other-wrap" id="other-market_position">
+        <input type="text" class="other-input" placeholder="اكتب هون...">
       </div>
       <div class="field-error">اختر خيار</div>
     </div>
@@ -167,7 +374,8 @@
 
   <!-- Q9 -->
   <div class="slide" data-index="9" data-section="2" data-field="competitors">
-    <span class="material-symbols-outlined slide-bg-icon">analytics</span>
+    <span class="material-symbols-outlined slide-bg-edge top-right">analytics</span>
+    <span class="material-symbols-outlined slide-bg-edge bottom-left">analytics</span>
     <div class="slide-inner">
       <div class="q-number">السؤال 9</div>
       <div class="q-text">مين هنن منافسيك؟ وشو اللي بيميزك عنهم؟</div>
@@ -179,7 +387,8 @@
 
   <!-- Q10 -->
   <div class="slide" data-index="10" data-section="2" data-required="true" data-field="five_words">
-    <span class="material-symbols-outlined slide-bg-icon">format_list_numbered</span>
+    <span class="material-symbols-outlined slide-bg-edge top-right">format_list_numbered</span>
+    <span class="material-symbols-outlined slide-bg-edge bottom-left">format_list_numbered</span>
     <div class="slide-inner">
       <div class="q-number">السؤال 10</div>
       <div class="q-text">اكتب 5 كلمات بدك زبائنك يربطوها بصالونك</div>
@@ -192,7 +401,8 @@
 
   <!-- Q11 -->
   <div class="slide" data-index="11" data-section="3" data-required="true" data-field="visual_vibe">
-    <span class="material-symbols-outlined slide-bg-icon">visibility</span>
+    <span class="material-symbols-outlined slide-bg-edge top-right">visibility</span>
+    <span class="material-symbols-outlined slide-bg-edge bottom-left">visibility</span>
     <div class="slide-inner">
       <div class="q-number">السؤال 11</div>
       <div class="q-text">أي طابع بصري بيعبر عنك أكتر شي؟</div>
@@ -206,6 +416,10 @@
         <label class="opt"><input type="radio" name="visual_vibe" value="فاخر هادئ"><span><span class="material-symbols-outlined">check_circle</span> فاخر هادئ وأنيق</span></label>
         <label class="opt"><input type="radio" name="visual_vibe" value="دافئ بوتيك"><span><span class="material-symbols-outlined">check_circle</span> دافئ وشخصي (بوتيك)</span></label>
         <label class="opt"><input type="radio" name="visual_vibe" value="طبيعي بوهيمي"><span><span class="material-symbols-outlined">check_circle</span> طبيعي عضوي</span></label>
+        <label class="opt"><input type="radio" name="visual_vibe" value="other"><span><span class="material-symbols-outlined">add_circle</span> أخرى</span></label>
+      </div>
+      <div class="other-wrap" id="other-visual_vibe">
+        <input type="text" class="other-input" placeholder="اكتب هون...">
       </div>
       <div class="field-error">اختر خيار</div>
     </div>
@@ -213,7 +427,8 @@
 
   <!-- Q12 -->
   <div class="slide" data-index="12" data-section="3" data-required="true" data-field="font_feel">
-    <span class="material-symbols-outlined slide-bg-icon">font_download</span>
+    <span class="material-symbols-outlined slide-bg-edge top-right">font_download</span>
+    <span class="material-symbols-outlined slide-bg-edge bottom-left">font_download</span>
     <div class="slide-inner">
       <div class="q-number">السؤال 12</div>
       <div class="q-text">أي نوع من الخطوط بيناسب هوية الصالون؟</div>
@@ -226,6 +441,10 @@
         <label class="opt"><input type="radio" name="font_feel" value="كلاسيكي"><span><span class="material-symbols-outlined">font_download</span> كلاسيكي راقي (Serif)</span></label>
         <label class="opt"><input type="radio" name="font_feel" value="عصري"><span><span class="material-symbols-outlined">match_case</span> عصري نظيف (Sans-Serif)</span></label>
         <label class="opt"><input type="radio" name="font_feel" value="خطّي"><span><span class="material-symbols-outlined">draw</span> خط يدوي دافئ (Script)</span></label>
+        <label class="opt"><input type="radio" name="font_feel" value="other"><span><span class="material-symbols-outlined">add_circle</span> أخرى</span></label>
+      </div>
+      <div class="other-wrap" id="other-font_feel">
+        <input type="text" class="other-input" placeholder="اكتب هون...">
       </div>
       <div class="field-error">اختر خيار</div>
     </div>
@@ -233,7 +452,8 @@
 
   <!-- Q13 -->
   <div class="slide" data-index="13" data-section="3" data-required="true" data-field="logo_type">
-    <span class="material-symbols-outlined slide-bg-icon">interests</span>
+    <span class="material-symbols-outlined slide-bg-edge top-right">interests</span>
+    <span class="material-symbols-outlined slide-bg-edge bottom-left">interests</span>
     <div class="slide-inner">
       <div class="q-number">السؤال 13</div>
       <div class="q-text">شو شكل الشعار اللي بتتخيله؟</div>
@@ -247,6 +467,10 @@
         <label class="opt"><input type="radio" name="logo_type" value="مونوغرام"><span><span class="material-symbols-outlined">interests</span> مونوغرام (حروف متشابكة)</span></label>
         <label class="opt"><input type="radio" name="logo_type" value="اسم فقط"><span><span class="material-symbols-outlined">title</span> اسم الصالون بخط مميز</span></label>
         <label class="opt"><input type="radio" name="logo_type" value="أيقونة واسم"><span><span class="material-symbols-outlined">category</span> أيقونة مبتكرة مع الاسم</span></label>
+        <label class="opt"><input type="radio" name="logo_type" value="other"><span><span class="material-symbols-outlined">add_circle</span> أخرى</span></label>
+      </div>
+      <div class="other-wrap" id="other-logo_type">
+        <input type="text" class="other-input" placeholder="اكتب هون...">
       </div>
       <div class="field-error">اختر خيار</div>
     </div>
@@ -254,7 +478,8 @@
 
   <!-- Q14 -->
   <div class="slide" data-index="14" data-section="3" data-required="true" data-field="color_palette">
-    <span class="material-symbols-outlined slide-bg-icon">palette</span>
+    <span class="material-symbols-outlined slide-bg-edge top-right">palette</span>
+    <span class="material-symbols-outlined slide-bg-edge bottom-left">palette</span>
     <div class="slide-inner">
       <div class="q-number">السؤال 14</div>
       <div class="q-text">أي لوحة ألوان أقرب لذوقك؟</div>
@@ -267,6 +492,10 @@
         <label class="opt"><input type="radio" name="color_palette" value="روز غولد وعاجي"><span><span class="material-symbols-outlined">format_paint</span> روز غولد، زهري بودرة، وعاجي</span></label>
         <label class="opt"><input type="radio" name="color_palette" value="أسود وذهبي"><span><span class="material-symbols-outlined">format_paint</span> أسود فاحم وذهبي فاخر</span></label>
         <label class="opt"><input type="radio" name="color_palette" value="ترابي دافئ"><span><span class="material-symbols-outlined">format_paint</span> ألوان ترابية وبيج دافئ</span></label>
+        <label class="opt"><input type="radio" name="color_palette" value="other"><span><span class="material-symbols-outlined">add_circle</span> أخرى</span></label>
+      </div>
+      <div class="other-wrap" id="other-color_palette">
+        <input type="text" class="other-input" placeholder="اكتب هون...">
       </div>
       <div class="field-error">اختر خيار</div>
     </div>
@@ -274,7 +503,8 @@
 
   <!-- Q15 -->
   <div class="slide" data-index="15" data-section="3" data-field="liked_logos">
-    <span class="material-symbols-outlined slide-bg-icon">recommend</span>
+    <span class="material-symbols-outlined slide-bg-edge top-right">recommend</span>
+    <span class="material-symbols-outlined slide-bg-edge bottom-left">recommend</span>
     <div class="slide-inner">
       <div class="q-number">السؤال 15</div>
       <div class="q-text">في شعارات لبراندات تانية بتعجبك؟</div>
@@ -286,7 +516,8 @@
 
   <!-- Q16 -->
   <div class="slide" data-index="16" data-section="3" data-field="avoid">
-    <span class="material-symbols-outlined slide-bg-icon">block</span>
+    <span class="material-symbols-outlined slide-bg-edge top-right">block</span>
+    <span class="material-symbols-outlined slide-bg-edge bottom-left">block</span>
     <div class="slide-inner">
       <div class="q-number">السؤال 16</div>
       <div class="q-text">شو الشغلات أو الألوان اللي ما بدك تشوفها أبداً؟</div>
@@ -298,7 +529,8 @@
 
   <!-- Q17 -->
   <div class="slide" data-index="17" data-section="3" data-required="true" data-field="bothers_more">
-    <span class="material-symbols-outlined slide-bg-icon">sentiment_dissatisfied</span>
+    <span class="material-symbols-outlined slide-bg-edge top-right">sentiment_dissatisfied</span>
+    <span class="material-symbols-outlined slide-bg-edge bottom-left">sentiment_dissatisfied</span>
     <div class="slide-inner">
       <div class="q-number">السؤال 17</div>
       <div class="q-text">أي شي بيضايقك أكتر بالتصميم؟</div>
@@ -306,6 +538,10 @@
         <label class="opt"><input type="radio" name="bothers_more" value="بسيط جداً"><span><span class="material-symbols-outlined">sentiment_dissatisfied</span> البساطة المفرطة والمملة</span></label>
         <label class="opt"><input type="radio" name="bothers_more" value="معقد جداً"><span><span class="material-symbols-outlined">blur_on</span> التعقيد والازدحام البصري</span></label>
         <label class="opt"><input type="radio" name="bothers_more" value="مكرر"><span><span class="material-symbols-outlined">content_copy</span> التقليد والتشابه مع الآخرين</span></label>
+        <label class="opt"><input type="radio" name="bothers_more" value="other"><span><span class="material-symbols-outlined">add_circle</span> أخرى</span></label>
+      </div>
+      <div class="other-wrap" id="other-bothers_more">
+        <input type="text" class="other-input" placeholder="اكتب هون...">
       </div>
       <div class="field-error">اختر خيار</div>
     </div>
@@ -313,7 +549,8 @@
 
   <!-- Q18 -->
   <div class="slide" data-index="18" data-section="4" data-field="usage">
-    <span class="material-symbols-outlined slide-bg-icon">print</span>
+    <span class="material-symbols-outlined slide-bg-edge top-right">print</span>
+    <span class="material-symbols-outlined slide-bg-edge bottom-left">print</span>
     <div class="slide-inner">
       <div class="q-number">السؤال 18</div>
       <div class="q-text">وين رح تستخدم الشعار بشكل أساسي؟</div>
@@ -322,13 +559,18 @@
         <label class="opt"><input type="checkbox" name="usage" value="لافتة خارجية"><span><span class="material-symbols-outlined">store</span> لافتة خارجية</span></label>
         <label class="opt"><input type="checkbox" name="usage" value="سوشيال ميديا"><span><span class="material-symbols-outlined">smartphone</span> منصات التواصل</span></label>
         <label class="opt"><input type="checkbox" name="usage" value="يونيفورم"><span><span class="material-symbols-outlined">styler</span> زي العمل (يونيفورم)</span></label>
+        <label class="opt"><input type="checkbox" name="usage" value="other"><span><span class="material-symbols-outlined">add_circle</span> أخرى</span></label>
+      </div>
+      <div class="other-wrap" id="other-usage">
+        <input type="text" class="other-input" placeholder="حدد الاستخدامات الأخرى...">
       </div>
     </div>
   </div>
 
   <!-- Q19 -->
   <div class="slide" data-index="19" data-section="4" data-field="interior">
-    <span class="material-symbols-outlined slide-bg-icon">chair</span>
+    <span class="material-symbols-outlined slide-bg-edge top-right">chair</span>
+    <span class="material-symbols-outlined slide-bg-edge bottom-left">chair</span>
     <div class="slide-inner">
       <div class="q-number">السؤال 19</div>
       <div class="q-text">كيف بيبين الديكور الداخلي للصالون؟</div>
@@ -340,13 +582,18 @@
 
   <!-- Q20 -->
   <div class="slide" data-index="20" data-section="4" data-required="true" data-field="personal_brand">
-    <span class="material-symbols-outlined slide-bg-icon">fingerprint</span>
+    <span class="material-symbols-outlined slide-bg-edge top-right">fingerprint</span>
+    <span class="material-symbols-outlined slide-bg-edge bottom-left">fingerprint</span>
     <div class="slide-inner">
       <div class="q-number">السؤال 20</div>
       <div class="q-text">بدك اسمك الشخصي يكون جزء من الشعار؟</div>
       <div class="options">
         <label class="opt"><input type="radio" name="personal_brand" value="نعم"><span><span class="material-symbols-outlined">person</span> إي، اسمي هو البراند</span></label>
         <label class="opt"><input type="radio" name="personal_brand" value="لا"><span><span class="material-symbols-outlined">business</span> لا، الصالون براند مستقل</span></label>
+        <label class="opt"><input type="radio" name="personal_brand" value="other"><span><span class="material-symbols-outlined">add_circle</span> أخرى</span></label>
+      </div>
+      <div class="other-wrap" id="other-personal_brand">
+        <input type="text" class="other-input" placeholder="اكتب هون...">
       </div>
       <div class="field-error">اختر خيار</div>
     </div>
@@ -354,7 +601,8 @@
 
   <!-- Q21 -->
   <div class="slide" data-index="21" data-section="4" data-field="extra">
-    <span class="material-symbols-outlined slide-bg-icon">chat_bubble_outline</span>
+    <span class="material-symbols-outlined slide-bg-edge top-right">chat_bubble_outline</span>
+    <span class="material-symbols-outlined slide-bg-edge bottom-left">chat_bubble_outline</span>
     <div class="slide-inner">
       <div class="q-number">السؤال 21</div>
       <div class="q-text">في أي تفاصيل أو ملاحظات تانية بدك تضيفها؟</div>
@@ -366,7 +614,8 @@
 
   <!-- SUMMARY SLIDE -->
   <div class="slide" data-index="22" data-section="4">
-    <span class="material-symbols-outlined slide-bg-icon">fact_check</span>
+    <span class="material-symbols-outlined slide-bg-edge top-right">fact_check</span>
+    <span class="material-symbols-outlined slide-bg-edge bottom-left">fact_check</span>
     <div class="slide-inner">
       <div class="q-number">المراجعة النهائية</div>
       <div class="q-text">ليك ملخص أجوبتك</div>
@@ -402,13 +651,13 @@
 
 <script src="https://unpkg.com/@formspree/ajax@1" defer></script>
 <script>
+  // ================== JAVASCRIPT ==================
   window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
   formspree('initForm', { formElement: '#main-form', formId: 'xzdwpkkv' });
 
-  // الأسئلة 21 + 1 ملخص = الإجمالي 22 شريحة قبل شريحة النجاح
   const TOTAL = 22; 
   let current = 0;
-  let editingIndex = -1; // لتتبع حالة العودة من الملخص للتعديل
+  let editingIndex = -1;
   
   const slides = document.querySelectorAll('.slide');
   const btnNext = document.getElementById('btn-next');
@@ -416,20 +665,59 @@
   const progressBar = document.getElementById('progress-bar');
   const header = document.getElementById('app-header');
 
+  // إظهار وإخفاء القوائم المنسدلة
+  function toggleDropdown(event, sectionNum) {
+    event.stopPropagation();
+    document.querySelectorAll('.step-dropdown').forEach(d => {
+      if(d.id !== 'dropdown-' + sectionNum) d.classList.remove('show');
+    });
+    const dropdown = document.getElementById('dropdown-' + sectionNum);
+    if(dropdown) dropdown.classList.toggle('show');
+  }
+
+  // إغلاق القوائم عند النقر في أي مكان آخر
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.step-dropdown').forEach(d => d.classList.remove('show'));
+  });
+
+  function jumpToSlide(event, index) {
+    event.stopPropagation();
+    document.querySelectorAll('.step-dropdown').forEach(d => d.classList.remove('show'));
+    if (current === index) return;
+    transitionTo(index);
+  }
+
   function getSlide(i) { return slides[i]; }
 
+  // تحديث دالة القراءة لتتعامل مع خيار "أخرى"
   function getFieldValue(slide) {
     const field = slide.dataset.field;
     if (!field) return '';
     const inputs = slide.querySelectorAll(`input[name="${field}"], textarea[name="${field}"]`);
     if (!inputs.length) return '';
+
     if (inputs[0].type === 'radio') {
       const checked = slide.querySelector(`input[name="${field}"]:checked`);
-      return checked ? checked.value : '';
+      if (!checked) return '';
+      if (checked.value === 'other') {
+        const otherInput = slide.querySelector(`#other-${field} input`);
+        return otherInput ? otherInput.value.trim() : '';
+      }
+      return checked.value;
     }
+
     if (inputs[0].type === 'checkbox') {
-      return Array.from(slide.querySelectorAll(`input[name="${field}"]:checked`)).map(i => i.value).join('، ');
+      const checkedBoxes = Array.from(slide.querySelectorAll(`input[name="${field}"]:checked`));
+      const values = checkedBoxes.map(cb => {
+        if (cb.value === 'other') {
+          const otherInput = slide.querySelector(`#other-${field} input`);
+          return (otherInput && otherInput.value.trim()) ? otherInput.value.trim() : '';
+        }
+        return cb.value;
+      }).filter(v => v !== '');
+      return values.join('، ');
     }
+
     return inputs[0].value.trim();
   }
 
@@ -454,7 +742,6 @@
   function generateSummary() {
     const container = document.getElementById('summary-content');
     container.innerHTML = '';
-    // المرور على الأسئلة من 1 إلى 21
     for(let i=1; i < TOTAL; i++) {
       const slide = getSlide(i);
       if(!slide) continue;
@@ -484,14 +771,12 @@
   }
 
   function updateUI() {
-    // شريط التقدم
     const pct = (current / TOTAL) * 100;
     progressBar.style.width = pct + '%';
 
     const currentSlide = getSlide(current);
     const sectionNum = parseInt(currentSlide.dataset.section);
 
-    // ترويسة الأقسام
     if (sectionNum > 0 && sectionNum <= 4) {
       header.style.display = 'flex';
       document.querySelectorAll('.step-item').forEach(dot => dot.classList.remove('active'));
@@ -511,9 +796,8 @@
       header.style.display = 'none';
     } else if (isLast) {
       btnNext.innerHTML = 'إرسال الاستبيان <span class="material-symbols-outlined" style="font-size: 18px;">send</span>';
-      btnBack.style.visibility = 'visible'; // السماح بالرجوع من الملخص بالطريقة العادية
+      btnBack.style.visibility = 'visible'; 
     } else if (editingIndex !== -1 && current === editingIndex) {
-      // زر الحفظ والعودة للملخص
       btnNext.innerHTML = 'حفظ والعودة للملخص <span class="material-symbols-outlined" style="font-size: 18px;">check</span>';
       btnBack.style.visibility = 'hidden';
     } else if (current === 0) {
@@ -537,7 +821,7 @@
       old.classList.remove('exit-up');
       nw.classList.add('active');
       const inp = nw.querySelector('input:not([type="radio"]):not([type="checkbox"]), textarea');
-      if (inp) setTimeout(() => inp.focus(), 300);
+      if (inp && !inp.closest('.other-wrap')) setTimeout(() => inp.focus(), 300);
     }, 50);
 
     updateUI();
@@ -546,26 +830,22 @@
   function goNext() {
     const slide = getSlide(current);
     
-    // التحقق من صحة الإدخال إذا كنا في أحد الأسئلة
     if (current > 0 && current < TOTAL) {
       if (!validate(slide)) return;
     }
 
-    // إذا كنا في وضع التعديل (العودة من الملخص)
     if (editingIndex !== -1 && current === editingIndex) {
-      editingIndex = -1; // إنهاء وضع التعديل
-      generateSummary(); // تحديث بيانات الملخص
-      transitionTo(TOTAL); // العودة مباشرة لصفحة الملخص
+      editingIndex = -1;
+      generateSummary();
+      transitionTo(TOTAL);
       return;
     }
 
-    // إذا وصلنا لصفحة الملخص (TOTAL) وضغطنا إرسال
     if (current === TOTAL) {
       submitForm();
       return;
     }
 
-    // إذا كانت الشريحة القادمة هي شريحة الملخص، قم بتوليده
     if (current + 1 === TOTAL) {
       generateSummary();
     }
@@ -611,6 +891,7 @@
     });
   }
 
+  // معالجة إظهار وإخفاء حقل "أخرى" لأسئلة الـ Radio
   document.querySelectorAll('.opt input[type="radio"]').forEach(radio => {
     radio.addEventListener('change', () => {
       const group = radio.name;
@@ -618,12 +899,35 @@
         r.closest('.opt').classList.remove('selected');
       });
       radio.closest('.opt').classList.add('selected');
+
+      const otherWrap = document.getElementById(`other-${group}`);
+      if (otherWrap) {
+        if (radio.value === 'other') {
+          otherWrap.classList.add('show');
+          otherWrap.querySelector('input').focus();
+        } else {
+          otherWrap.classList.remove('show');
+        }
+      }
     });
   });
 
+  // معالجة إظهار وإخفاء حقل "أخرى" لأسئلة الـ Checkbox
   document.querySelectorAll('.opt input[type="checkbox"]').forEach(cb => {
     cb.addEventListener('change', () => {
       cb.closest('.opt').classList.toggle('selected', cb.checked);
+
+      if (cb.value === 'other') {
+        const otherWrap = document.getElementById(`other-${cb.name}`);
+        if (otherWrap) {
+          if (cb.checked) {
+            otherWrap.classList.add('show');
+            otherWrap.querySelector('input').focus();
+          } else {
+            otherWrap.classList.remove('show');
+          }
+        }
+      }
     });
   });
 
