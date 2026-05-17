@@ -867,11 +867,31 @@
     if (current > 0) transitionTo(current - 1);
   }
 
-  function submitForm() {
+function submitForm() {
     btnNext.disabled = true;
     btnNext.innerHTML = 'جاري الإرسال... <span class="material-symbols-outlined" style="font-size: 18px;">hourglass_empty</span>';
 
-    const data = {};
+    // 1. إنشاء حاوية لتجميع الملخص كنص مرتب ليوصلك بالإيميل
+    let compiledSummary = "✦ ملخص إجابات استبيان الهوية البصرية ✦\n\n";
+    
+    for(let i=1; i < TOTAL; i++) {
+      const slide = getSlide(i);
+      if(!slide) continue;
+      
+      const qText = slide.querySelector('.q-text').innerText;
+      let val = getFieldValue(slide);
+      if(!val) val = 'لم تتم الإجابة';
+
+      // إضافة السؤال والإجابة إلى الملخص
+      compiledSummary += `[${qText}]\nالإجابة: ${val}\n-----------------------------------\n`;
+    }
+
+    // 2. تجهيز البيانات للإرسال
+    const data = {
+      "الملخص_الشامل": compiledSummary // هذا الحقل سيصلك كرسالة نصية كاملة ومرتبة
+    };
+
+    // إضافة الحقول الفردية أيضاً في حال أردت قراءتها بشكل منفصل
     slides.forEach(slide => {
       const field = slide.dataset.field;
       if (!field) return;
@@ -879,6 +899,7 @@
       if (val) data[field] = val;
     });
 
+    // 3. الإرسال التلقائي عبر Formspree
     fetch('https://formspree.io/f/xzdwpkkv', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -887,7 +908,7 @@
     .then(r => r.json())
     .then(res => {
       if (res.ok || res.next) {
-        transitionTo(current + 1);
+        transitionTo(current + 1); // الانتقال لشريحة "تم بنجاح"
       } else {
         btnNext.disabled = false;
         btnNext.innerHTML = 'إرسال الاستبيان <span class="material-symbols-outlined" style="font-size: 18px;">send</span>';
