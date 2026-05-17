@@ -27,45 +27,31 @@
   html, body {
     height: 100%;
     width: 100%;
-    overflow: hidden; /* يمنع أي خروج عن إطار الشاشة */
+    overflow: hidden;
     background: var(--bg-gradient);
     color: var(--text-main);
     font-family: 'Cairo', sans-serif;
     direction: rtl;
   }
 
-  /* ── TOP HEADER & DROPDOWNS ── */
+  /* ── TOP HEADER (FIXED & FULL WIDTH) ── */
   #app-header {
     position: fixed;
-    top: 20px; left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    max-width: 600px;
-    background: rgba(30, 22, 24, 0.6);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--line);
-    border-radius: 20px;
-    padding: 15px 25px;
+    top: 0; left: 0; right: 0;
+    width: 100%;
+    background: var(--bg-dark); /* لون صلب لمنع التراكب */
+    border-bottom: 1px solid var(--line);
+    padding: 15px 20px 0 20px;
     z-index: 100;
-    box-shadow: var(--shadow-sm);
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    transition: all 0.3s ease;
+    gap: 15px;
   }
 
-  /* حالة الطي (Collapsed) */
-  #app-header.collapsed { padding: 10px 20px; }
-  #app-header.collapsed #section-tracker { display: none; }
-
-  .header-toggle {
-    display: flex; justify-content: center; align-items: center;
-    color: var(--text-muted); cursor: pointer; height: 20px;
-    transition: color 0.3s;
+  #section-tracker { 
+    display: flex; justify-content: space-between; align-items: center;
+    width: 100%; max-width: 600px; margin: 0 auto; 
   }
-  .header-toggle:hover { color: var(--rose-gold); }
-
-  #section-tracker { display: flex; justify-content: space-between; align-items: center; }
 
   .step-item {
     display: flex; flex-direction: column; align-items: center; gap: 6px;
@@ -77,6 +63,7 @@
   .step-item .material-symbols-outlined { font-size: 24px; pointer-events: none; }
   .step-item .label { font-size: 11px; font-weight: 700; pointer-events: none; }
 
+  /* Dropdown Styles */
   .step-dropdown {
     position: absolute; top: 130%; left: 50%; transform: translateX(-50%);
     background: rgba(30, 22, 24, 0.95); border: 1px solid var(--rose-gold); border-radius: 12px;
@@ -89,12 +76,12 @@
   .drop-item:hover { background: rgba(221, 167, 165, 0.15); color: var(--rose-gold); }
 
   /* RTL Progress Bar */
-  .progress-container { width: 100%; height: 6px; background: rgba(255, 255, 255, 0.05); border-radius: 10px; position: relative; overflow: hidden; }
+  .progress-container { width: 100%; max-width: 600px; margin: 0 auto 15px auto; height: 6px; background: rgba(255, 255, 255, 0.05); border-radius: 10px; position: relative; overflow: hidden; }
   #progress-bar { position: absolute; top: 0; right: 0; height: 100%; background: var(--rose-gold); border-radius: 10px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 0 10px rgba(221, 167, 165, 0.5); }
 
   /* ── EDGE BACKGROUND ICONS ── */
   .slide-bg-edge { position: absolute; font-size: 18vh; color: var(--rose-gold); opacity: 0.08; z-index: 0; pointer-events: none; }
-  .slide-bg-edge.top-right { top: 12%; right: 5%; transform: rotate(20deg); }
+  .slide-bg-edge.top-right { top: 15%; right: 5%; transform: rotate(20deg); }
   .slide-bg-edge.bottom-left { bottom: 12%; left: 5%; transform: rotate(-20deg); }
 
   /* ── SLIDES CONTAINER ── */
@@ -103,11 +90,11 @@
   .slide { 
     position: absolute; inset: 0; 
     display: flex; flex-direction: column; align-items: center; 
-    justify-content: flex-start; /* تغيير التوسيط لمنع صعود المحتوى خلف الشريط العلوي */
-    padding: 160px 20px 130px; /* زيادة المساحة العلوية لحماية الأسئلة */
+    justify-content: flex-start;
+    padding: 130px 20px 40px; /* المسافة العلوية تحمي الأسئلة من شريط الأقسام */
     opacity: 0; pointer-events: none; transform: scale(0.98) translateY(20px); 
     transition: opacity 0.5s ease, transform 0.5s ease; 
-    overflow-y: auto; overflow-x: hidden; /* يمنع التمرير الأفقي بشكل قاطع */
+    overflow-y: auto; overflow-x: hidden;
   }
   
   .slide.active { opacity: 1; pointer-events: all; transform: scale(1) translateY(0); }
@@ -116,7 +103,7 @@
   .slide-inner { 
     width: 100%; max-width: 640px; display: flex; flex-direction: column; 
     align-items: center; text-align: center; position: relative; z-index: 2; 
-    margin: auto 0; /* التوسيط العمودي الذكي */
+    margin: auto 0;
   }
 
   /* ── TEXT & TYPOGRAPHY ── */
@@ -150,10 +137,7 @@
   @keyframes fadeInDown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
   /* ── SUMMARY SECTION ── */
-  .summary-container { width: 100%; max-width: 600px; max-height: 50vh; overflow-y: auto; text-align: right; padding: 10px; background: var(--card-bg); border-radius: 12px; border: 1px solid var(--line); margin-bottom: 20px; }
-  .summary-container::-webkit-scrollbar { width: 6px; }
-  .summary-container::-webkit-scrollbar-track { background: transparent; }
-  .summary-container::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+  .summary-container { width: 100%; max-width: 600px; text-align: right; padding: 10px; background: var(--card-bg); border-radius: 12px; border: 1px solid var(--line); margin-bottom: 20px; }
   .summary-item { display: flex; justify-content: space-between; align-items: flex-start; padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); }
   .summary-item:last-child { border-bottom: none; }
   .sum-text { flex: 1; }
@@ -162,21 +146,31 @@
   .btn-edit { background: transparent; border: 1px solid var(--line); color: var(--text-muted); border-radius: 8px; padding: 6px 10px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 4px; font-family: 'Cairo'; font-size: 12px; }
   .btn-edit:hover { border-color: var(--rose-gold); color: var(--rose-gold); background: rgba(221, 167, 165, 0.1); }
 
-  /* ── BOTTOM NAV ── */
-  #bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 50; background: linear-gradient(to top, var(--bg-dark) 50%, transparent); }
+  /* ── DYNAMIC IN-FLOW NAV BUTTONS ── */
+  #bottom-nav { 
+    position: relative; 
+    margin-top: 40px; 
+    width: 100%; 
+    max-width: 500px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    background: transparent; 
+    padding: 0;
+  }
   .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 30px; font-family: 'Cairo', sans-serif; font-size: 16px; font-weight: 700; border-radius: 30px; cursor: pointer; transition: all 0.3s; border: none; outline: none; }
   .btn-next { background: var(--rose-gold); color: var(--bg-dark); box-shadow: 0 4px 15px rgba(221, 167, 165, 0.3); }
   .btn-next:hover { background: #C48E8C; transform: translateY(-2px); }
   .btn-back { background: transparent; color: var(--text-main); border: 1px solid var(--line); }
   .btn-back:hover { border-color: var(--rose-gold); background: rgba(255, 255, 255, 0.05); }
+  
   .gold-line { width: 50px; height: 2px; background: var(--rose-gold); margin-bottom: 24px; border-radius: 2px; }
   .field-error { font-size: 14px; color: var(--error); margin-top: 10px; font-weight: 600; display: none; }
   .field-error.visible { display: block; }
 
   @media (max-width: 600px) { 
-    #bottom-nav { padding: 16px 20px; } 
     .checkbox-grid { grid-template-columns: 1fr; } 
-    .slide { padding: 150px 20px 110px; } /* حماية إضافية للأسئلة في الموبايل */
+    .slide { padding: 120px 20px 40px; }
   }
 </style>
 </head>
@@ -186,7 +180,6 @@
 
 <header id="app-header" style="display: none;">
   <div id="section-tracker">
-    <!-- القسم 1 -->
     <div class="step-item" id="step-1" onclick="toggleDropdown(event, 1)">
       <span class="material-symbols-outlined">storefront</span>
       <span class="label">الصالون</span>
@@ -200,7 +193,6 @@
       </div>
     </div>
     
-    <!-- القسم 2 -->
     <div class="step-item" id="step-2" onclick="toggleDropdown(event, 2)">
       <span class="material-symbols-outlined">target</span>
       <span class="label">السوق</span>
@@ -212,7 +204,6 @@
       </div>
     </div>
 
-    <!-- القسم 3 -->
     <div class="step-item" id="step-3" onclick="toggleDropdown(event, 3)">
       <span class="material-symbols-outlined">palette</span>
       <span class="label">البصريات</span>
@@ -227,7 +218,6 @@
       </div>
     </div>
 
-    <!-- القسم 4 -->
     <div class="step-item" id="step-4" onclick="toggleDropdown(event, 4)">
       <span class="material-symbols-outlined">tune</span>
       <span class="label">التفاصيل</span>
@@ -242,10 +232,6 @@
   
   <div class="progress-container">
     <div id="progress-bar" style="width: 0%"></div>
-  </div>
-
-  <div class="header-toggle" onclick="toggleHeader()">
-    <span class="material-symbols-outlined" id="toggle-icon">expand_less</span>
   </div>
 </header>
 
@@ -263,7 +249,6 @@
         لنوصل لهوية بصرية بتعبر عن طابعك الجمالي وتكون مميزة.<br><br>
         ما في أجوبة صح أو غلط — بس حكيلي بصراحة.
       </p>
-      <button class="btn btn-next" onclick="goNext()" style="margin-top: 15px;">نبدأ <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span></button>
     </div>
   </div>
 
@@ -665,11 +650,11 @@
 
 </div>
 
-<!-- BOTTOM NAV -->
-<nav id="bottom-nav">
+<!-- BOTTOM NAV (DYNAMIC) -->
+<div id="bottom-nav">
   <button class="btn btn-back" id="btn-back" onclick="goBack()"><span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span> رجوع</button>
   <button class="btn btn-next" id="btn-next" onclick="goNext()">التالي <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span></button>
-</nav>
+</div>
 
 <form id="main-form" style="display:none;"></form>
 
@@ -689,17 +674,6 @@
   const progressBar = document.getElementById('progress-bar');
   const header = document.getElementById('app-header');
   const bottomNav = document.getElementById('bottom-nav');
-
-  // طي وتوسيع القائمة العلوية
-  function toggleHeader() {
-    const icon = document.getElementById('toggle-icon');
-    header.classList.toggle('collapsed');
-    if(header.classList.contains('collapsed')) {
-      icon.innerText = 'expand_more';
-    } else {
-      icon.innerText = 'expand_less';
-    }
-  }
 
   function toggleDropdown(event, sectionNum) {
     event.stopPropagation();
@@ -818,12 +792,6 @@
       header.style.display = 'none';
     }
 
-    if (current === 0) {
-        bottomNav.style.display = 'none';
-    } else {
-        bottomNav.style.display = 'flex';
-    }
-
     btnBack.style.visibility = (current > 0 && editingIndex === -1) ? 'visible' : 'hidden';
 
     const isLast = current === TOTAL;
@@ -838,9 +806,12 @@
     } else if (editingIndex !== -1 && current === editingIndex) {
       btnNext.innerHTML = 'حفظ والعودة للملخص <span class="material-symbols-outlined" style="font-size: 18px;">check</span>';
       btnBack.style.visibility = 'hidden';
+    } else if (current === 0) {
+      btnNext.innerHTML = 'نبدأ <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span>';
     } else {
       btnNext.innerHTML = 'التالي <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span>';
       btnNext.style.display = '';
+      bottomNav.style.display = 'flex';
     }
   }
 
@@ -852,6 +823,9 @@
     old.classList.add('exit-up');
     old.classList.remove('active');
     current = next;
+
+    // نقل أزرار التنقل لتكون داخل الشريحة الجديدة مباشرة تحت المحتوى
+    nw.querySelector('.slide-inner').appendChild(bottomNav);
 
     setTimeout(() => {
       old.classList.remove('exit-up');
@@ -927,7 +901,7 @@
     });
   }
 
-  // Auto-advance للـ Radio buttons + إظهار حقل "أخرى"
+  // معالجة حقل "أخرى" فقط (بدون انتقال تلقائي)
   document.querySelectorAll('.opt input[type="radio"]').forEach(radio => {
     radio.addEventListener('change', () => {
       const group = radio.name;
@@ -943,15 +917,11 @@
           otherWrap.querySelector('input').focus();
         } else {
           otherWrap.classList.remove('show');
-          setTimeout(() => { goNext(); }, 400); 
         }
-      } else {
-        setTimeout(() => { goNext(); }, 400);
       }
     });
   });
 
-  // إظهار حقل "أخرى" للـ Checkbox
   document.querySelectorAll('.opt input[type="checkbox"]').forEach(cb => {
     cb.addEventListener('change', () => {
       cb.closest('.opt').classList.toggle('selected', cb.checked);
@@ -970,19 +940,8 @@
     });
   });
 
-  // التقاط زر Enter عالمياً
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Enter') {
-      // السماح بالنزول سطر جديد إذا كان المستخدم داخل حقل النص الطويل (Textarea)
-      if (e.target.tagName === 'TEXTAREA') {
-        return; 
-      }
-      // منع السلوك الافتراضي (إذا كان موجوداً) والانتقال للسؤال التالي
-      e.preventDefault();
-      goNext();
-    }
-  });
-
+  // وضع أزرار التنقل في الشريحة الأولى عند تحميل الصفحة
+  getSlide(0).querySelector('.slide-inner').appendChild(bottomNav);
   updateUI();
 </script>
 </body>
