@@ -1,0 +1,633 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>استبيان الهوية البصرية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header id="app-header" style="display: none;">
+  <div id="section-tracker">
+    <div class="step-item" id="step-1">
+      <span class="material-symbols-outlined">storefront</span>
+      <span class="label">الصالون</span>
+    </div>
+    <div class="step-item" id="step-2">
+      <span class="material-symbols-outlined">target</span>
+      <span class="label">السوق</span>
+    </div>
+    <div class="step-item" id="step-3">
+      <span class="material-symbols-outlined">palette</span>
+      <span class="label">البصريات</span>
+    </div>
+    <div class="step-item" id="step-4">
+      <span class="material-symbols-outlined">tune</span>
+      <span class="label">التفاصيل</span>
+    </div>
+  </div>
+  <div class="progress-container">
+    <div id="progress-bar" style="width: 0%"></div>
+  </div>
+</header>
+
+<div id="slides">
+
+  <!-- WELCOME -->
+  <div class="slide slide-welcome active" data-index="0" data-section="0">
+    <span class="material-symbols-outlined slide-bg-icon">auto_awesome</span>
+    <div class="slide-inner">
+      <div class="gold-line"></div>
+      <div class="q-text">أهلاً وسهلاً 👋</div>
+      <p class="q-hint">
+        هاد الاستبيان رح يساعدني أفهم تفاصيل صالونك وشخصيتك أكتر،<br>
+        لنوصل لهوية بصرية بتعبر عن طابعك الجمالي وتكون مميزة.<br><br>
+        ما في أجوبة صح أو غلط — بس حكيلي بصراحة.
+      </p>
+      <button class="btn btn-next" onclick="goNext()">نبدأ <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span></button>
+    </div>
+  </div>
+
+  <!-- Q1 -->
+  <div class="slide" data-index="1" data-section="1" data-required="true" data-field="salon_name">
+    <span class="material-symbols-outlined slide-bg-icon">signature</span>
+    <div class="slide-inner">
+      <div class="q-number">السؤال 1</div>
+      <div class="q-text">شو اسم الصالون؟</div>
+      <div class="q-hint">وإذا في معنى أو قصة وراء الاسم، حكيلي ياها</div>
+      <div class="input-wrap">
+        <textarea name="salon_name" placeholder="اكتب هون..." rows="2"></textarea>
+      </div>
+      <div class="field-error">هاد السؤال مطلوب</div>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="slide" data-index="2" data-section="1" data-required="true" data-field="experience">
+    <span class="material-symbols-outlined slide-bg-icon">hourglass_top</span>
+    <div class="slide-inner">
+      <div class="q-number">السؤال 2</div>
+      <div class="q-text">من إيمتى عم تشتغل بهالمجال؟</div>
+      <div class="input-wrap">
+        <input type="text" name="experience" placeholder="مثلاً: 5 سنوات، من 2018...">
+      </div>
+      <div class="field-error">هاد السؤال مطلوب</div>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="slide" data-index="3" data-section="1" data-field="services">
+    <span class="material-symbols-outlined slide-bg-icon">spa</span>
+    <div class="slide-inner">
+      <div class="q-number">السؤال 3</div>
+      <div class="q-text">شو الخدمات اللي رح يقدمها الصالون؟</div>
+      <div class="checkbox-grid">
+        <label class="opt"><input type="checkbox" name="services" value="قص وتصفيف"><span><span class="material-symbols-outlined">content_cut</span> قص وتصفيف</span></label>
+        <label class="opt"><input type="checkbox" name="services" value="صبغة وألوان"><span><span class="material-symbols-outlined">format_color_fill</span> صبغة وألوان</span></label>
+        <label class="opt"><input type="checkbox" name="services" value="عناية بالشعر"><span><span class="material-symbols-outlined">spa</span> عناية بالشعر</span></label>
+        <label class="opt"><input type="checkbox" name="services" value="مكياج"><span><span class="material-symbols-outlined">face</span> مكياج</span></label>
+        <label class="opt"><input type="checkbox" name="services" value="أظافر"><span><span class="material-symbols-outlined">back_hand</span> أظافر</span></label>
+        <label class="opt"><input type="checkbox" name="services" value="عناية بالبشرة"><span><span class="material-symbols-outlined">face_retouching_natural</span> عناية بالبشرة</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="slide" data-index="4" data-section="1" data-required="true" data-field="one_word">
+    <span class="material-symbols-outlined slide-bg-icon">label</span>
+    <div class="slide-inner">
+      <div class="q-number">السؤال 4</div>
+      <div class="q-text">لو لازم توصف صالونك بكلمة وحدة، شو بتقول؟</div>
+      <div class="input-wrap">
+        <input type="text" name="one_word" placeholder="كلمة وحدة بس...">
+      </div>
+      <div class="field-error">هاد السؤال مطلوب</div>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="slide" data-index="5" data-section="1" data-required="true" data-field="brand_person">
+    <span class="material-symbols-outlined slide-bg-icon">person_check</span>
+    <div class="slide-inner">
+      <div class="q-number">السؤال 5</div>
+      <div class="q-text">لو كان الصالون شخص، كيف بتوصف شخصيته؟</div>
+      <div class="q-hint">شو عمره، أناقته، كيف بيحكي مع الناس...</div>
+      <div class="input-wrap">
+        <textarea name="brand_person" placeholder="اوصفلي الشخصية هون..." rows="3"></textarea>
+      </div>
+      <div class="field-error">هاد السؤال مطلوب</div>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="slide" data-index="6" data-section="1" data-required="true" data-field="feeling">
+    <span class="material-symbols-outlined slide-bg-icon">favorite_border</span>
+    <div class="slide-inner">
+      <div class="q-number">السؤال 6</div>
+      <div class="q-text">كيف بدك الزبائن يحسوا لما يشوفوا شعارك؟</div>
+      <div class="input-wrap">
+        <textarea name="feeling" placeholder="بالفخامة، بالراحة، بالثقة..." rows="2"></textarea>
+      </div>
+      <div class="field-error">هاد السؤال مطلوب</div>
+    </div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="slide" data-index="7" data-section="2" data-required="true" data-field="ideal_client">
+    <span class="material-symbols-outlined slide-bg-icon">group</span>
+    <div class="slide-inner">
+      <div class="q-number">السؤال 7</div>
+      <div class="q-text">مين هو زبونك المثالي؟</div>
+      <div class="q-hint">شو عمره تقريباً؟ شو بيشتغل؟ كيف أسلوب حياته؟</div>
+      <div class="input-wrap">
+        <textarea name="ideal_client" placeholder="تفاصيل الزبون المستهدف..." rows="3"></textarea>
+      </div>
+      <div class="field-error">هاد السؤال مطلوب</div>
+    </div>
+  </div>
+
+  <!-- Q8 -->
+  <div class="slide" data-index="8" data-section="2" data-required="true" data-field="market_position">
+    <span class="material-symbols-outlined slide-bg-icon">diamond</span>
+    <div class="slide-inner">
+      <div class="q-number">السؤال 8</div>
+      <div class="q-text">وين بيقع صالونك بالسوق مقارنة بغيره؟</div>
+      <div class="options">
+        <label class="opt"><input type="radio" name="market_position" value="فاخر وحصري"><span><span class="material-symbols-outlined">diamond</span> فاخر وحصري</span></label>
+        <label class="opt"><input type="radio" name="market_position" value="متوسط راقي"><span><span class="material-symbols-outlined">star</span> متوسط راقي</span></label>
+        <label class="opt"><input type="radio" name="market_position" value="شعبي بجودة عالية"><span><span class="material-symbols-outlined">verified</span> ذو جودة وقيمة ممتازة</span></label>
+      </div>
+      <div class="field-error">اختر خيار</div>
+    </div>
+  </div>
+
+  <!-- Q9 -->
+  <div class="slide" data-index="9" data-section="2" data-field="competitors">
+    <span class="material-symbols-outlined slide-bg-icon">analytics</span>
+    <div class="slide-inner">
+      <div class="q-number">السؤال 9</div>
+      <div class="q-text">مين هنن منافسيك؟ وشو اللي بيميزك عنهم؟</div>
+      <div class="input-wrap">
+        <textarea name="competitors" placeholder="اكتب هون..." rows="3"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q10 -->
+  <div class="slide" data-index="10" data-section="2" data-required="true" data-field="five_words">
+    <span class="material-symbols-outlined slide-bg-icon">format_list_numbered</span>
+    <div class="slide-inner">
+      <div class="q-number">السؤال 10</div>
+      <div class="q-text">اكتب 5 كلمات بدك زبائنك يربطوها بصالونك</div>
+      <div class="input-wrap">
+        <textarea name="five_words" placeholder="كلمة، كلمة، كلمة..." rows="2"></textarea>
+      </div>
+      <div class="field-error">هاد السؤال مطلوب</div>
+    </div>
+  </div>
+
+  <!-- Q11 -->
+  <div class="slide" data-index="11" data-section="3" data-required="true" data-field="visual_vibe">
+    <span class="material-symbols-outlined slide-bg-icon">visibility</span>
+    <div class="slide-inner">
+      <div class="q-number">السؤال 11</div>
+      <div class="q-text">أي طابع بصري بيعبر عنك أكتر شي؟</div>
+      
+      <div class="img-showcase">
+        <img src="" alt="ستايل 1 (ضع رابط الصورة)">
+        <img src="" alt="ستايل 2 (ضع رابط الصورة)">
+      </div>
+
+      <div class="options">
+        <label class="opt"><input type="radio" name="visual_vibe" value="فاخر هادئ"><span><span class="material-symbols-outlined">check_circle</span> فاخر هادئ وأنيق</span></label>
+        <label class="opt"><input type="radio" name="visual_vibe" value="دافئ بوتيك"><span><span class="material-symbols-outlined">check_circle</span> دافئ وشخصي (بوتيك)</span></label>
+        <label class="opt"><input type="radio" name="visual_vibe" value="طبيعي بوهيمي"><span><span class="material-symbols-outlined">check_circle</span> طبيعي عضوي</span></label>
+      </div>
+      <div class="field-error">اختر خيار</div>
+    </div>
+  </div>
+
+  <!-- Q12 -->
+  <div class="slide" data-index="12" data-section="3" data-required="true" data-field="font_feel">
+    <span class="material-symbols-outlined slide-bg-icon">font_download</span>
+    <div class="slide-inner">
+      <div class="q-number">السؤال 12</div>
+      <div class="q-text">أي نوع من الخطوط بيناسب هوية الصالون؟</div>
+      
+      <div class="img-showcase">
+        <img src="" alt="أمثلة الخطوط (ضع رابط الصورة)">
+      </div>
+
+      <div class="options">
+        <label class="opt"><input type="radio" name="font_feel" value="كلاسيكي"><span><span class="material-symbols-outlined">font_download</span> كلاسيكي راقي (Serif)</span></label>
+        <label class="opt"><input type="radio" name="font_feel" value="عصري"><span><span class="material-symbols-outlined">match_case</span> عصري نظيف (Sans-Serif)</span></label>
+        <label class="opt"><input type="radio" name="font_feel" value="خطّي"><span><span class="material-symbols-outlined">draw</span> خط يدوي دافئ (Script)</span></label>
+      </div>
+      <div class="field-error">اختر خيار</div>
+    </div>
+  </div>
+
+  <!-- Q13 -->
+  <div class="slide" data-index="13" data-section="3" data-required="true" data-field="logo_type">
+    <span class="material-symbols-outlined slide-bg-icon">interests</span>
+    <div class="slide-inner">
+      <div class="q-number">السؤال 13</div>
+      <div class="q-text">شو شكل الشعار اللي بتتخيله؟</div>
+
+      <div class="img-showcase">
+        <img src="" alt="شعار 1">
+        <img src="" alt="شعار 2">
+      </div>
+
+      <div class="options">
+        <label class="opt"><input type="radio" name="logo_type" value="مونوغرام"><span><span class="material-symbols-outlined">interests</span> مونوغرام (حروف متشابكة)</span></label>
+        <label class="opt"><input type="radio" name="logo_type" value="اسم فقط"><span><span class="material-symbols-outlined">title</span> اسم الصالون بخط مميز</span></label>
+        <label class="opt"><input type="radio" name="logo_type" value="أيقونة واسم"><span><span class="material-symbols-outlined">category</span> أيقونة مبتكرة مع الاسم</span></label>
+      </div>
+      <div class="field-error">اختر خيار</div>
+    </div>
+  </div>
+
+  <!-- Q14 -->
+  <div class="slide" data-index="14" data-section="3" data-required="true" data-field="color_palette">
+    <span class="material-symbols-outlined slide-bg-icon">palette</span>
+    <div class="slide-inner">
+      <div class="q-number">السؤال 14</div>
+      <div class="q-text">أي لوحة ألوان أقرب لذوقك؟</div>
+      
+      <div class="img-showcase">
+        <img src="" alt="ألوان مقترحة (ضع الرابط)">
+      </div>
+
+      <div class="options">
+        <label class="opt"><input type="radio" name="color_palette" value="روز غولد وعاجي"><span><span class="material-symbols-outlined">format_paint</span> روز غولد، زهري بودرة، وعاجي</span></label>
+        <label class="opt"><input type="radio" name="color_palette" value="أسود وذهبي"><span><span class="material-symbols-outlined">format_paint</span> أسود فاحم وذهبي فاخر</span></label>
+        <label class="opt"><input type="radio" name="color_palette" value="ترابي دافئ"><span><span class="material-symbols-outlined">format_paint</span> ألوان ترابية وبيج دافئ</span></label>
+      </div>
+      <div class="field-error">اختر خيار</div>
+    </div>
+  </div>
+
+  <!-- Q15 -->
+  <div class="slide" data-index="15" data-section="3" data-field="liked_logos">
+    <span class="material-symbols-outlined slide-bg-icon">recommend</span>
+    <div class="slide-inner">
+      <div class="q-number">السؤال 15</div>
+      <div class="q-text">في شعارات لبراندات تانية بتعجبك؟</div>
+      <div class="input-wrap">
+        <textarea name="liked_logos" placeholder="اكتب هون..." rows="3"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q16 -->
+  <div class="slide" data-index="16" data-section="3" data-field="avoid">
+    <span class="material-symbols-outlined slide-bg-icon">block</span>
+    <div class="slide-inner">
+      <div class="q-number">السؤال 16</div>
+      <div class="q-text">شو الشغلات أو الألوان اللي ما بدك تشوفها أبداً؟</div>
+      <div class="input-wrap">
+        <textarea name="avoid" placeholder="مثلاً: ما بحب الألوان الصارخة..." rows="3"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q17 -->
+  <div class="slide" data-index="17" data-section="3" data-required="true" data-field="bothers_more">
+    <span class="material-symbols-outlined slide-bg-icon">sentiment_dissatisfied</span>
+    <div class="slide-inner">
+      <div class="q-number">السؤال 17</div>
+      <div class="q-text">أي شي بيضايقك أكتر بالتصميم؟</div>
+      <div class="options">
+        <label class="opt"><input type="radio" name="bothers_more" value="بسيط جداً"><span><span class="material-symbols-outlined">sentiment_dissatisfied</span> البساطة المفرطة والمملة</span></label>
+        <label class="opt"><input type="radio" name="bothers_more" value="معقد جداً"><span><span class="material-symbols-outlined">blur_on</span> التعقيد والازدحام البصري</span></label>
+        <label class="opt"><input type="radio" name="bothers_more" value="مكرر"><span><span class="material-symbols-outlined">content_copy</span> التقليد والتشابه مع الآخرين</span></label>
+      </div>
+      <div class="field-error">اختر خيار</div>
+    </div>
+  </div>
+
+  <!-- Q18 -->
+  <div class="slide" data-index="18" data-section="4" data-field="usage">
+    <span class="material-symbols-outlined slide-bg-icon">print</span>
+    <div class="slide-inner">
+      <div class="q-number">السؤال 18</div>
+      <div class="q-text">وين رح تستخدم الشعار بشكل أساسي؟</div>
+      <div class="checkbox-grid">
+        <label class="opt"><input type="checkbox" name="usage" value="بطاقات العمل"><span><span class="material-symbols-outlined">badge</span> بطاقات العمل</span></label>
+        <label class="opt"><input type="checkbox" name="usage" value="لافتة خارجية"><span><span class="material-symbols-outlined">store</span> لافتة خارجية</span></label>
+        <label class="opt"><input type="checkbox" name="usage" value="سوشيال ميديا"><span><span class="material-symbols-outlined">smartphone</span> منصات التواصل</span></label>
+        <label class="opt"><input type="checkbox" name="usage" value="يونيفورم"><span><span class="material-symbols-outlined">styler</span> زي العمل (يونيفورم)</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q19 -->
+  <div class="slide" data-index="19" data-section="4" data-field="interior">
+    <span class="material-symbols-outlined slide-bg-icon">chair</span>
+    <div class="slide-inner">
+      <div class="q-number">السؤال 19</div>
+      <div class="q-text">كيف بيبين الديكور الداخلي للصالون؟</div>
+      <div class="input-wrap">
+        <textarea name="interior" placeholder="الألوان المستخدمة بالديكور، الإضاءة..." rows="3"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q20 -->
+  <div class="slide" data-index="20" data-section="4" data-required="true" data-field="personal_brand">
+    <span class="material-symbols-outlined slide-bg-icon">fingerprint</span>
+    <div class="slide-inner">
+      <div class="q-number">السؤال 20</div>
+      <div class="q-text">بدك اسمك الشخصي يكون جزء من الشعار؟</div>
+      <div class="options">
+        <label class="opt"><input type="radio" name="personal_brand" value="نعم"><span><span class="material-symbols-outlined">person</span> إي، اسمي هو البراند</span></label>
+        <label class="opt"><input type="radio" name="personal_brand" value="لا"><span><span class="material-symbols-outlined">business</span> لا، الصالون براند مستقل</span></label>
+      </div>
+      <div class="field-error">اختر خيار</div>
+    </div>
+  </div>
+
+  <!-- Q21 -->
+  <div class="slide" data-index="21" data-section="4" data-field="extra">
+    <span class="material-symbols-outlined slide-bg-icon">chat_bubble_outline</span>
+    <div class="slide-inner">
+      <div class="q-number">السؤال 21</div>
+      <div class="q-text">في أي تفاصيل أو ملاحظات تانية بدك تضيفها؟</div>
+      <div class="input-wrap">
+        <textarea name="extra" placeholder="المساحة إلك، حكيلي..." rows="4"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUMMARY SLIDE -->
+  <div class="slide" data-index="22" data-section="4">
+    <span class="material-symbols-outlined slide-bg-icon">fact_check</span>
+    <div class="slide-inner">
+      <div class="q-number">المراجعة النهائية</div>
+      <div class="q-text">ليك ملخص أجوبتك</div>
+      <p class="q-hint">فيك تراجع وتعدل أي سؤال قبل ما تبعت</p>
+      
+      <div class="summary-container" id="summary-content">
+        <!-- سيتم توليد الملخص هنا بواسطة الجافاسكربت -->
+      </div>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="slide slide-success" data-index="23">
+    <div class="slide-inner">
+      <span class="material-symbols-outlined" style="font-size: 60px; color: var(--rose-gold); margin-bottom: 20px;">task_alt</span>
+      <div class="gold-line" style="margin: 0 auto 28px;"></div>
+      <div class="q-text">شكراً إلك، استلمنا الأجوبة!</div>
+      <p class="q-hint">
+        رح ادرس الإجابات منيح وابلش شغل على هوية بصرية بتليق فيك وبصالونك.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<nav id="bottom-nav">
+  <button class="btn btn-back" id="btn-back" onclick="goBack()"><span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span> رجوع</button>
+  <button class="btn btn-next" id="btn-next" onclick="goNext()">التالي <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span></button>
+</nav>
+
+<form id="main-form" style="display:none;"></form>
+
+<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+<script>
+  window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+  formspree('initForm', { formElement: '#main-form', formId: 'xzdwpkkv' });
+
+  // الأسئلة 21 + 1 ملخص = الإجمالي 22 شريحة قبل شريحة النجاح
+  const TOTAL = 22; 
+  let current = 0;
+  let editingIndex = -1; // لتتبع حالة العودة من الملخص للتعديل
+  
+  const slides = document.querySelectorAll('.slide');
+  const btnNext = document.getElementById('btn-next');
+  const btnBack = document.getElementById('btn-back');
+  const progressBar = document.getElementById('progress-bar');
+  const header = document.getElementById('app-header');
+
+  function getSlide(i) { return slides[i]; }
+
+  function getFieldValue(slide) {
+    const field = slide.dataset.field;
+    if (!field) return '';
+    const inputs = slide.querySelectorAll(`input[name="${field}"], textarea[name="${field}"]`);
+    if (!inputs.length) return '';
+    if (inputs[0].type === 'radio') {
+      const checked = slide.querySelector(`input[name="${field}"]:checked`);
+      return checked ? checked.value : '';
+    }
+    if (inputs[0].type === 'checkbox') {
+      return Array.from(slide.querySelectorAll(`input[name="${field}"]:checked`)).map(i => i.value).join('، ');
+    }
+    return inputs[0].value.trim();
+  }
+
+  function validate(slide) {
+    if (!slide.dataset.required) return true;
+    const val = getFieldValue(slide);
+    const errEl = slide.querySelector('.field-error');
+    if (!val) {
+      if (errEl) errEl.classList.add('visible');
+      slide.querySelector('.slide-inner').style.animation = 'none';
+      setTimeout(() => {
+        const el = slide.querySelector('input, textarea, .options');
+        if (el) el.style.borderColor = 'var(--error)';
+        setTimeout(() => { if (el) el.style.borderColor = 'var(--line)'; }, 600);
+      }, 10);
+      return false;
+    }
+    if (errEl) errEl.classList.remove('visible');
+    return true;
+  }
+
+  function generateSummary() {
+    const container = document.getElementById('summary-content');
+    container.innerHTML = '';
+    // المرور على الأسئلة من 1 إلى 21
+    for(let i=1; i < TOTAL; i++) {
+      const slide = getSlide(i);
+      if(!slide) continue;
+      
+      const qText = slide.querySelector('.q-text').innerText;
+      let val = getFieldValue(slide);
+      if(!val) val = '<span style="color:var(--text-muted); font-size:13px;">لم تتم الإجابة</span>';
+
+      const item = document.createElement('div');
+      item.className = 'summary-item';
+      item.innerHTML = `
+        <div class="sum-text">
+          <div class="summary-q">${qText}</div>
+          <div class="summary-a">${val}</div>
+        </div>
+        <button class="btn-edit" onclick="editSlide(${i})">
+          <span class="material-symbols-outlined" style="font-size:14px;">edit</span> تعديل
+        </button>
+      `;
+      container.appendChild(item);
+    }
+  }
+
+  function editSlide(index) {
+    editingIndex = index;
+    transitionTo(index);
+  }
+
+  function updateUI() {
+    // شريط التقدم
+    const pct = (current / TOTAL) * 100;
+    progressBar.style.width = pct + '%';
+
+    const currentSlide = getSlide(current);
+    const sectionNum = parseInt(currentSlide.dataset.section);
+
+    // ترويسة الأقسام
+    if (sectionNum > 0 && sectionNum <= 4) {
+      header.style.display = 'flex';
+      document.querySelectorAll('.step-item').forEach(dot => dot.classList.remove('active'));
+      document.getElementById(`step-${sectionNum}`).classList.add('active');
+    } else {
+      header.style.display = 'none';
+    }
+
+    btnBack.style.visibility = (current > 0 && editingIndex === -1) ? 'visible' : 'hidden';
+
+    const isLast = current === TOTAL;
+    const isSuccess = current === TOTAL + 1;
+
+    if (isSuccess) {
+      btnNext.style.display = 'none';
+      btnBack.style.visibility = 'hidden';
+      header.style.display = 'none';
+    } else if (isLast) {
+      btnNext.innerHTML = 'إرسال الاستبيان <span class="material-symbols-outlined" style="font-size: 18px;">send</span>';
+      btnBack.style.visibility = 'visible'; // السماح بالرجوع من الملخص بالطريقة العادية
+    } else if (editingIndex !== -1 && current === editingIndex) {
+      // زر الحفظ والعودة للملخص
+      btnNext.innerHTML = 'حفظ والعودة للملخص <span class="material-symbols-outlined" style="font-size: 18px;">check</span>';
+      btnBack.style.visibility = 'hidden';
+    } else if (current === 0) {
+      btnNext.innerHTML = 'نبدأ <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span>';
+    } else {
+      btnNext.innerHTML = 'التالي <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span>';
+      btnNext.style.display = '';
+    }
+  }
+
+  function transitionTo(next) {
+    const old = getSlide(current);
+    const nw = getSlide(next);
+    if (!nw) return;
+
+    old.classList.add('exit-up');
+    old.classList.remove('active');
+    current = next;
+
+    setTimeout(() => {
+      old.classList.remove('exit-up');
+      nw.classList.add('active');
+      const inp = nw.querySelector('input:not([type="radio"]):not([type="checkbox"]), textarea');
+      if (inp) setTimeout(() => inp.focus(), 300);
+    }, 50);
+
+    updateUI();
+  }
+
+  function goNext() {
+    const slide = getSlide(current);
+    
+    // التحقق من صحة الإدخال إذا كنا في أحد الأسئلة
+    if (current > 0 && current < TOTAL) {
+      if (!validate(slide)) return;
+    }
+
+    // إذا كنا في وضع التعديل (العودة من الملخص)
+    if (editingIndex !== -1 && current === editingIndex) {
+      editingIndex = -1; // إنهاء وضع التعديل
+      generateSummary(); // تحديث بيانات الملخص
+      transitionTo(TOTAL); // العودة مباشرة لصفحة الملخص
+      return;
+    }
+
+    // إذا وصلنا لصفحة الملخص (TOTAL) وضغطنا إرسال
+    if (current === TOTAL) {
+      submitForm();
+      return;
+    }
+
+    // إذا كانت الشريحة القادمة هي شريحة الملخص، قم بتوليده
+    if (current + 1 === TOTAL) {
+      generateSummary();
+    }
+
+    transitionTo(current + 1);
+  }
+
+  function goBack() {
+    if (current > 0) transitionTo(current - 1);
+  }
+
+  function submitForm() {
+    btnNext.disabled = true;
+    btnNext.innerHTML = 'جاري الإرسال... <span class="material-symbols-outlined" style="font-size: 18px;">hourglass_empty</span>';
+
+    const data = {};
+    slides.forEach(slide => {
+      const field = slide.dataset.field;
+      if (!field) return;
+      const val = getFieldValue(slide);
+      if (val) data[field] = val;
+    });
+
+    fetch('https://formspree.io/f/xzdwpkkv', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(data)
+    })
+    .then(r => r.json())
+    .then(res => {
+      if (res.ok || res.next) {
+        transitionTo(current + 1);
+      } else {
+        btnNext.disabled = false;
+        btnNext.innerHTML = 'إرسال الاستبيان <span class="material-symbols-outlined" style="font-size: 18px;">send</span>';
+        alert('حدث خطأ، يرجى المحاولة مرة أخرى');
+      }
+    })
+    .catch(() => {
+      btnNext.disabled = false;
+      btnNext.innerHTML = 'إرسال الاستبيان <span class="material-symbols-outlined" style="font-size: 18px;">send</span>';
+      alert('حدث خطأ بالاتصال، تأكد من الإنترنت وجرب مرة أخرى');
+    });
+  }
+
+  document.querySelectorAll('.opt input[type="radio"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      const group = radio.name;
+      document.querySelectorAll(`input[name="${group}"]`).forEach(r => {
+        r.closest('.opt').classList.remove('selected');
+      });
+      radio.closest('.opt').classList.add('selected');
+    });
+  });
+
+  document.querySelectorAll('.opt input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', () => {
+      cb.closest('.opt').classList.toggle('selected', cb.checked);
+    });
+  });
+
+  updateUI();
+</script>
+</body>
+</html>
