@@ -941,30 +941,42 @@
     }
   }
 
-  function transitionTo(next) {
-    // إخفاء الكيبورد فوراً عند النقر على التالي لتجنب مشاكل ارتفاع الشاشة
-    if (document.activeElement && typeof document.activeElement.blur === 'function') {
+function transitionTo(next) {
+    // 1. فحص إذا كان الكيبورد مفتوح وإغلاقه
+    let isKeyboardOpen = false;
+    if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
       document.activeElement.blur();
+      isKeyboardOpen = true;
     }
 
-    const old = getSlide(current);
-    const nw = getSlide(next);
-    if (!nw) return;
+    // 2. إجبار المتصفح يرجع الصفحة الرئيسية لفوق (عشان يلغي الرفعة تبع الكيبورد)
+    window.scrollTo(0, 0);
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
 
-    // إرجاع مؤشر التمرير للسؤال الجديد إلى الأعلى دائماً
-    nw.scrollTop = 0;
+    // 3. ننتظر شوي إذا الكيبورد كان مفتوح، كرمال الشاشة تاخد حجمها الطبيعي قبل انتقال السلايد
+    setTimeout(() => {
+      const old = getSlide(current);
+      const nw = getSlide(next);
+      if (!nw) return;
 
-    old.classList.add('exit-up');
-    old.classList.remove('active');
-    current = next;
+      // تصفير سكرول السلايد الجديد
+      nw.scrollTop = 0;
 
-    nw.querySelector('.slide-inner').appendChild(bottomNav);
-    setTimeout(() => { 
-      old.classList.remove('exit-up'); 
-      nw.classList.add('active'); 
-      nw.scrollTop = 0; // تأكيد إضافي بعد تفعيل الكلاس
-    }, 50);
-    updateUI();
+      old.classList.add('exit-up');
+      old.classList.remove('active');
+      current = next;
+
+      nw.querySelector('.slide-inner').appendChild(bottomNav);
+      
+      setTimeout(() => { 
+        old.classList.remove('exit-up'); 
+        nw.classList.add('active'); 
+        nw.scrollTop = 0; // تأكيد إضافي بعد ظهور السلايد
+      }, 50);
+      
+      updateUI();
+    }, isKeyboardOpen ? 150 : 0); // تأخير 150 ملي ثانية بس بحال كان الكيبورد طالع
   }
 
   function goNext() {
