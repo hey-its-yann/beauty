@@ -360,15 +360,16 @@
     </div>
   </div>
 
-  <div class="slide" data-index="8" data-section="1" data-required="true" data-field="brand_style">
+   <div class="slide" data-index="8" data-section="1" data-required="true" data-field="brand_style">
     <span class="material-symbols-outlined slide-bg-edge top-right">tune</span><span class="material-symbols-outlined slide-bg-edge bottom-left">tune</span>
     <div class="slide-inner">
       <div class="q-number">السؤال 8</div><div class="q-text">وين بتشوف صالونك؟</div>
-      <div class="q-hint">اختار الطابع الأقرب أو اترك الموضوع للمصمم</div>
+      <div class="q-hint">اختار الطابع الأقرب من كل قسم أو اترك الموضوع للمصمم</div>
       
-      <div class="img-grid">
+      <div style="font-size: 15px; color: var(--rose-gold); margin-bottom: 10px; font-weight: 700; text-align: right; width: 100%; max-width: 550px;">القسم الأول: الطابع العام</div>
+      <div class="img-grid" style="max-width: 550px; margin-bottom: 25px;">
         <label class="img-opt">
-          <input type="radio" name="brand_style" value="كلاسيكي ورسمي">
+          <input type="radio" name="brand_style_1" value="كلاسيكي ورسمي (Traditional)">
           <div class="img-content">
             <img src="classic.jpg" alt="كلاسيكي">
             <span class="img-label">كلاسيكي ورسمي</span>
@@ -377,7 +378,7 @@
         </label>
 
         <label class="img-opt">
-          <input type="radio" name="brand_style" value="حديث وعصري">
+          <input type="radio" name="brand_style_1" value="حديث وعصري (Modern)">
           <div class="img-content">
             <img src="modern.jpg" alt="عصري">
             <span class="img-label">حديث وعصري</span>
@@ -386,7 +387,7 @@
         </label>
 
         <label class="img-opt">
-          <input type="radio" name="brand_style" value="متروك للمصمم">
+          <input type="radio" name="brand_style_1" value="الطابع العام: متروك للمصمم">
           <div class="img-content">
             <div class="designer-choice-box">
               <span class="material-symbols-outlined" style="font-size: 36px; color: var(--rose-gold); margin-bottom: 8px;">brush</span>
@@ -397,7 +398,41 @@
           <span class="material-symbols-outlined check-icon">check_circle</span>
         </label>
       </div>
-      <div class="field-error">اختر خيار واحد على الأقل</div>
+
+      <div style="font-size: 15px; color: var(--rose-gold); margin-bottom: 10px; font-weight: 700; text-align: right; width: 100%; max-width: 550px;">القسم الثاني: شخصية البراند</div>
+      <div class="img-grid" style="max-width: 550px; margin-bottom: 15px;">
+        <label class="img-opt">
+          <input type="radio" name="brand_style_2" value="ودود (Friendly)">
+          <div class="img-content">
+            <img src="friendly.png" alt="Friendly">
+            <span class="img-label">Friendly</span>
+          </div>
+          <span class="material-symbols-outlined check-icon">check_circle</span>
+        </label>
+
+        <label class="img-opt">
+          <input type="radio" name="brand_style_2" value="احترافي (Professional)">
+          <div class="img-content">
+            <img src="prof.png" alt="Professional">
+            <span class="img-label">Professional</span>
+          </div>
+          <span class="material-symbols-outlined check-icon">check_circle</span>
+        </label>
+
+        <label class="img-opt">
+          <input type="radio" name="brand_style_2" value="شخصية البراند: متروك للمصمم">
+          <div class="img-content">
+            <div class="designer-choice-box">
+              <span class="material-symbols-outlined" style="font-size: 36px; color: var(--rose-gold); margin-bottom: 8px;">brush</span>
+              <span style="font-size: 14px; font-weight: bold; color: var(--text-main);">متروك للمصمم</span>
+            </div>
+            <span class="img-label" style="opacity: 0; height: 0;">متروك للمصمم</span>
+          </div>
+          <span class="material-symbols-outlined check-icon">check_circle</span>
+        </label>
+      </div>
+
+      <div class="field-error">يرجى اختيار خيار من كل قسم</div>
     </div>
   </div>
 
@@ -881,9 +916,30 @@
 
   function getSlide(i) { return slides[i]; }
 
-  function getFieldValue(slide) {
+function getFieldValue(slide) {
     const field = slide.dataset.field;
     if (!field) return '';
+
+    // دعم المجموعات المتعددة من أزرار الراديو داخل نفس السؤال (مثل السؤال الثامن)
+    if (field === 'brand_style') {
+      const radios = slide.querySelectorAll('input[type="radio"]');
+      const names = [...new Set(Array.from(radios).map(r => r.name))];
+      if (names.length > 1) {
+        const values = [];
+        let allSelected = true;
+        names.forEach(name => {
+          const checked = slide.querySelector(`input[name="${name}"]:checked`);
+          if (checked) {
+            values.push(checked.value);
+          } else {
+            allSelected = false;
+          }
+        });
+        // إذا كان السؤال مطلوباً ولم يتم الاختيار من القسمين، نرجع قيمة فارغة لإظهار الخطأ
+        if (slide.dataset.required && !allSelected) return '';
+        return values.join('، ');
+      }
+    }
 
     const inputs = slide.querySelectorAll(`input[name="${field}"], textarea[name="${field}"]`);
     if (!inputs.length) return '';
