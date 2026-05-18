@@ -345,8 +345,7 @@
               <span class="material-symbols-outlined" style="font-size: 36px; color: var(--rose-gold); margin-bottom: 8px;">brush</span>
               <span style="font-size: 14px; font-weight: bold; color: var(--text-main);">متروك للمصمم</span>
             </div>
-            <span class="img-label" style="opacity: 0; height: 0;">متروك للمصمم</span> <!-- للمحافظة على التنسيق -->
-          </div>
+            <span class="img-label" style="opacity: 0; height: 0;">متروك للمصمم</span> </div>
           <span class="material-symbols-outlined check-icon">check_circle</span>
         </label>
       </div>
@@ -478,6 +477,18 @@
           </div>
           <span class="material-symbols-outlined check-icon">check_circle</span>
         </label>
+
+        <label class="img-opt">
+          <input type="checkbox" name="visual_vibe" value="متروك للمصمم">
+          <div class="img-content">
+            <div class="designer-choice-box">
+              <span class="material-symbols-outlined" style="font-size: 36px; color: var(--rose-gold); margin-bottom: 8px;">brush</span>
+              <span style="font-size: 14px; font-weight: bold; color: var(--text-main);">متروك للمصمم</span>
+            </div>
+            <span class="img-label" style="opacity: 0; height: 0;">متروك للمصمم</span>
+          </div>
+          <span class="material-symbols-outlined check-icon">check_circle</span>
+        </label>
       </div>
 
       <label class="opt" style="width: 100%; max-width: 550px;"><input type="checkbox" name="visual_vibe" value="other"><span><span class="material-symbols-outlined">add_circle</span> أخرى</span></label>
@@ -520,6 +531,18 @@
           <div class="img-content">
             <img src="script.png" alt="خط يدوي">
             <span class="img-label">خط يدوي دافئ (Script)</span>
+          </div>
+          <span class="material-symbols-outlined check-icon">check_circle</span>
+        </label>
+
+        <label class="img-opt">
+          <input type="checkbox" name="font_feel" value="متروك للمصمم">
+          <div class="img-content">
+            <div class="designer-choice-box">
+              <span class="material-symbols-outlined" style="font-size: 36px; color: var(--rose-gold); margin-bottom: 8px;">brush</span>
+              <span style="font-size: 14px; font-weight: bold; color: var(--text-main);">متروك للمصمم</span>
+            </div>
+            <span class="img-label" style="opacity: 0; height: 0;">متروك للمصمم</span>
           </div>
           <span class="material-symbols-outlined check-icon">check_circle</span>
         </label>
@@ -566,6 +589,18 @@
           </div>
           <span class="material-symbols-outlined check-icon">check_circle</span>
         </label>
+
+        <label class="img-opt">
+          <input type="checkbox" name="logo_type" value="متروك للمصمم">
+          <div class="img-content">
+            <div class="designer-choice-box">
+              <span class="material-symbols-outlined" style="font-size: 36px; color: var(--rose-gold); margin-bottom: 8px;">brush</span>
+              <span style="font-size: 14px; font-weight: bold; color: var(--text-main);">متروك للمصمم</span>
+            </div>
+            <span class="img-label" style="opacity: 0; height: 0;">متروك للمصمم</span>
+          </div>
+          <span class="material-symbols-outlined check-icon">check_circle</span>
+        </label>
       </div>
 
       <label class="opt" style="width: 100%; max-width: 550px;"><input type="checkbox" name="logo_type" value="other"><span><span class="material-symbols-outlined">add_circle</span> أخرى</span></label>
@@ -606,6 +641,18 @@
           <div class="img-content">
             <img src="vibrant.png" alt="ألوان حيوية">
             <span class="img-label">حيوية وفريش (باستيل، أبيض)</span>
+          </div>
+          <span class="material-symbols-outlined check-icon">check_circle</span>
+        </label>
+
+        <label class="img-opt">
+          <input type="checkbox" name="color_palette" value="متروك للمصمم">
+          <div class="img-content">
+            <div class="designer-choice-box">
+              <span class="material-symbols-outlined" style="font-size: 36px; color: var(--rose-gold); margin-bottom: 8px;">brush</span>
+              <span style="font-size: 14px; font-weight: bold; color: var(--text-main);">متروك للمصمم</span>
+            </div>
+            <span class="img-label" style="opacity: 0; height: 0;">متروك للمصمم</span>
           </div>
           <span class="material-symbols-outlined check-icon">check_circle</span>
         </label>
@@ -895,16 +942,28 @@
   }
 
   function transitionTo(next) {
+    // إخفاء الكيبورد فوراً عند النقر على التالي لتجنب مشاكل ارتفاع الشاشة
+    if (document.activeElement && typeof document.activeElement.blur === 'function') {
+      document.activeElement.blur();
+    }
+
     const old = getSlide(current);
     const nw = getSlide(next);
     if (!nw) return;
+
+    // إرجاع مؤشر التمرير للسؤال الجديد إلى الأعلى دائماً
+    nw.scrollTop = 0;
 
     old.classList.add('exit-up');
     old.classList.remove('active');
     current = next;
 
     nw.querySelector('.slide-inner').appendChild(bottomNav);
-    setTimeout(() => { old.classList.remove('exit-up'); nw.classList.add('active'); }, 50);
+    setTimeout(() => { 
+      old.classList.remove('exit-up'); 
+      nw.classList.add('active'); 
+      nw.scrollTop = 0; // تأكيد إضافي بعد تفعيل الكلاس
+    }, 50);
     updateUI();
   }
 
