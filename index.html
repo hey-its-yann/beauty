@@ -34,18 +34,11 @@
     direction: rtl;
   }
 
-  /* ── TOP HEADER (FIXED & FULL WIDTH) ── */
+  /* ── TOP HEADER ── */
   #app-header {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    width: 100%;
-    background: var(--bg-dark); /* لون صلب لمنع التراكب */
-    border-bottom: 1px solid var(--line);
-    padding: 15px 20px 0 20px;
-    z-index: 100;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    position: fixed; top: 0; left: 0; right: 0; width: 100%; background: var(--bg-dark); 
+    border-bottom: 1px solid var(--line); padding: 15px 20px 0 20px; z-index: 100;
+    display: flex; flex-direction: column; gap: 15px;
   }
 
   #section-tracker { 
@@ -55,67 +48,50 @@
 
   .step-item {
     display: flex; flex-direction: column; align-items: center; gap: 6px;
-    opacity: 0.5; transition: all 0.4s ease; color: var(--text-muted);
-    position: relative; cursor: pointer;
+    opacity: 0.5; transition: all 0.4s ease; color: var(--text-muted); position: relative; cursor: pointer;
   }
 
   .step-item:hover, .step-item.active { opacity: 1; color: var(--rose-gold); }
   .step-item .material-symbols-outlined { font-size: 24px; pointer-events: none; }
   .step-item .label { font-size: 11px; font-weight: 700; pointer-events: none; }
 
-  /* Dropdown Styles */
   .step-dropdown {
     position: absolute; top: 130%; left: 50%; transform: translateX(-50%);
     background: rgba(30, 22, 24, 0.95); border: 1px solid var(--rose-gold); border-radius: 12px;
     padding: 10px; width: max-content; display: none; flex-direction: column; gap: 5px;
-    z-index: 200; box-shadow: 0 8px 25px rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+    z-index: 200; box-shadow: 0 8px 25px rgba(0,0,0,0.6); backdrop-filter: blur(5px); max-height: 300px; overflow-y: auto;
   }
-
   .step-dropdown.show { display: flex; }
   .drop-item { padding: 8px 12px; font-size: 13px; color: var(--text-main); border-radius: 8px; cursor: pointer; transition: all 0.2s; text-align: right; }
   .drop-item:hover { background: rgba(221, 167, 165, 0.15); color: var(--rose-gold); }
 
-  /* RTL Progress Bar */
-  .progress-container { width: 100%; max-width: 600px; margin: 0 auto 15px auto; height: 6px; background: rgba(255, 255, 255, 0.05); border-radius: 10px; position: relative; overflow: hidden; }
+  /* Progress Bar */
+  .progress-wrapper { width: 100%; max-width: 600px; margin: 0 auto 15px auto; display: flex; flex-direction: column; gap: 8px; }
+  #progress-text { font-size: 13px; font-weight: 700; color: var(--rose-gold); text-align: left; padding-left: 5px; font-family: 'Cairo', sans-serif; }
+  .progress-container { width: 100%; height: 6px; background: rgba(255, 255, 255, 0.05); border-radius: 10px; position: relative; overflow: hidden; }
   #progress-bar { position: absolute; top: 0; right: 0; height: 100%; background: var(--rose-gold); border-radius: 10px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 0 10px rgba(221, 167, 165, 0.5); }
 
-  /* ── EDGE BACKGROUND ICONS ── */
+  /* ── BACKGROUND ICONS ── */
   .slide-bg-edge { position: absolute; font-size: 18vh; color: var(--rose-gold); opacity: 0.08; z-index: 0; pointer-events: none; }
   .slide-bg-edge.top-right { top: 15%; right: 5%; transform: rotate(20deg); }
   .slide-bg-edge.bottom-left { bottom: 12%; left: 5%; transform: rotate(-20deg); }
 
-  /* ── SLIDES CONTAINER ── */
+  /* ── SLIDES ── */
   #slides { height: 100vh; width: 100%; position: relative; z-index: 10; }
-  
   .slide { 
-    position: absolute; 
-    top: 115px; /* فصل المساحة تماماً: الشريحة تبدأ تحت الشريط الثابت */
-    bottom: 0; left: 0; right: 0; 
-    display: flex; flex-direction: column; align-items: center; 
-    justify-content: flex-start; /* إلغاء الدفع للأعلى للمحتوى الطويل */
-    padding: 30px 20px 40px; /* مسافة أمان من أعلى وأسفل الشريحة */
-    opacity: 0; pointer-events: none; transform: scale(0.98) translateY(20px); 
-    transition: opacity 0.5s ease, transform 0.5s ease; 
+    position: absolute; top: 115px; bottom: 0; left: 0; right: 0; 
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 30px 20px 40px; 
+    opacity: 0; pointer-events: none; transform: scale(0.98) translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; 
     overflow-y: auto; overflow-x: hidden;
   }
-  
   .slide.active { opacity: 1; pointer-events: all; transform: scale(1) translateY(0); }
   .slide.exit-up { opacity: 0; transform: scale(1.02) translateY(-20px); pointer-events: none; }
-  
-  .slide-inner { 
-    width: 100%; max-width: 640px; display: flex; flex-direction: column; 
-    align-items: center; text-align: center; position: relative; z-index: 2; 
-    margin: 0 auto; /* إزالة التوسيط العمودي لضمان بقاء العناوين في الأعلى دائماً */
-  }
+  .slide-inner { width: 100%; max-width: 640px; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; z-index: 2; margin: 0 auto; }
 
-  /* ── TEXT & TYPOGRAPHY ── */
+  /* ── TYPOGRAPHY ── */
   .q-number { font-family: 'Amiri', serif; font-size: 16px; color: var(--rose-gold); margin-bottom: 8px; font-weight: 700; }
   .q-text { font-family: 'Amiri', serif; font-size: clamp(24px, 4.5vw, 34px); font-weight: 700; line-height: 1.5; color: var(--text-main); margin-bottom: 12px; }
   .q-hint { font-size: 15px; color: var(--text-muted); font-weight: 400; line-height: 1.6; margin-bottom: 24px; max-width: 85%; }
-
-  /* ── IMAGE SHOWCASE ── */
-  .img-showcase { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin-bottom: 24px; width: 100%; max-width: 550px; }
-  .img-showcase img { max-width: 100%; height: 180px; width: 180px; border: none; border-radius: 20px; object-fit: cover; box-shadow: var(--shadow-sm); transition: transform 0.3s ease; }
 
   /* ── INPUTS ── */
   .input-wrap { position: relative; width: 100%; max-width: 500px; }
@@ -123,7 +99,7 @@
   input:focus, textarea:focus { border-color: var(--rose-gold); background: rgba(255, 255, 255, 0.1); box-shadow: 0 0 0 3px rgba(221, 167, 165, 0.15); }
   input::placeholder, textarea::placeholder { color: var(--text-muted); opacity: 0.6; }
 
-  /* ── OPTIONS ── */
+  /* ── OPTIONS (Regular Checkboxes & Radios) ── */
   .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 8px; width: 100%; max-width: 500px; }
   .opt { display: flex; align-items: center; justify-content: flex-start; gap: 14px; padding: 16px 20px; border: 1px solid var(--line); background: var(--card-bg); border-radius: 12px; cursor: pointer; transition: all 0.25s; user-select: none; }
   .opt:hover { border-color: var(--rose-gold); transform: translateY(-2px); }
@@ -132,11 +108,53 @@
   .opt span { font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
   .checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px; width: 100%; max-width: 500px; }
 
-  /* ── "OTHER" INPUT ── */
+  /* ── IMAGE OPTIONS (Clickable Images) ── */
+  .img-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px; width: 100%; max-width: 600px; margin-bottom: 15px; }
+  .img-opt { cursor: pointer; display: block; position: relative; }
+  .img-opt input { display: none; }
+  .img-opt .img-content { border: none; border-radius: 12px; transition: all 0.3s; background: transparent; overflow: visible; height: 100%; display: flex; flex-direction: column; align-items: center; }
+  .img-opt img { width: 100%; height: 180px; object-fit: cover; display: block; border-radius: 12px; transition: all 0.3s; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); }
+  .img-opt:hover img { transform: scale(1.05); box-shadow: 0 6px 18px rgba(221, 167, 165, 0.3); }
+  .img-opt .img-label { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 14px 10px 0; font-size: 14px; font-weight: 700; text-align: center; color: var(--text-main); flex: 1; }
+  .img-opt .check-icon { font-size: 28px; color: var(--rose-gold); opacity: 0; transform: scale(0.5); transition: all 0.3s; position: absolute; top: 10px; right: 10px; background: rgba(26, 20, 22, 0.9); border-radius: 50%; box-shadow: 0 4px 15px rgba(221, 167, 165, 0.5); z-index: 5; pointer-events: none; padding: 4px; }
+  .img-opt input:checked + .img-content img { border: 3px solid var(--rose-gold); box-shadow: 0 8px 24px rgba(221, 167, 165, 0.4); }
+  .img-opt input:checked + .img-content .img-label { color: var(--rose-gold); }
+  .img-opt input:checked ~ .check-icon { opacity: 1; transform: scale(1); }
+
   .other-wrap { display: none; width: 100%; max-width: 500px; margin-top: 4px; margin-bottom: 8px; }
   .other-wrap.show { display: block; animation: fadeInDown 0.3s ease; }
   .other-input { background: rgba(255, 255, 255, 0.02) !important; border-color: var(--rose-gold) !important; padding: 12px !important; font-size: 15px !important; }
   @keyframes fadeInDown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── SLIDERS ── */
+  .slider-group { width: 100%; max-width: 500px; margin-bottom: 35px; background: rgba(255,255,255,0.02); padding: 20px; border-radius: 16px; border: 1px solid var(--line); }
+  .slider-layout { display: flex; align-items: center; justify-content: space-between; gap: 15px; width: 100%; }
+  
+  /* Increased width for the container */
+  .slider-side { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 140px; } 
+  
+  /* Removed the background/box-shadow and used object-fit: contain to stop cropping */
+  .slider-side img { 
+    width: 100%; 
+    height: 120px; /* Made the image taller */
+    border-radius: 8px; 
+    object-fit: contain; /* Prevents the image from being cropped */
+    background: transparent; /* Removes the dark box background */
+    box-shadow: none; /* Removes the boxy border effect */
+    transition: all 0.3s; 
+  }
+  
+  /* Added a subtle glow instead of a harsh box shadow on hover */
+  .slider-side:hover img { 
+    filter: drop-shadow(0 6px 12px rgba(221, 167, 165, 0.4)); 
+    transform: scale(1.1); 
+  }
+  .slider-side span { font-size: 13px; text-align: center; color: var(--text-main); font-weight: 700; line-height: 1.3; }
+   .slider-core { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .slider-hint-text { font-size: 11px; color: var(--rose-gold); background: rgba(221, 167, 165, 0.1); padding: 4px 10px; border-radius: 20px; text-align: center; width: max-content; }
+  .custom-slider { -webkit-appearance: none; width: 100%; height: 8px; background: var(--card-bg); border-radius: 10px; outline: none; border: 1px solid var(--line); }
+  .custom-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 24px; height: 24px; border-radius: 50%; background: var(--rose-gold); cursor: pointer; box-shadow: 0 0 10px rgba(221, 167, 165, 0.6); transition: transform 0.2s; }
+  .custom-slider::-webkit-slider-thumb:hover { transform: scale(1.15); }
 
   /* ── SUMMARY SECTION ── */
   .summary-container { width: 100%; max-width: 600px; text-align: right; padding: 10px; background: var(--card-bg); border-radius: 12px; border: 1px solid var(--line); margin-bottom: 20px; }
@@ -148,27 +166,10 @@
   .btn-edit { background: transparent; border: 1px solid var(--line); color: var(--text-muted); border-radius: 8px; padding: 6px 10px; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 4px; font-family: 'Cairo'; font-size: 12px; }
   .btn-edit:hover { border-color: var(--rose-gold); color: var(--rose-gold); background: rgba(221, 167, 165, 0.1); }
 
-  /* ── DYNAMIC IN-FLOW NAV BUTTONS ── */
-  #bottom-nav { 
-    position: relative; 
-    margin-top: 40px; 
-    margin-bottom: 60px; /* مسافة أمان سفلية لكي لا تلتصق الأزرار بأسفل الشاشة */
-    width: 100%; 
-    max-width: 500px; 
-    display: flex; 
-    flex-direction: column; /* ترتيب الأزرار تحت بعضها */
-    gap: 15px; 
-    background: transparent; 
-    padding: 0;
-  }
-  
-  #bottom-nav .btn { 
-    width: 100%; /* جعل الزر يأخذ العرض بالكامل ليكون مساوياً لعرض السؤال */
-    justify-content: center; /* توسيط النص والأيقونة داخل الزر الواسع */
-    padding: 16px 20px; 
-  }
-
-  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 30px; font-family: 'Cairo', sans-serif; font-size: 16px; font-weight: 700; border-radius: 30px; cursor: pointer; transition: all 0.3s; border: none; outline: none; }
+  /* ── BUTTONS ── */
+  #bottom-nav { position: relative; margin-top: 40px; margin-bottom: 60px; width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 15px; background: transparent; padding: 0; }
+  #bottom-nav .btn { width: 100%; justify-content: center; padding: 16px 20px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: 'Cairo', sans-serif; font-size: 16px; font-weight: 700; border-radius: 30px; cursor: pointer; transition: all 0.3s; border: none; outline: none; }
   .btn-next { background: var(--rose-gold); color: var(--bg-dark); box-shadow: 0 4px 15px rgba(221, 167, 165, 0.3); }
   .btn-next:hover { background: #C48E8C; transform: translateY(-2px); }
   .btn-back { background: transparent; color: var(--text-main); border: 1px solid var(--line); }
@@ -178,75 +179,81 @@
   .field-error { font-size: 14px; color: var(--error); margin-top: 10px; font-weight: 600; display: none; }
   .field-error.visible { display: block; }
 
-  @media (max-width: 600px) { 
-    .checkbox-grid { grid-template-columns: 1fr; } 
+@media (max-width: 600px) { 
+    .checkbox-grid { grid-template-columns: 1fr; }
+    .slider-layout { gap: 8px; }
+    
+    /* Updated sizes for mobile to keep them visible but fit the screen */
+    .slider-side { width: 100px; }
+    .slider-side img { height: 95px; }
+    
+    .slider-side span { font-size: 11px; }
+    .slider-core { flex: 1; gap: 8px; }
+    .slider-hint-text { font-size: 10px; padding: 2px 6px; }
+    .custom-slider { height: 6px; }
   }
 </style>
 </head>
 <body>
 
-<!-- ================== HTML STRUCTURE ================== -->
-
 <header id="app-header" style="display: none;">
   <div id="section-tracker">
     <div class="step-item" id="step-1" onclick="toggleDropdown(event, 1)">
-      <span class="material-symbols-outlined">storefront</span>
-      <span class="label">الصالون</span>
+      <span class="material-symbols-outlined">storefront</span><span class="label">الصالون</span>
       <div class="step-dropdown" id="dropdown-1">
-        <div class="drop-item" onclick="jumpToSlide(event, 1)">سؤال 1: اسم الصالون</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 2)">سؤال 2: الخبرة</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 3)">سؤال 3: الخدمات</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 4)">سؤال 4: كلمة واحدة</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 5)">سؤال 5: شخصية البراند</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 6)">سؤال 6: الإحساس</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 1)">سؤال 1: الاسم</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 2)">سؤال 2: الشعار اللفظي</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 3)">سؤال 3: الخبرة</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 4)">سؤال 4: الخدمات</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 5)">سؤال 5: الهدف المعنوي</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 6)">سؤال 6: كلمة واحدة</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 7)">سؤال 7: الشخصية</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 8)">سؤال 8: مقياس البراند</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 9)">سؤال 9: الإحساس</div>
       </div>
     </div>
-    
     <div class="step-item" id="step-2" onclick="toggleDropdown(event, 2)">
-      <span class="material-symbols-outlined">target</span>
-      <span class="label">السوق</span>
+      <span class="material-symbols-outlined">target</span><span class="label">السوق</span>
       <div class="step-dropdown" id="dropdown-2">
-        <div class="drop-item" onclick="jumpToSlide(event, 7)">سؤال 7: الزبون المثالي</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 8)">سؤال 8: الموقع بالسوق</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 9)">سؤال 9: المنافسين</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 10)">سؤال 10: خمس كلمات</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 10)">سؤال 10: الزبون المثالي</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 11)">سؤال 11: الموقع بالسوق</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 12)">سؤال 12: المنافسين</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 13)">سؤال 13: خمس كلمات</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 14)">سؤال 14: جذب الجمهور</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 15)">سؤال 15: القيمة للجمهور</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 16)">سؤال 16: اكتشاف البراند</div>
       </div>
     </div>
-
     <div class="step-item" id="step-3" onclick="toggleDropdown(event, 3)">
-      <span class="material-symbols-outlined">palette</span>
-      <span class="label">البصريات</span>
+      <span class="material-symbols-outlined">palette</span><span class="label">البصريات</span>
       <div class="step-dropdown" id="dropdown-3">
-        <div class="drop-item" onclick="jumpToSlide(event, 11)">سؤال 11: الطابع البصري</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 12)">سؤال 12: الخطوط</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 13)">سؤال 13: شكل الشعار</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 14)">سؤال 14: الألوان</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 15)">سؤال 15: شعارات تعجبك</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 16)">سؤال 16: ما لا يعجبك</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 17)">سؤال 17: ما يزعجك</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 17)">سؤال 17: الطابع البصري</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 18)">سؤال 18: الخطوط</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 19)">سؤال 19: شكل الشعار</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 20)">سؤال 20: الألوان</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 21)">سؤال 21: شعارات تعجبك</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 22)">سؤال 22: ما لا يعجبك</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 23)">سؤال 23: ما يزعجك</div>
       </div>
     </div>
-
     <div class="step-item" id="step-4" onclick="toggleDropdown(event, 4)">
-      <span class="material-symbols-outlined">tune</span>
-      <span class="label">التفاصيل</span>
+      <span class="material-symbols-outlined">tune</span><span class="label">التفاصيل</span>
       <div class="step-dropdown" id="dropdown-4">
-        <div class="drop-item" onclick="jumpToSlide(event, 18)">سؤال 18: الاستخدام</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 19)">سؤال 19: الديكور</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 20)">سؤال 20: الاسم الشخصي</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 21)">سؤال 21: تفاصيل إضافية</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 24)">سؤال 24: الاستخدام</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 25)">سؤال 25: الديكور</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 26)">سؤال 26: الاسم الشخصي</div>
+        <div class="drop-item" onclick="jumpToSlide(event, 27)">سؤال 27: تفاصيل إضافية</div>
       </div>
     </div>
   </div>
-  
-  <div class="progress-container">
-    <div id="progress-bar" style="width: 0%"></div>
+  <div class="progress-wrapper">
+    <div id="progress-text">0%</div>
+    <div class="progress-container"><div id="progress-bar" style="width: 0%"></div></div>
   </div>
 </header>
 
 <div id="slides">
 
-  <!-- WELCOME -->
   <div class="slide slide-welcome active" data-index="0" data-section="0">
     <span class="material-symbols-outlined slide-bg-edge top-right">auto_awesome</span>
     <span class="material-symbols-outlined slide-bg-edge bottom-left">auto_awesome</span>
@@ -256,47 +263,43 @@
       <p class="q-hint">
         هاد الاستبيان رح يساعدني أفهم تفاصيل صالونك وشخصيتك أكتر،<br>
         لنوصل لهوية بصرية بتعبر عن طابعك الجمالي وتكون مميزة.<br><br>
-        ما في أجوبة صح أو غلط — بس حكيلي بصراحة.
+        ما في أجوبة صح أو غلط — بس احكيلي بصراحة.
       </p>
     </div>
   </div>
 
-  <!-- Q1 -->
   <div class="slide" data-index="1" data-section="1" data-required="true" data-field="salon_name">
-    <span class="material-symbols-outlined slide-bg-edge top-right">signature</span>
-    <span class="material-symbols-outlined slide-bg-edge bottom-left">signature</span>
+    <span class="material-symbols-outlined slide-bg-edge top-right">signature</span><span class="material-symbols-outlined slide-bg-edge bottom-left">signature</span>
     <div class="slide-inner">
-      <div class="q-number">السؤال 1</div>
-      <div class="q-text">شو اسم الصالون؟</div>
-      <div class="q-hint">وإذا في معنى أو قصة وراء الاسم، حكيلي ياها</div>
-      <div class="input-wrap">
-        <textarea name="salon_name" placeholder="اكتب هون..." rows="2"></textarea>
-      </div>
+      <div class="q-number">السؤال 1</div><div class="q-text">شو اسم الصالون؟</div>
+      <div class="q-hint">وإذا في معنى أو قصة ورا الاسم، احكيلي عنها</div>
+      <div class="input-wrap"><textarea name="salon_name" placeholder="اكتب هون..." rows="2"></textarea></div>
       <div class="field-error">هاد السؤال مطلوب</div>
     </div>
   </div>
 
-  <!-- Q2 -->
-  <div class="slide" data-index="2" data-section="1" data-required="true" data-field="experience">
-    <span class="material-symbols-outlined slide-bg-edge top-right">hourglass_top</span>
-    <span class="material-symbols-outlined slide-bg-edge bottom-left">hourglass_top</span>
+  <div class="slide" data-index="2" data-section="1" data-field="slogan">
+    <span class="material-symbols-outlined slide-bg-edge top-right">short_text</span><span class="material-symbols-outlined slide-bg-edge bottom-left">short_text</span>
     <div class="slide-inner">
-      <div class="q-number">السؤال 2</div>
-      <div class="q-text">من إيمتى عم تشتغل بهالمجال؟</div>
-      <div class="input-wrap">
-        <input type="text" name="experience" placeholder="مثلاً: 5 سنوات، من 2018...">
-      </div>
+      <div class="q-number">السؤال 2</div><div class="q-text">هل في شعار لفظي (Slogan) حابب نضيفه تحت اللوغو؟</div>
+      <div class="q-hint">جملة قصيرة بتعبر عن الصالون (مثال: جمالك بيبدأ من عنا). اتركها فاضية إذا ما في.</div>
+      <div class="input-wrap"><input type="text" name="slogan" placeholder="اكتب الشعار اللفظي هون..."></div>
+    </div>
+  </div>
+
+  <div class="slide" data-index="3" data-section="1" data-required="true" data-field="experience">
+    <span class="material-symbols-outlined slide-bg-edge top-right">hourglass_top</span><span class="material-symbols-outlined slide-bg-edge bottom-left">hourglass_top</span>
+    <div class="slide-inner">
+      <div class="q-number">السؤال 3</div><div class="q-text">من أيمت عم تشتغل بهالمجال؟</div>
+      <div class="input-wrap"><input type="text" name="experience" placeholder="مثلاً: 5 سنوات، من 2018..."></div>
       <div class="field-error">هاد السؤال مطلوب</div>
     </div>
   </div>
 
-  <!-- Q3 -->
-  <div class="slide" data-index="3" data-section="1" data-field="services">
-    <span class="material-symbols-outlined slide-bg-edge top-right">spa</span>
-    <span class="material-symbols-outlined slide-bg-edge bottom-left">spa</span>
+  <div class="slide" data-index="4" data-section="1" data-field="services">
+    <span class="material-symbols-outlined slide-bg-edge top-right">spa</span><span class="material-symbols-outlined slide-bg-edge bottom-left">spa</span>
     <div class="slide-inner">
-      <div class="q-number">السؤال 3</div>
-      <div class="q-text">شو الخدمات اللي رح يقدمها الصالون؟</div>
+      <div class="q-number">السؤال 4</div><div class="q-text">شو الخدمات اللي رح يقدمها الصالون؟</div>
       <div class="checkbox-grid">
         <label class="opt"><input type="checkbox" name="services" value="قص وتصفيف"><span><span class="material-symbols-outlined">content_cut</span> قص وتصفيف</span></label>
         <label class="opt"><input type="checkbox" name="services" value="صبغة وألوان"><span><span class="material-symbols-outlined">format_color_fill</span> صبغة وألوان</span></label>
@@ -306,360 +309,437 @@
         <label class="opt"><input type="checkbox" name="services" value="عناية بالبشرة"><span><span class="material-symbols-outlined">face_retouching_natural</span> عناية بالبشرة</span></label>
         <label class="opt" style="grid-column: 1 / -1;"><input type="checkbox" name="services" value="other"><span><span class="material-symbols-outlined">add_circle</span> أخرى</span></label>
       </div>
-      <div class="other-wrap" id="other-services">
-        <input type="text" class="other-input" placeholder="حدد الخدمات الأخرى...">
-      </div>
+      <div class="other-wrap" id="other-services"><input type="text" class="other-input" placeholder="حدد الخدمات الأخرى..."></div>
     </div>
   </div>
 
-  <!-- Q4 -->
-  <div class="slide" data-index="4" data-section="1" data-required="true" data-field="one_word">
-    <span class="material-symbols-outlined slide-bg-edge top-right">label</span>
-    <span class="material-symbols-outlined slide-bg-edge bottom-left">label</span>
+  <div class="slide" data-index="5" data-section="1" data-field="brand_purpose">
+    <span class="material-symbols-outlined slide-bg-edge top-right">psychology</span><span class="material-symbols-outlined slide-bg-edge bottom-left">psychology</span>
     <div class="slide-inner">
-      <div class="q-number">السؤال 4</div>
-      <div class="q-text">لو لازم توصف صالونك بكلمة وحدة، شو بتقول؟</div>
-      <div class="input-wrap">
-        <input type="text" name="one_word" placeholder="كلمة وحدة بس...">
-      </div>
+      <div class="q-number">السؤال 5</div><div class="q-text">شو هو الإحساس أو الهدف المعنوي اللي بدك تزرعه بزبائنك؟</div>
+      <div class="q-hint">بعيداً عن الخدمات الملموسة.. مثلاً: "بدي كل زبونة تطلع من عندي حاسة إنها أقوى وأكثر ثقة بنفسها"</div>
+      <div class="input-wrap"><textarea name="brand_purpose" placeholder="احكيلي أكثر عن الأثر اللي حابب تتركه..." rows="3"></textarea></div>
+    </div>
+  </div>
+
+  <div class="slide" data-index="6" data-section="1" data-required="true" data-field="one_word">
+    <span class="material-symbols-outlined slide-bg-edge top-right">label</span><span class="material-symbols-outlined slide-bg-edge bottom-left">label</span>
+    <div class="slide-inner">
+      <div class="q-number">السؤال 6</div><div class="q-text">لو لازم توصف صالونك بكلمة وحدة، شو بتقول؟</div>
+      <div class="input-wrap"><input type="text" name="one_word" placeholder="كلمة وحدة بس..."></div>
       <div class="field-error">هاد السؤال مطلوب</div>
     </div>
   </div>
 
-  <!-- Q5 -->
-  <div class="slide" data-index="5" data-section="1" data-required="true" data-field="brand_person">
-    <span class="material-symbols-outlined slide-bg-edge top-right">person_check</span>
-    <span class="material-symbols-outlined slide-bg-edge bottom-left">person_check</span>
+  <div class="slide" data-index="7" data-section="1" data-required="true" data-field="brand_person">
+    <span class="material-symbols-outlined slide-bg-edge top-right">person_check</span><span class="material-symbols-outlined slide-bg-edge bottom-left">person_check</span>
     <div class="slide-inner">
-      <div class="q-number">السؤال 5</div>
-      <div class="q-text">لو كان الصالون شخص، كيف بتوصف شخصيته؟</div>
+      <div class="q-number">السؤال 7</div><div class="q-text">لو كان الصالون شخص، كيف بتوصف شخصيته؟</div>
       <div class="q-hint">شو عمره، أناقته، كيف بيحكي مع الناس...</div>
-      <div class="input-wrap">
-        <textarea name="brand_person" placeholder="اوصفلي الشخصية هون..." rows="3"></textarea>
-      </div>
+      <div class="input-wrap"><textarea name="brand_person" placeholder="اوصفلي الشخصية هون..." rows="3"></textarea></div>
       <div class="field-error">هاد السؤال مطلوب</div>
     </div>
   </div>
 
-  <!-- Q6 -->
-  <div class="slide" data-index="6" data-section="1" data-required="true" data-field="feeling">
-    <span class="material-symbols-outlined slide-bg-edge top-right">favorite_border</span>
-    <span class="material-symbols-outlined slide-bg-edge bottom-left">favorite_border</span>
+  <div class="slide" data-index="8" data-section="1" data-field="brand_compass">
+    <span class="material-symbols-outlined slide-bg-edge top-right">tune</span><span class="material-symbols-outlined slide-bg-edge bottom-left">tune</span>
     <div class="slide-inner">
-      <div class="q-number">السؤال 6</div>
-      <div class="q-text">كيف بدك الزبائن يحسوا لما يشوفوا شعارك؟</div>
-      <div class="input-wrap">
-        <textarea name="feeling" placeholder="بالفخامة، بالراحة، بالثقة..." rows="2"></textarea>
+      <div class="q-number">السؤال 8</div><div class="q-text">وين بتشوف صالونك على هالمقاييس؟</div>
+      <div class="q-hint">حدد الاتجاه الأقرب لشخصية صالونك</div>
+      <div class="slider-group">
+        <div class="slider-layout">
+          <div class="slider-side"><img src="classic.png" alt="كلاسيكي"><span>تقليدي وكلاسيكي</span></div>
+          <div class="slider-core"><div class="slider-hint-text">اختر المنتصف لترك الخيار للمصمم</div><input type="range" min="1" max="3" value="2" class="custom-slider" name="slider_style"></div>
+          <div class="slider-side"><img src="modern.png" alt="عصري"><span>حديث وعصري</span></div>
+        </div>
       </div>
+      <div class="slider-group">
+        <div class="slider-layout">
+          <div class="slider-side"><img src="friendly.png" alt="ودود"><span>ودود وعفوي</span></div>
+          <div class="slider-core"><div class="slider-hint-text">اختر المنتصف لترك الخيار للمصمم</div><input type="range" min="1" max="3" value="2" class="custom-slider" name="slider_tone"></div>
+          <div class="slider-side"><img src="prof.png" alt="رسمي"><span>رسمي ومهني</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" data-index="9" data-section="1" data-required="true" data-field="feeling">
+    <span class="material-symbols-outlined slide-bg-edge top-right">favorite_border</span><span class="material-symbols-outlined slide-bg-edge bottom-left">favorite_border</span>
+    <div class="slide-inner">
+      <div class="q-number">السؤال 9</div><div class="q-text">كيف بدك الزبائن يحسوا لما يشوفوا شعارك؟</div>
+      <div class="input-wrap"><textarea name="feeling" placeholder="بالفخامة، بالراحة، بالثقة..." rows="2"></textarea></div>
       <div class="field-error">هاد السؤال مطلوب</div>
     </div>
   </div>
 
-  <!-- Q7 -->
-  <div class="slide" data-index="7" data-section="2" data-required="true" data-field="ideal_client">
-    <span class="material-symbols-outlined slide-bg-edge top-right">group</span>
-    <span class="material-symbols-outlined slide-bg-edge bottom-left">group</span>
+  <div class="slide" data-index="10" data-section="2" data-required="true" data-field="ideal_client">
+    <span class="material-symbols-outlined slide-bg-edge top-right">group</span><span class="material-symbols-outlined slide-bg-edge bottom-left">group</span>
     <div class="slide-inner">
-      <div class="q-number">السؤال 7</div>
-      <div class="q-text">مين هو زبونك المثالي؟</div>
-      <div class="q-hint">شو عمره تقريباً؟ شو بيشتغل؟ كيف أسلوب حياته؟</div>
-      <div class="input-wrap">
-        <textarea name="ideal_client" placeholder="تفاصيل الزبون المستهدف..." rows="3"></textarea>
-      </div>
+      <div class="q-number">السؤال 10</div><div class="q-text">مين هو زبونك المثالي؟</div>
+      <div class="q-hint"> شو عمره تقريباً؟ شو بيشتغل؟ كيف أسلوب حياته؟ </div>
+      <div class="input-wrap"><textarea name="ideal_client" placeholder="احكيلي بتفصيل أكتر عن الفئات المستهدفة" rows="3"></textarea></div>
       <div class="field-error">هاد السؤال مطلوب</div>
     </div>
   </div>
 
-  <!-- Q8 -->
-  <div class="slide" data-index="8" data-section="2" data-required="true" data-field="market_position">
-    <span class="material-symbols-outlined slide-bg-edge top-right">diamond</span>
-    <span class="material-symbols-outlined slide-bg-edge bottom-left">diamond</span>
+  <div class="slide" data-index="11" data-section="2" data-required="true" data-field="market_position">
+    <span class="material-symbols-outlined slide-bg-edge top-right">diamond</span><span class="material-symbols-outlined slide-bg-edge bottom-left">diamond</span>
     <div class="slide-inner">
-      <div class="q-number">السؤال 8</div>
-      <div class="q-text">وين بيقع صالونك بالسوق مقارنة بغيره؟</div>
+      <div class="q-number">السؤال 11</div><div class="q-text">كيف بتصنف أسعار وخدمات صالونك؟</div>
       <div class="options">
-        <label class="opt"><input type="radio" name="market_position" value="فاخر وحصري"><span><span class="material-symbols-outlined">diamond</span> فاخر وحصري</span></label>
-        <label class="opt"><input type="radio" name="market_position" value="متوسط راقي"><span><span class="material-symbols-outlined">star</span> متوسط راقي</span></label>
-        <label class="opt"><input type="radio" name="market_position" value="شعبي بجودة عالية"><span><span class="material-symbols-outlined">verified</span> ذو جودة وقيمة ممتازة</span></label>
+        <label class="opt"><input type="radio" name="market_position" value="High Class & VIP"><span><span class="material-symbols-outlined">diamond</span> High Class & VIP</span></label>
+        <label class="opt"><input type="radio" name="market_position" value="أسعار متوسطة وخدمات راقية"><span><span class="material-symbols-outlined">star</span> أسعار متوسطة وخدمات راقية</span></label>
+        <label class="opt"><input type="radio" name="market_position" value="أسعار بمتناول الجميع وخدمة سريعة"><span><span class="material-symbols-outlined">verified</span> أسعار بمتناول الجميع وخدمة سريعة</span></label>
         <label class="opt"><input type="radio" name="market_position" value="other"><span><span class="material-symbols-outlined">add_circle</span> أخرى</span></label>
       </div>
-      <div class="other-wrap" id="other-market_position">
-        <input type="text" class="other-input" placeholder="اكتب هون...">
-      </div>
+      <div class="other-wrap" id="other-market_position"><input type="text" class="other-input" placeholder="اكتب هون..."></div>
       <div class="field-error">اختر خيار</div>
     </div>
   </div>
 
-  <!-- Q9 -->
-  <div class="slide" data-index="9" data-section="2" data-field="competitors">
-    <span class="material-symbols-outlined slide-bg-edge top-right">analytics</span>
-    <span class="material-symbols-outlined slide-bg-edge bottom-left">analytics</span>
+  <div class="slide" data-index="12" data-section="2" data-field="competitors">
+    <span class="material-symbols-outlined slide-bg-edge top-right">analytics</span><span class="material-symbols-outlined slide-bg-edge bottom-left">analytics</span>
     <div class="slide-inner">
-      <div class="q-number">السؤال 9</div>
-      <div class="q-text">مين هنن منافسيك؟ وشو اللي بيميزك عنهم؟</div>
-      <div class="input-wrap">
-        <textarea name="competitors" placeholder="اكتب هون..." rows="3"></textarea>
-      </div>
+      <div class="q-number">السؤال 12</div><div class="q-text">مين هنن منافسيك؟ وشو اللي بيميزك عنهم؟</div>
+      <div class="input-wrap"><textarea name="competitors" placeholder="اكتب هون..." rows="3"></textarea></div>
     </div>
   </div>
 
-  <!-- Q10 -->
-  <div class="slide" data-index="10" data-section="2" data-required="true" data-field="five_words">
-    <span class="material-symbols-outlined slide-bg-edge top-right">format_list_numbered</span>
-    <span class="material-symbols-outlined slide-bg-edge bottom-left">format_list_numbered</span>
+  <div class="slide" data-index="13" data-section="2" data-required="true" data-field="five_words">
+    <span class="material-symbols-outlined slide-bg-edge top-right">format_list_numbered</span><span class="material-symbols-outlined slide-bg-edge bottom-left">format_list_numbered</span>
     <div class="slide-inner">
-      <div class="q-number">السؤال 10</div>
-      <div class="q-text">اكتب 5 كلمات بدك زبائنك يربطوها بصالونك</div>
-      <div class="input-wrap">
-        <textarea name="five_words" placeholder="كلمة، كلمة، كلمة..." rows="2"></textarea>
-      </div>
+      <div class="q-number">السؤال 13</div><div class="q-text">اكتب 5 كلمات بدك زبائنك يربطوها بصالونك</div>
+      <div class="input-wrap"><textarea name="five_words" placeholder="كلمة، كلمة، كلمة..." rows="2"></textarea></div>
       <div class="field-error">هاد السؤال مطلوب</div>
     </div>
   </div>
 
-  <!-- Q11 -->
-  <div class="slide" data-index="11" data-section="3" data-required="true" data-field="visual_vibe">
+  <div class="slide" data-index="14" data-section="2" data-field="audience_attraction">
+    <span class="material-symbols-outlined slide-bg-edge top-right">stars</span>
+    <span class="material-symbols-outlined slide-bg-edge bottom-left">stars</span>
+    <div class="slide-inner">
+      <div class="q-number">السؤال 14</div>
+      <div class="q-text">شو اللي بيجذب زبائنك لصالونك؟</div>
+      <div class="q-hint">الأسلوب؟ جودة الشغل؟ الجو العام بالمكان؟</div>
+      <div class="input-wrap">
+        <textarea name="audience_attraction" placeholder="اكتب هون..." rows="3"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" data-index="15" data-section="2" data-field="audience_value">
+    <span class="material-symbols-outlined slide-bg-edge top-right">workspace_premium</span>
+    <span class="material-symbols-outlined slide-bg-edge bottom-left">workspace_premium</span>
+    <div class="slide-inner">
+      <div class="q-number">السؤال 15</div>
+      <div class="q-text">شو أكتر شي بتحس زبائنك بيقدروه وبحبوه بخدماتك؟</div>
+      <div class="input-wrap">
+        <textarea name="audience_value" placeholder="اكتب هون..." rows="3"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" data-index="16" data-section="2" data-field="brand_discovery">
+    <span class="material-symbols-outlined slide-bg-edge top-right">search</span>
+    <span class="material-symbols-outlined slide-bg-edge bottom-left">search</span>
+    <div class="slide-inner">
+      <div class="q-number">السؤال 16</div>
+      <div class="q-text">كيف زبائنك بيعرفوا عنك وبيوصلولك؟</div>
+      <div class="q-hint">عن طريق الانستغرام؟ الريلز؟ ولا توصية من الأصدقاء؟</div>
+      <div class="input-wrap">
+        <textarea name="brand_discovery" placeholder="اكتب هون..." rows="3"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide" data-index="17" data-section="3" data-required="true" data-field="visual_vibe">
     <span class="material-symbols-outlined slide-bg-edge top-right">visibility</span>
     <span class="material-symbols-outlined slide-bg-edge bottom-left">visibility</span>
     <div class="slide-inner">
-      <div class="q-number">السؤال 11</div>
+      <div class="q-number">السؤال 17</div>
       <div class="q-text">أي طابع بصري بيعبر عنك أكتر شي؟</div>
+      <div class="q-hint">بإمكانك تختار أكتر من ستايل</div>
       
-      <div class="img-showcase">
-        <img src="" alt="ستايل 1 (ضع رابط الصورة)">
-        <img src="" alt="ستايل 2 (ضع رابط الصورة)">
+      <div class="img-grid">
+        <label class="img-opt">
+          <input type="checkbox" name="visual_vibe" value="فاخر هادئ">
+          <div class="img-content">
+            <img src="lux.jpg" alt="lux.jpg">
+            <span class="img-label">فاخر هادئ وأنيق</span>
+          </div>
+          <span class="material-symbols-outlined check-icon">check_circle</span>
+        </label>
+
+        <label class="img-opt">
+          <input type="checkbox" name="visual_vibe" value="دافئ بوتيك">
+          <div class="img-content">
+            <img src="boutique.jpg" alt="boutique.jpg">
+            <span class="img-label">دافئ وشخصي (بوتيك)</span>
+          </div>
+          <span class="material-symbols-outlined check-icon">check_circle</span>
+        </label>
+
+        <label class="img-opt">
+          <input type="checkbox" name="visual_vibe" value="طبيعي بوهيمي">
+          <div class="img-content">
+            <img src="bohemian.jpg" alt="bohemian.jpg">
+            <span class="img-label">طبيعي وعضوي</span>
+          </div>
+          <span class="material-symbols-outlined check-icon">check_circle</span>
+        </label>
       </div>
 
-      <div class="options">
-        <label class="opt"><input type="radio" name="visual_vibe" value="فاخر هادئ"><span><span class="material-symbols-outlined">check_circle</span> فاخر هادئ وأنيق</span></label>
-        <label class="opt"><input type="radio" name="visual_vibe" value="دافئ بوتيك"><span><span class="material-symbols-outlined">check_circle</span> دافئ وشخصي (بوتيك)</span></label>
-        <label class="opt"><input type="radio" name="visual_vibe" value="طبيعي بوهيمي"><span><span class="material-symbols-outlined">check_circle</span> طبيعي عضوي</span></label>
-        <label class="opt"><input type="radio" name="visual_vibe" value="other"><span><span class="material-symbols-outlined">add_circle</span> أخرى</span></label>
-      </div>
-      <div class="other-wrap" id="other-visual_vibe">
-        <input type="text" class="other-input" placeholder="اكتب هون...">
-      </div>
-      <div class="field-error">اختر خيار</div>
+      <label class="opt" style="width: 100%; max-width: 550px;"><input type="checkbox" name="visual_vibe" value="other"><span><span class="material-symbols-outlined">add_circle</span> أخرى</span></label>
+      <div class="other-wrap" id="other-visual_vibe"><input type="text" class="other-input" placeholder="اكتب هون..."></div>
+      <div class="field-error">اختر خيار واحد على الأقل</div>
     </div>
   </div>
 
-  <!-- Q12 -->
-  <div class="slide" data-index="12" data-section="3" data-required="true" data-field="font_feel">
+  <div class="slide" data-index="18" data-section="3" data-required="true" data-field="font_feel">
     <span class="material-symbols-outlined slide-bg-edge top-right">font_download</span>
     <span class="material-symbols-outlined slide-bg-edge bottom-left">font_download</span>
     <div class="slide-inner">
-      <div class="q-number">السؤال 12</div>
+      <div class="q-number">السؤال 18</div>
       <div class="q-text">أي نوع من الخطوط بيناسب هوية الصالون؟</div>
+      <div class="q-hint">بإمكانك تختار أكتر من نوع
+        <br> مش الخيار النهائي هاد الخط بس مشان نحدد النمط يلي تفضله
+      </div>
       
-      <div class="img-showcase">
-        <img src="" alt="أمثلة الخطوط (ضع رابط الصورة)">
+      <div class="img-grid">
+        <label class="img-opt">
+          <input type="checkbox" name="font_feel" value="كلاسيكي">
+          <div class="img-content">
+            <img src="classical.png" alt="خط كلاسيكي">
+            <span class="img-label">كلاسيكي راقي (Serif)</span>
+          </div>
+          <span class="material-symbols-outlined check-icon">check_circle</span>
+        </label>
+
+        <label class="img-opt">
+          <input type="checkbox" name="font_feel" value="عصري">
+          <div class="img-content">
+            <img src="modernfont.png" alt="خط عصري">
+            <span class="img-label">عصري نظيف (Sans-Serif)</span>
+          </div>
+          <span class="material-symbols-outlined check-icon">check_circle</span>
+        </label>
+
+        <label class="img-opt">
+          <input type="checkbox" name="font_feel" value="خطّي">
+          <div class="img-content">
+            <img src="script.png" alt="خط يدوي">
+            <span class="img-label">خط يدوي دافئ (Script)</span>
+          </div>
+          <span class="material-symbols-outlined check-icon">check_circle</span>
+        </label>
       </div>
 
-      <div class="options">
-        <label class="opt"><input type="radio" name="font_feel" value="كلاسيكي"><span><span class="material-symbols-outlined">font_download</span> كلاسيكي راقي (Serif)</span></label>
-        <label class="opt"><input type="radio" name="font_feel" value="عصري"><span><span class="material-symbols-outlined">match_case</span> عصري نظيف (Sans-Serif)</span></label>
-        <label class="opt"><input type="radio" name="font_feel" value="خطّي"><span><span class="material-symbols-outlined">draw</span> خط يدوي دافئ (Script)</span></label>
-        <label class="opt"><input type="radio" name="font_feel" value="other"><span><span class="material-symbols-outlined">add_circle</span> أخرى</span></label>
-      </div>
-      <div class="other-wrap" id="other-font_feel">
-        <input type="text" class="other-input" placeholder="اكتب هون...">
-      </div>
-      <div class="field-error">اختر خيار</div>
+      <label class="opt" style="width: 100%; max-width: 550px;"><input type="checkbox" name="font_feel" value="other"><span><span class="material-symbols-outlined">add_circle</span> أخرى</span></label>
+      <div class="other-wrap" id="other-font_feel"><input type="text" class="other-input" placeholder="اكتب هون..."></div>
+      <div class="field-error">اختر خيار واحد على الأقل</div>
     </div>
   </div>
 
-  <!-- Q13 -->
-  <div class="slide" data-index="13" data-section="3" data-required="true" data-field="logo_type">
+  <div class="slide" data-index="19" data-section="3" data-required="true" data-field="logo_type">
     <span class="material-symbols-outlined slide-bg-edge top-right">interests</span>
     <span class="material-symbols-outlined slide-bg-edge bottom-left">interests</span>
     <div class="slide-inner">
-      <div class="q-number">السؤال 13</div>
+      <div class="q-number">السؤال 19</div>
       <div class="q-text">شو شكل الشعار اللي بتتخيله؟</div>
+      <div class="q-hint">بإمكانك تختار أكتر من شكل</div>
 
-      <div class="img-showcase">
-        <img src="" alt="شعار 1">
-        <img src="" alt="شعار 2">
+      <div class="img-grid">
+        <label class="img-opt">
+          <input type="checkbox" name="logo_type" value="مونوغرام">
+          <div class="img-content">
+            <img src="mono.jpg" alt="مونوغرام">
+            <span class="img-label">مونوغرام (حروف متشابكة)</span>
+          </div>
+          <span class="material-symbols-outlined check-icon">check_circle</span>
+        </label>
+
+        <label class="img-opt">
+          <input type="checkbox" name="logo_type" value="اسم فقط">
+          <div class="img-content">
+            <img src="name.jpg" alt="اسم فقط">
+            <span class="img-label">اسم الصالون بخط مميز</span>
+          </div>
+          <span class="material-symbols-outlined check-icon">check_circle</span>
+        </label>
+
+        <label class="img-opt">
+          <input type="checkbox" name="logo_type" value="أيقونة واسم">
+          <div class="img-content">
+            <img src="mix.jpg" alt="أيقونة واسم">
+            <span class="img-label">أيقونة مبتكرة مع الاسم</span>
+          </div>
+          <span class="material-symbols-outlined check-icon">check_circle</span>
+        </label>
       </div>
 
-      <div class="options">
-        <label class="opt"><input type="radio" name="logo_type" value="مونوغرام"><span><span class="material-symbols-outlined">interests</span> مونوغرام (حروف متشابكة)</span></label>
-        <label class="opt"><input type="radio" name="logo_type" value="اسم فقط"><span><span class="material-symbols-outlined">title</span> اسم الصالون بخط مميز</span></label>
-        <label class="opt"><input type="radio" name="logo_type" value="أيقونة واسم"><span><span class="material-symbols-outlined">category</span> أيقونة مبتكرة مع الاسم</span></label>
-        <label class="opt"><input type="radio" name="logo_type" value="other"><span><span class="material-symbols-outlined">add_circle</span> أخرى</span></label>
-      </div>
-      <div class="other-wrap" id="other-logo_type">
-        <input type="text" class="other-input" placeholder="اكتب هون...">
-      </div>
-      <div class="field-error">اختر خيار</div>
+      <label class="opt" style="width: 100%; max-width: 550px;"><input type="checkbox" name="logo_type" value="other"><span><span class="material-symbols-outlined">add_circle</span> أخرى</span></label>
+      <div class="other-wrap" id="other-logo_type"><input type="text" class="other-input" placeholder="اكتب هون..."></div>
+      <div class="field-error">اختر خيار واحد على الأقل</div>
     </div>
   </div>
 
-  <!-- Q14 -->
-  <div class="slide" data-index="14" data-section="3" data-required="true" data-field="color_palette">
+  <div class="slide" data-index="20" data-section="3" data-required="true" data-field="color_palette">
     <span class="material-symbols-outlined slide-bg-edge top-right">palette</span>
     <span class="material-symbols-outlined slide-bg-edge bottom-left">palette</span>
     <div class="slide-inner">
-      <div class="q-number">السؤال 14</div>
+      <div class="q-number">السؤال 20</div>
       <div class="q-text">أي لوحة ألوان أقرب لذوقك؟</div>
+      <div class="q-hint">بإمكانك تختار أكتر من لوحة ألوان</div>
       
-      <div class="img-showcase">
-        <img src="" alt="ألوان مقترحة (ضع الرابط)">
+      <div class="img-grid">
+        <label class="img-opt">
+          <input type="checkbox" name="color_palette" value="ألوان ترابية ودافئة">
+          <div class="img-content">
+            <img src="earthy.png" alt="ألوان ترابية">
+            <span class="img-label">ترابية ودافئة (بيج، بني)</span>
+          </div>
+          <span class="material-symbols-outlined check-icon">check_circle</span>
+        </label>
+
+        <label class="img-opt">
+          <input type="checkbox" name="color_palette" value="ألوان فاخرة وغامقة">
+          <div class="img-content">
+            <img src="luxury.png" alt="ألوان فاخرة">
+            <span class="img-label">فاخرة وغامقة (أسود، ذهبي)</span>
+          </div>
+          <span class="material-symbols-outlined check-icon">check_circle</span>
+        </label>
+
+        <label class="img-opt">
+          <input type="checkbox" name="color_palette" value="ألوان حيوية وفريش">
+          <div class="img-content">
+            <img src="vibrant.png" alt="ألوان حيوية">
+            <span class="img-label">حيوية وفريش (باستيل، أبيض)</span>
+          </div>
+          <span class="material-symbols-outlined check-icon">check_circle</span>
+        </label>
       </div>
 
-      <div class="options">
-        <label class="opt"><input type="radio" name="color_palette" value="روز غولد وعاجي"><span><span class="material-symbols-outlined">format_paint</span> روز غولد، زهري بودرة، وعاجي</span></label>
-        <label class="opt"><input type="radio" name="color_palette" value="أسود وذهبي"><span><span class="material-symbols-outlined">format_paint</span> أسود فاحم وذهبي فاخر</span></label>
-        <label class="opt"><input type="radio" name="color_palette" value="ترابي دافئ"><span><span class="material-symbols-outlined">format_paint</span> ألوان ترابية وبيج دافئ</span></label>
-        <label class="opt"><input type="radio" name="color_palette" value="other"><span><span class="material-symbols-outlined">add_circle</span> أخرى</span></label>
-      </div>
-      <div class="other-wrap" id="other-color_palette">
-        <input type="text" class="other-input" placeholder="اكتب هون...">
-      </div>
-      <div class="field-error">اختر خيار</div>
+      <label class="opt" style="width: 100%; max-width: 550px;"><input type="checkbox" name="color_palette" value="other"><span><span class="material-symbols-outlined">add_circle</span> أخرى</span></label>
+      <div class="other-wrap" id="other-color_palette"><input type="text" class="other-input" placeholder="اكتب هون..."></div>
+      <div class="field-error">اختر خيار واحد على الأقل</div>
     </div>
   </div>
 
-  <!-- Q15 -->
-  <div class="slide" data-index="15" data-section="3" data-field="liked_logos">
+  <div class="slide" data-index="21" data-section="3" data-field="liked_logos">
     <span class="material-symbols-outlined slide-bg-edge top-right">recommend</span>
     <span class="material-symbols-outlined slide-bg-edge bottom-left">recommend</span>
     <div class="slide-inner">
-      <div class="q-number">السؤال 15</div>
+      <div class="q-number">السؤال 21</div>
       <div class="q-text">في شعارات لبراندات تانية بتعجبك؟</div>
+      <div class="q-hint">مثال: "بتعجبني فخامة شعار ديور"، أو "بحب بساطة شعار زارا"، أو إذا في أسماء صالونات معينة بتعجبك هويتها.</div>
       <div class="input-wrap">
-        <textarea name="liked_logos" placeholder="اكتب هون..." rows="3"></textarea>
+        <textarea name="liked_logos" placeholder="اذكر البراندات أو ستايلها هنا..." rows="3"></textarea>
       </div>
     </div>
   </div>
 
-  <!-- Q16 -->
-  <div class="slide" data-index="16" data-section="3" data-field="avoid">
+  <div class="slide" data-index="22" data-section="3" data-field="avoid">
     <span class="material-symbols-outlined slide-bg-edge top-right">block</span>
     <span class="material-symbols-outlined slide-bg-edge bottom-left">block</span>
     <div class="slide-inner">
-      <div class="q-number">السؤال 16</div>
+      <div class="q-number">السؤال 22</div>
       <div class="q-text">شو الشغلات أو الألوان اللي ما بدك تشوفها أبداً؟</div>
+      <div class="q-hint">مثلاً: "بكره الألوان الفاقعة"، أو "ما بحب اللوغو اللي فيه مقص ومشط بشكل مباشر وتقليدي".</div>
       <div class="input-wrap">
-        <textarea name="avoid" placeholder="مثلاً: ما بحب الألوان الصارخة..." rows="3"></textarea>
+        <textarea name="avoid" placeholder="الأشياء المرفوضة تماماً..." rows="3"></textarea>
       </div>
     </div>
   </div>
 
-  <!-- Q17 -->
-  <div class="slide" data-index="17" data-section="3" data-required="true" data-field="bothers_more">
+  <div class="slide" data-index="23" data-section="3" data-required="true" data-field="bothers_more">
     <span class="material-symbols-outlined slide-bg-edge top-right">sentiment_dissatisfied</span>
     <span class="material-symbols-outlined slide-bg-edge bottom-left">sentiment_dissatisfied</span>
     <div class="slide-inner">
-      <div class="q-number">السؤال 17</div>
+      <div class="q-number">السؤال 23</div>
       <div class="q-text">أي شي بيضايقك أكتر بالتصميم؟</div>
+      <div class="q-hint">بإمكانك تختار أكتر من خيار</div>
       <div class="options">
-        <label class="opt"><input type="radio" name="bothers_more" value="بسيط جداً"><span><span class="material-symbols-outlined">sentiment_dissatisfied</span> البساطة المفرطة والمملة</span></label>
-        <label class="opt"><input type="radio" name="bothers_more" value="معقد جداً"><span><span class="material-symbols-outlined">blur_on</span> التعقيد والازدحام البصري</span></label>
-        <label class="opt"><input type="radio" name="bothers_more" value="مكرر"><span><span class="material-symbols-outlined">content_copy</span> التقليد والتشابه مع الآخرين</span></label>
-        <label class="opt"><input type="radio" name="bothers_more" value="other"><span><span class="material-symbols-outlined">add_circle</span> أخرى</span></label>
+        <label class="opt"><input type="checkbox" name="bothers_more" value="بسيط جداً"><span><span class="material-symbols-outlined">sentiment_dissatisfied</span> البساطة المفرطة والمملة</span></label>
+        <label class="opt"><input type="checkbox" name="bothers_more" value="معقد جداً"><span><span class="material-symbols-outlined">blur_on</span> التعقيد والازدحام البصري</span></label>
+        <label class="opt"><input type="checkbox" name="bothers_more" value="مكرر"><span><span class="material-symbols-outlined">content_copy</span> التقليد والتشابه مع الآخرين</span></label>
+        <label class="opt"><input type="checkbox" name="bothers_more" value="other"><span><span class="material-symbols-outlined">add_circle</span> أخرى</span></label>
       </div>
       <div class="other-wrap" id="other-bothers_more">
         <input type="text" class="other-input" placeholder="اكتب هون...">
       </div>
-      <div class="field-error">اختر خيار</div>
+      <div class="field-error">اختر خيار واحد على الأقل</div>
     </div>
   </div>
 
-  <!-- Q18 -->
-  <div class="slide" data-index="18" data-section="4" data-field="usage">
-    <span class="material-symbols-outlined slide-bg-edge top-right">print</span>
-    <span class="material-symbols-outlined slide-bg-edge bottom-left">print</span>
+  <div class="slide" data-index="24" data-section="4" data-field="usage">
+    <span class="material-symbols-outlined slide-bg-edge top-right">print</span><span class="material-symbols-outlined slide-bg-edge bottom-left">print</span>
     <div class="slide-inner">
-      <div class="q-number">السؤال 18</div>
-      <div class="q-text">وين رح تستخدم الشعار بشكل أساسي؟</div>
+      <div class="q-number">السؤال 24</div><div class="q-text">وين رح تستخدم الشعار بشكل أساسي؟</div>
       <div class="checkbox-grid">
         <label class="opt"><input type="checkbox" name="usage" value="بطاقات العمل"><span><span class="material-symbols-outlined">badge</span> بطاقات العمل</span></label>
         <label class="opt"><input type="checkbox" name="usage" value="لافتة خارجية"><span><span class="material-symbols-outlined">store</span> لافتة خارجية</span></label>
-        <label class="opt"><input type="checkbox" name="usage" value="سوشيال ميديا"><span><span class="material-symbols-outlined">smartphone</span> منصات التواصل</span></label>
+        <label class="opt"><input type="checkbox" name="usage" value="سوشيال ميديا"><span><span class="material-symbols-outlined">smartphone</span> منصات السوشيال ميديا</span></label>
         <label class="opt"><input type="checkbox" name="usage" value="يونيفورم"><span><span class="material-symbols-outlined">styler</span> زي العمل (يونيفورم)</span></label>
         <label class="opt" style="grid-column: 1 / -1;"><input type="checkbox" name="usage" value="other"><span><span class="material-symbols-outlined">add_circle</span> أخرى</span></label>
       </div>
-      <div class="other-wrap" id="other-usage">
-        <input type="text" class="other-input" placeholder="حدد الاستخدامات الأخرى...">
-      </div>
+      <div class="other-wrap" id="other-usage"><input type="text" class="other-input" placeholder="حدد الاستخدامات الأخرى..."></div>
     </div>
   </div>
 
-  <!-- Q19 -->
-  <div class="slide" data-index="19" data-section="4" data-field="interior">
-    <span class="material-symbols-outlined slide-bg-edge top-right">chair</span>
-    <span class="material-symbols-outlined slide-bg-edge bottom-left">chair</span>
+  <div class="slide" data-index="25" data-section="4" data-field="interior">
+    <span class="material-symbols-outlined slide-bg-edge top-right">chair</span><span class="material-symbols-outlined slide-bg-edge bottom-left">chair</span>
     <div class="slide-inner">
-      <div class="q-number">السؤال 19</div>
-      <div class="q-text">كيف بيبين الديكور الداخلي للصالون؟</div>
-      <div class="input-wrap">
-        <textarea name="interior" placeholder="الألوان المستخدمة بالديكور، الإضاءة..." rows="3"></textarea>
-      </div>
+      <div class="q-number">السؤال 25</div>
+      <div class="q-text">كيف شكل وألوان الديكور الداخلي للصالون؟</div>
+      <div class="q-hint">يا ريت توصفلي الألوان الغالبة، نوع الإضاءة، والمواد المستخدمة متل خشب أو رخام.. كرمال نصمم لوغو يلبق مع المكان وما يبين غريب عنه</div>
+
+      <div class="input-wrap"><textarea name="interior" placeholder="الألوان المستخدمة بالديكور، الإضاءة..." rows="3"></textarea></div>
     </div>
   </div>
 
-  <!-- Q20 -->
-  <div class="slide" data-index="20" data-section="4" data-required="true" data-field="personal_brand">
-    <span class="material-symbols-outlined slide-bg-edge top-right">fingerprint</span>
-    <span class="material-symbols-outlined slide-bg-edge bottom-left">fingerprint</span>
+  <div class="slide" data-index="26" data-section="4" data-required="true" data-field="personal_brand">
+    <span class="material-symbols-outlined slide-bg-edge top-right">fingerprint</span><span class="material-symbols-outlined slide-bg-edge bottom-left">fingerprint</span>
     <div class="slide-inner">
-      <div class="q-number">السؤال 20</div>
-      <div class="q-text">بدك اسمك الشخصي يكون جزء من الشعار؟</div>
+      <div class="q-number">السؤال 26</div><div class="q-text">بدك اسمك الشخصي يكون جزء من الشعار؟</div>
       <div class="options">
         <label class="opt"><input type="radio" name="personal_brand" value="نعم"><span><span class="material-symbols-outlined">person</span> إي، اسمي هو البراند</span></label>
         <label class="opt"><input type="radio" name="personal_brand" value="لا"><span><span class="material-symbols-outlined">business</span> لا، الصالون براند مستقل</span></label>
         <label class="opt"><input type="radio" name="personal_brand" value="other"><span><span class="material-symbols-outlined">add_circle</span> أخرى</span></label>
       </div>
-      <div class="other-wrap" id="other-personal_brand">
-        <input type="text" class="other-input" placeholder="اكتب هون...">
-      </div>
+      <div class="other-wrap" id="other-personal_brand"><input type="text" class="other-input" placeholder="اكتب هون..."></div>
       <div class="field-error">اختر خيار</div>
     </div>
   </div>
 
-  <!-- Q21 -->
-  <div class="slide" data-index="21" data-section="4" data-field="extra">
-    <span class="material-symbols-outlined slide-bg-edge top-right">chat_bubble_outline</span>
-    <span class="material-symbols-outlined slide-bg-edge bottom-left">chat_bubble_outline</span>
+  <div class="slide" data-index="27" data-section="4" data-field="extra">
+    <span class="material-symbols-outlined slide-bg-edge top-right">chat_bubble_outline</span><span class="material-symbols-outlined slide-bg-edge bottom-left">chat_bubble_outline</span>
     <div class="slide-inner">
-      <div class="q-number">السؤال 21</div>
-      <div class="q-text">في أي تفاصيل أو ملاحظات تانية بدك تضيفها؟</div>
-      <div class="input-wrap">
-        <textarea name="extra" placeholder="المساحة إلك، حكيلي..." rows="4"></textarea>
-      </div>
+      <div class="q-number">السؤال 27</div><div class="q-text">في أي تفاصيل أو ملاحظات تانية بدك تضيفها؟</div>
+      <div class="input-wrap"><textarea name="extra" placeholder="المساحة إلك، احكيلي..." rows="4"></textarea></div>
     </div>
   </div>
 
-  <!-- SUMMARY SLIDE -->
-  <div class="slide" data-index="22" data-section="4">
-    <span class="material-symbols-outlined slide-bg-edge top-right">fact_check</span>
-    <span class="material-symbols-outlined slide-bg-edge bottom-left">fact_check</span>
+  <div class="slide" data-index="28" data-section="4">
+    <span class="material-symbols-outlined slide-bg-edge top-right">fact_check</span><span class="material-symbols-outlined slide-bg-edge bottom-left">fact_check</span>
     <div class="slide-inner">
-      <div class="q-number">المراجعة النهائية</div>
-      <div class="q-text">ليك ملخص أجوبتك</div>
+      <div class="q-number">المراجعة النهائية</div><div class="q-text">ليك ملخص أجوبتك</div>
       <p class="q-hint">فيك تراجع وتعدل أي سؤال قبل ما تبعت</p>
-      
-      <div class="summary-container" id="summary-content">
-        <!-- سيتم توليد الملخص هنا بواسطة الجافاسكربت -->
-      </div>
+      <div class="summary-container" id="summary-content"></div>
     </div>
   </div>
 
-  <!-- SUCCESS -->
-  <div class="slide slide-success" data-index="23">
+  <div class="slide slide-success" data-index="29">
     <div class="slide-inner">
       <span class="material-symbols-outlined" style="font-size: 60px; color: var(--rose-gold); margin-bottom: 20px;">task_alt</span>
       <div class="gold-line" style="margin: 0 auto 28px;"></div>
       <div class="q-text">شكراً إلك، استلمنا الأجوبة!</div>
-      <p class="q-hint">
-        رح ادرس الإجابات منيح وابلش شغل على هوية بصرية بتليق فيك وبصالونك.
-      </p>
+      <p class="q-hint">رح ادرس الإجابات منيح وابلش شغل على هوية بصرية بتليق فيك وبصالونك.</p>
     </div>
   </div>
 
 </div>
 
-<!-- BOTTOM NAV (DYNAMIC) -->
 <div id="bottom-nav">
   <button class="btn btn-next" id="btn-next" onclick="goNext()">التالي <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span></button>
   <button class="btn btn-back" id="btn-back" onclick="goBack()"><span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span> رجوع</button>
@@ -673,7 +753,7 @@
   window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
   formspree('initForm', { formElement: '#main-form', formId: 'xzdwpkkv' });
 
-  const TOTAL = 22; 
+  const TOTAL = 28; 
   let current = 0;
   let editingIndex = -1;
   
@@ -709,6 +789,21 @@
   function getFieldValue(slide) {
     const field = slide.dataset.field;
     if (!field) return '';
+
+    const rangeInputs = slide.querySelectorAll(`input[type="range"]`);
+    if (rangeInputs.length > 0) {
+        let values = [];
+        rangeInputs.forEach(input => {
+            let label = input.name === 'slider_style' ? 'الستايل: ' : 'النبرة: ';
+            let valText = '';
+            if(input.value == 1) valText = 'يميل للخيار الأول';
+            else if(input.value == 2) valText = 'الخيار متروك للمصمم (متوازن)';
+            else if(input.value == 3) valText = 'يميل للخيار الثاني';
+            values.push(label + valText);
+        });
+        return values.join(' | ');
+    }
+
     const inputs = slide.querySelectorAll(`input[name="${field}"], textarea[name="${field}"]`);
     if (!inputs.length) return '';
 
@@ -722,6 +817,7 @@
       return checked.value;
     }
 
+    // هنا الكود الذكي تبعنا بيجمع كل المربعات اللي انعمل عليها صح (سواء بالصور أو الخيارات العادية)
     if (inputs[0].type === 'checkbox') {
       const checkedBoxes = Array.from(slide.querySelectorAll(`input[name="${field}"]:checked`));
       const values = checkedBoxes.map(cb => {
@@ -745,7 +841,7 @@
       if (errEl) errEl.classList.add('visible');
       slide.querySelector('.slide-inner').style.animation = 'none';
       setTimeout(() => {
-        const el = slide.querySelector('input, textarea, .options');
+        const el = slide.querySelector('input, textarea, .options, .img-grid');
         if (el) el.style.borderColor = 'var(--error)';
         setTimeout(() => { if (el) el.style.borderColor = 'var(--line)'; }, 600);
       }, 10);
@@ -761,7 +857,6 @@
     for(let i=1; i < TOTAL; i++) {
       const slide = getSlide(i);
       if(!slide) continue;
-      
       const qText = slide.querySelector('.q-text').innerText;
       let val = getFieldValue(slide);
       if(!val) val = '<span style="color:var(--text-muted); font-size:13px;">لم تتم الإجابة</span>';
@@ -773,9 +868,7 @@
           <div class="summary-q">${qText}</div>
           <div class="summary-a">${val}</div>
         </div>
-        <button class="btn-edit" onclick="editSlide(${i})">
-          <span class="material-symbols-outlined" style="font-size:14px;">edit</span> تعديل
-        </button>
+        <button class="btn-edit" onclick="editSlide(${i})"><span class="material-symbols-outlined" style="font-size:14px;">edit</span> تعديل</button>
       `;
       container.appendChild(item);
     }
@@ -789,6 +882,7 @@
   function updateUI() {
     const pct = (current / TOTAL) * 100;
     progressBar.style.width = pct + '%';
+    document.getElementById('progress-text').innerText = Math.round(pct) + '%';
 
     const currentSlide = getSlide(current);
     const sectionNum = parseInt(currentSlide.dataset.section);
@@ -801,11 +895,8 @@
       header.style.display = 'none';
     }
 
-    if (current === 0) {
-        bottomNav.style.display = 'none';
-    } else {
-        bottomNav.style.display = 'flex';
-    }
+    if (current === 0) { bottomNav.style.display = 'none'; } 
+    else { bottomNav.style.display = 'flex'; }
 
     btnBack.style.display = (current > 0 && editingIndex === -1) ? 'flex' : 'none';
 
@@ -837,38 +928,18 @@
     current = next;
 
     nw.querySelector('.slide-inner').appendChild(bottomNav);
-
-    setTimeout(() => {
-      old.classList.remove('exit-up');
-      nw.classList.add('active');
-    }, 50);
-
+    setTimeout(() => { old.classList.remove('exit-up'); nw.classList.add('active'); }, 50);
     updateUI();
   }
 
   function goNext() {
     const slide = getSlide(current);
-    
-    if (current > 0 && current < TOTAL) {
-      if (!validate(slide)) return;
-    }
-
+    if (current > 0 && current < TOTAL) { if (!validate(slide)) return; }
     if (editingIndex !== -1 && current === editingIndex) {
-      editingIndex = -1;
-      generateSummary();
-      transitionTo(TOTAL);
-      return;
+      editingIndex = -1; generateSummary(); transitionTo(TOTAL); return;
     }
-
-    if (current === TOTAL) {
-      submitForm();
-      return;
-    }
-
-    if (current + 1 === TOTAL) {
-      generateSummary();
-    }
-
+    if (current === TOTAL) { submitForm(); return; }
+    if (current + 1 === TOTAL) { generateSummary(); }
     transitionTo(current + 1);
   }
 
@@ -880,25 +951,17 @@
     btnNext.disabled = true;
     btnNext.innerHTML = 'جاري الإرسال... <span class="material-symbols-outlined" style="font-size: 18px;">hourglass_empty</span>';
 
-    // 1. إنشاء الحاوية لتجميع الملخص كنص مرتب
     let compiledSummary = "✦ ملخص إجابات استبيان الهوية البصرية ✦\n\n";
-    
     for(let i=1; i < TOTAL; i++) {
       const slide = getSlide(i);
       if(!slide) continue;
-      
       const qText = slide.querySelector('.q-text').innerText;
       let val = getFieldValue(slide);
       if(!val) val = 'لم تتم الإجابة';
-
       compiledSummary += `[${qText}]\nالإجابة: ${val}\n-----------------------------------\n`;
     }
 
-    // 2. تجهيز البيانات للإرسال
-    const data = {
-      "الملخص_الشامل": compiledSummary 
-    };
-
+    const data = { "الملخص_الشامل": compiledSummary };
     slides.forEach(slide => {
       const field = slide.dataset.field;
       if (!field) return;
@@ -906,7 +969,6 @@
       if (val) data[field] = val;
     });
 
-    // 3. الإرسال عبر Formspree
     fetch('https://formspree.io/f/xzdwpkkv', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
@@ -914,28 +976,29 @@
     })
     .then(r => r.json())
     .then(res => {
-      if (res.ok || res.next) {
-        transitionTo(current + 1);
-      } else {
+      if (res.ok || res.next) { transitionTo(current + 1); } 
+      else {
         btnNext.disabled = false;
         btnNext.innerHTML = 'إرسال الاستبيان <span class="material-symbols-outlined" style="font-size: 18px;">send</span>';
         alert('حدث خطأ، يرجى المحاولة مرة أخرى');
       }
-    })
-    .catch(() => {
+    }).catch(() => {
       btnNext.disabled = false;
       btnNext.innerHTML = 'إرسال الاستبيان <span class="material-symbols-outlined" style="font-size: 18px;">send</span>';
       alert('حدث خطأ بالاتصال، تأكد من الإنترنت وجرب مرة أخرى');
     });
   }
 
-  document.querySelectorAll('.opt input[type="radio"]').forEach(radio => {
+  // مستمع للراديو (خيار واحد فقط)
+  document.querySelectorAll('input[type="radio"]').forEach(radio => {
     radio.addEventListener('change', () => {
       const group = radio.name;
       document.querySelectorAll(`input[name="${group}"]`).forEach(r => {
-        r.closest('.opt').classList.remove('selected');
+        const optWrap = r.closest('.opt');
+        if(optWrap) optWrap.classList.remove('selected');
       });
-      radio.closest('.opt').classList.add('selected');
+      const currentOptWrap = radio.closest('.opt');
+      if(currentOptWrap) currentOptWrap.classList.add('selected');
 
       const otherWrap = document.getElementById(`other-${group}`);
       if (otherWrap) {
@@ -949,9 +1012,11 @@
     });
   });
 
-  document.querySelectorAll('.opt input[type="checkbox"]').forEach(cb => {
+  // مستمع للتشيك بوكس (الخيارات المتعددة والصور)
+  document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
     cb.addEventListener('change', () => {
-      cb.closest('.opt').classList.toggle('selected', cb.checked);
+      const optWrap = cb.closest('.opt');
+      if(optWrap) optWrap.classList.toggle('selected', cb.checked);
 
       if (cb.value === 'other') {
         const otherWrap = document.getElementById(`other-${cb.name}`);
