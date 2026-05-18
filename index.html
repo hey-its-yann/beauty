@@ -35,11 +35,13 @@
   }
 
   /* ── TOP HEADER ── */
-  #app-header {
-    position: fixed; top: 0; left: 0; right: 0; width: 100%; background: var(--bg-dark); 
-    border-bottom: 1px solid var(--line); padding: 15px 20px 10px 20px; z-index: 100;
-    display: flex; flex-direction: column; gap: 15px;
-  }
+#app-header {
+  position: fixed; bottom: 0; top: auto; left: 0; right: 0; width: 100%; 
+  background: var(--bg-dark); 
+  border-top: 1px solid var(--line); border-bottom: none; 
+  padding: 10px 20px 20px 20px; z-index: 100;
+  display: flex; flex-direction: column; gap: 15px;
+}
 
   #section-tracker { 
     display: flex; justify-content: space-between; align-items: center;
@@ -55,12 +57,12 @@
   .step-item .material-symbols-outlined { font-size: 24px; pointer-events: none; }
   .step-item .label { font-size: 11px; font-weight: 700; pointer-events: none; }
 
-  .step-dropdown {
-    position: absolute; top: 130%; left: 50%; transform: translateX(-50%);
-    background: rgba(30, 22, 24, 0.95); border: 1px solid var(--rose-gold); border-radius: 12px;
-    padding: 10px; width: max-content; display: none; flex-direction: column; gap: 5px;
-    z-index: 200; box-shadow: 0 8px 25px rgba(0,0,0,0.6); backdrop-filter: blur(5px); max-height: 300px; overflow-y: auto;
-  }
+ .step-dropdown {
+  position: absolute; bottom: 130%; top: auto; left: 50%; transform: translateX(-50%);
+  background: rgba(30, 22, 24, 0.95); border: 1px solid var(--rose-gold); border-radius: 12px;
+  padding: 10px; width: max-content; display: none; flex-direction: column; gap: 5px;
+  z-index: 200; box-shadow: 0 -8px 25px rgba(0,0,0,0.6); backdrop-filter: blur(5px); max-height: 300px; overflow-y: auto;
+}
   .step-dropdown.show { display: flex; }
   .drop-item { padding: 8px 12px; font-size: 13px; color: var(--text-main); border-radius: 8px; cursor: pointer; transition: all 0.2s; text-align: right; }
   .drop-item:hover { background: rgba(221, 167, 165, 0.15); color: var(--rose-gold); }
@@ -78,12 +80,14 @@
 
   /* ── SLIDES ── */
   #slides { height: 100vh; width: 100%; position: relative; z-index: 10; }
-  .slide { 
-    position: absolute; top: 120px; bottom: 0; left: 0; right: 0; 
-    display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 30px 20px 40px; 
-    opacity: 0; pointer-events: none; transform: scale(0.98) translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; 
-    overflow-y: auto; overflow-x: hidden;
-  }
+ .slide { 
+  position: absolute; top: 0; bottom: 100px; left: 0; right: 0; 
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start; 
+  padding: 40px 20px 20px; 
+  opacity: 0; pointer-events: none; transform: scale(0.98) translateY(20px); 
+  transition: opacity 0.5s ease, transform 0.5s ease; 
+  overflow-y: auto; overflow-x: hidden;
+}
   .slide.active { opacity: 1; pointer-events: all; transform: scale(1) translateY(0); }
   .slide.exit-up { opacity: 0; transform: scale(1.02) translateY(-20px); pointer-events: none; }
   .slide-inner { width: 100%; max-width: 640px; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; z-index: 2; margin: 0 auto; }
@@ -159,11 +163,10 @@
   .field-error.visible { display: block; }
 
 @media (max-width: 600px) { 
-    .checkbox-grid { grid-template-columns: 1fr; }
-    /* حل مشكلة تداخل العناصر على الموبايل عبر زيادة المساحة العلوية */
-    .slide { top: 150px; }
-    .img-grid { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
-  }
+  .checkbox-grid { grid-template-columns: 1fr; }
+  .slide { top: 0; bottom: 115px; } /* تركنا مساحة للهيدر بالأسفل */
+  .img-grid { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+}
 </style>
 </head>
 <body>
