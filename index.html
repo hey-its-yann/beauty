@@ -34,44 +34,79 @@
     direction: rtl;
   }
 
-  /* ── TOP HEADER ── */
-#app-header {
-  position: fixed; bottom: 0; top: auto; left: 0; right: 0; width: 100%; 
-  background: var(--bg-dark); 
-  border-top: 1px solid var(--line); border-bottom: none; 
-  padding: 10px 20px 20px 20px; z-index: 100;
-  display: flex; flex-direction: column; gap: 15px;
-}
+  /* ── FLOATING TOP NAV BAR ── */
+  #top-nav-bar {
+    position: fixed; top: 0; left: 0; right: 0; width: 100%;
+    padding: 20px; z-index: 100;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    pointer-events: none; /* كرمال ما يمنع النقر عالفراغ بين الزرين */
+  }
 
-  #section-tracker { 
+  .nav-btn-wrapper, .progress-btn-wrapper {
+    pointer-events: auto; /* تفعيل النقر للأزرار بس */
+    position: relative;
+  }
+
+  /* الزر اليمين: القائمة */
+  #section-menu-btn {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(30, 22, 24, 0.8); border: 1px solid var(--line);
+    color: var(--text-main); font-family: 'Cairo', sans-serif; font-size: 14px; font-weight: 700;
+    padding: 10px 18px; border-radius: 30px; cursor: pointer;
+    backdrop-filter: blur(8px); box-shadow: var(--shadow-sm);
+    transition: all 0.3s;
+    outline: none;
+  }
+  #section-menu-btn:hover { border-color: var(--rose-gold); color: var(--rose-gold); }
+
+  /* الزر اليسار: نسبة التقدم المتلونة */
+  #progress-btn {
+    display: flex; align-items: center; justify-content: center;
+    width: 50px; height: 50px; border-radius: 50%;
+    background: rgba(30, 22, 24, 0.8); border: 1px solid var(--line);
+    color: var(--text-main); font-size: 13px; font-weight: 700; font-family: 'Cairo', sans-serif;
+    backdrop-filter: blur(8px); box-shadow: var(--shadow-sm);
+    position: relative; overflow: hidden;
+    transition: all 0.3s;
+  }
+  /* تأثير التعبئة من الأسفل للأعلى */
+  #progress-btn::before {
+    content: ''; position: absolute; bottom: 0; left: 0; width: 100%;
+    height: var(--fill-pct, 0%);
+    background: rgba(221, 167, 165, 0.4); /* لون تعبئة شفاف شوي ليعطي جمالية */
+    transition: height 0.5s cubic-bezier(0.4,0,0.2,1); z-index: 1;
+  }
+  #progress-text-btn { position: relative; z-index: 2; }
+
+  /* Dropdown Styles (القوائم المتداخلة) */
+  .section-dropdown {
+    position: absolute; top: 120%; right: 0; width: 230px;
+    background: rgba(30, 22, 24, 0.95); border: 1px solid var(--line); border-radius: 12px;
+    padding: 10px; display: none; flex-direction: column; gap: 8px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.7); backdrop-filter: blur(10px); 
+    max-height: 65vh; overflow-y: auto;
+  }
+  .section-dropdown.show { display: flex; animation: fadeInDown 0.3s ease; }
+  
+  .sec-item { display: flex; flex-direction: column; background: rgba(255,255,255,0.02); border-radius: 8px; border: 1px solid transparent; transition: all 0.2s;}
+  .sec-item:hover { border-color: var(--line); }
+  
+  .sec-header {
     display: flex; justify-content: space-between; align-items: center;
-    width: 100%; max-width: 600px; margin: 0 auto; 
+    padding: 12px; font-size: 14px; font-weight: 700; color: var(--rose-gold);
+    cursor: pointer; border-radius: 8px; transition: all 0.2s; user-select: none;
   }
-
-  .step-item {
-    display: flex; flex-direction: column; align-items: center; gap: 6px;
-    opacity: 0.5; transition: all 0.4s ease; color: var(--text-muted); position: relative; cursor: pointer;
+  .sec-header:hover { background: rgba(221, 167, 165, 0.05); }
+  .expand-icon { font-size: 18px; transition: transform 0.3s; }
+  .sec-header.open .expand-icon { transform: rotate(180deg); }
+  
+  .nested-list {
+    display: none; flex-direction: column; gap: 2px; padding: 0 15px 10px 10px;
   }
-
-  .step-item:hover, .step-item.active { opacity: 1; color: var(--rose-gold); }
-  .step-item .material-symbols-outlined { font-size: 24px; pointer-events: none; }
-  .step-item .label { font-size: 11px; font-weight: 700; pointer-events: none; }
-
- .step-dropdown {
-  position: absolute; bottom: 130%; top: auto; left: 50%; transform: translateX(-50%);
-  background: rgba(30, 22, 24, 0.95); border: 1px solid var(--rose-gold); border-radius: 12px;
-  padding: 10px; width: max-content; display: none; flex-direction: column; gap: 5px;
-  z-index: 200; box-shadow: 0 -8px 25px rgba(0,0,0,0.6); backdrop-filter: blur(5px); max-height: 300px; overflow-y: auto;
-}
-  .step-dropdown.show { display: flex; }
-  .drop-item { padding: 8px 12px; font-size: 13px; color: var(--text-main); border-radius: 8px; cursor: pointer; transition: all 0.2s; text-align: right; }
+  .nested-list.show { display: flex; }
+  
+  .drop-item { padding: 8px 10px; font-size: 13px; color: var(--text-main); border-radius: 6px; cursor: pointer; transition: all 0.2s; text-align: right; }
   .drop-item:hover { background: rgba(221, 167, 165, 0.15); color: var(--rose-gold); }
-
-  /* Progress Bar */
-  .progress-wrapper { width: 100%; max-width: 600px; margin: 0 auto 5px auto; display: flex; flex-direction: column; gap: 8px; }
-  #progress-text { font-size: 13px; font-weight: 700; color: var(--rose-gold); text-align: left; padding-left: 5px; font-family: 'Cairo', sans-serif; }
-  .progress-container { width: 100%; height: 6px; background: rgba(255, 255, 255, 0.05); border-radius: 10px; position: relative; overflow: hidden; }
-  #progress-bar { position: absolute; top: 0; right: 0; height: 100%; background: var(--rose-gold); border-radius: 10px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); box-shadow: 0 0 10px rgba(221, 167, 165, 0.5); }
 
   /* ── BACKGROUND ICONS ── */
   .slide-bg-edge { position: absolute; font-size: 18vh; color: var(--rose-gold); opacity: 0.08; z-index: 0; pointer-events: none; }
@@ -80,14 +115,13 @@
 
   /* ── SLIDES ── */
   #slides { height: 100vh; width: 100%; position: relative; z-index: 10; }
- .slide { 
-  position: absolute; top: 0; bottom: 100px; left: 0; right: 0; 
-  display: flex; flex-direction: column; align-items: center; justify-content: flex-start; 
-  padding: 40px 20px 20px; 
-  opacity: 0; pointer-events: none; transform: scale(0.98) translateY(20px); 
-  transition: opacity 0.5s ease, transform 0.5s ease; 
-  overflow-y: auto; overflow-x: hidden;
-}
+  .slide { 
+    position: absolute; top: 0; bottom: 0; left: 0; right: 0; 
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-start; 
+    padding: 110px 20px 40px; /* مساحة علوية كرمال الأزرار العائمة ما تغطي السؤال */
+    opacity: 0; pointer-events: none; transform: scale(0.98) translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; 
+    overflow-y: auto; overflow-x: hidden;
+  }
   .slide.active { opacity: 1; pointer-events: all; transform: scale(1) translateY(0); }
   .slide.exit-up { opacity: 0; transform: scale(1.02) translateY(-20px); pointer-events: none; }
   .slide-inner { width: 100%; max-width: 640px; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; z-index: 2; margin: 0 auto; }
@@ -118,10 +152,8 @@
   .img-opt input { display: none; }
   .img-opt .img-content { border: none; border-radius: 12px; transition: all 0.3s; background: transparent; overflow: visible; height: 100%; display: flex; flex-direction: column; align-items: center; gap: 10px;}
   
-  /* جعل الصورة مربعة تماما */
   .img-opt img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; border-radius: 12px; transition: all 0.3s; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); }
   
-  /* صندوق خيار "متروك للمصمم" */
   .designer-choice-box { width: 100%; aspect-ratio: 1 / 1; border-radius: 12px; border: 2px dashed rgba(221, 167, 165, 0.5); background: rgba(255, 255, 255, 0.03); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.3s; }
   
   .img-opt:hover img, .img-opt:hover .designer-choice-box { transform: scale(1.05); box-shadow: 0 6px 18px rgba(221, 167, 165, 0.3); }
@@ -163,72 +195,84 @@
   .field-error.visible { display: block; }
 
 @media (max-width: 600px) { 
-  .checkbox-grid { grid-template-columns: 1fr; }
-  .slide { top: 0; bottom: 115px; } /* تركنا مساحة للهيدر بالأسفل */
-  .img-grid { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
-}
+    .checkbox-grid { grid-template-columns: 1fr; }
+    .img-grid { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+  }
 </style>
 </head>
 <body>
 
-<header id="app-header" style="display: none;">
-  <div id="section-tracker">
-    <div class="step-item" id="step-1" onclick="toggleDropdown(event, 1)">
-      <span class="material-symbols-outlined">storefront</span><span class="label">الصالون</span>
-      <div class="step-dropdown" id="dropdown-1">
-        <div class="drop-item" onclick="jumpToSlide(event, 1)">سؤال 1: الاسم</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 2)">سؤال 2: الشعار اللفظي</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 3)">سؤال 3: الخبرة</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 4)">سؤال 4: الخدمات</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 5)">سؤال 5: الهدف المعنوي</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 6)">سؤال 6: كلمة واحدة</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 7)">سؤال 7: الشخصية</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 8)">سؤال 8: مقياس البراند</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 9)">سؤال 9: الإحساس</div>
+<header id="top-nav-bar" style="display: none;">
+  <div class="nav-btn-wrapper">
+    <button id="section-menu-btn" onclick="toggleSectionMenu(event)">
+      <span class="material-symbols-outlined" style="font-size: 18px;">menu</span>
+      <span id="current-section-name">الصالون</span>
+    </button>
+    
+    <div id="section-dropdown" class="section-dropdown">
+      
+      <div class="sec-item">
+        <div class="sec-header" onclick="toggleNested(event, 'nested-1')">الصالون <span class="material-symbols-outlined expand-icon">expand_more</span></div>
+        <div class="nested-list" id="nested-1">
+          <div class="drop-item" onclick="jumpToSlide(event, 1)">سؤال 1: الاسم</div>
+          <div class="drop-item" onclick="jumpToSlide(event, 2)">سؤال 2: الشعار اللفظي</div>
+          <div class="drop-item" onclick="jumpToSlide(event, 3)">سؤال 3: الخبرة</div>
+          <div class="drop-item" onclick="jumpToSlide(event, 4)">سؤال 4: الخدمات</div>
+          <div class="drop-item" onclick="jumpToSlide(event, 5)">سؤال 5: الهدف المعنوي</div>
+          <div class="drop-item" onclick="jumpToSlide(event, 6)">سؤال 6: كلمة واحدة</div>
+          <div class="drop-item" onclick="jumpToSlide(event, 7)">سؤال 7: الشخصية</div>
+          <div class="drop-item" onclick="jumpToSlide(event, 8)">سؤال 8: مقياس البراند</div>
+          <div class="drop-item" onclick="jumpToSlide(event, 9)">سؤال 9: الإحساس</div>
+        </div>
       </div>
-    </div>
-    <div class="step-item" id="step-2" onclick="toggleDropdown(event, 2)">
-      <span class="material-symbols-outlined">target</span><span class="label">السوق</span>
-      <div class="step-dropdown" id="dropdown-2">
-        <div class="drop-item" onclick="jumpToSlide(event, 10)">سؤال 10: الزبون المثالي</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 11)">سؤال 11: الموقع بالسوق</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 12)">سؤال 12: المنافسين</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 13)">سؤال 13: خمس كلمات</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 14)">سؤال 14: جذب الجمهور</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 15)">سؤال 15: القيمة للجمهور</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 16)">سؤال 16: اكتشاف البراند</div>
+
+      <div class="sec-item">
+        <div class="sec-header" onclick="toggleNested(event, 'nested-2')">السوق <span class="material-symbols-outlined expand-icon">expand_more</span></div>
+        <div class="nested-list" id="nested-2">
+          <div class="drop-item" onclick="jumpToSlide(event, 10)">سؤال 10: الزبون المثالي</div>
+          <div class="drop-item" onclick="jumpToSlide(event, 11)">سؤال 11: الموقع بالسوق</div>
+          <div class="drop-item" onclick="jumpToSlide(event, 12)">سؤال 12: المنافسين</div>
+          <div class="drop-item" onclick="jumpToSlide(event, 13)">سؤال 13: خمس كلمات</div>
+          <div class="drop-item" onclick="jumpToSlide(event, 14)">سؤال 14: جذب الجمهور</div>
+          <div class="drop-item" onclick="jumpToSlide(event, 15)">سؤال 15: القيمة للجمهور</div>
+          <div class="drop-item" onclick="jumpToSlide(event, 16)">سؤال 16: اكتشاف البراند</div>
+        </div>
       </div>
-    </div>
-    <div class="step-item" id="step-3" onclick="toggleDropdown(event, 3)">
-      <span class="material-symbols-outlined">palette</span><span class="label">البصريات</span>
-      <div class="step-dropdown" id="dropdown-3">
-        <div class="drop-item" onclick="jumpToSlide(event, 17)">سؤال 17: الطابع البصري</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 18)">سؤال 18: الخطوط</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 19)">سؤال 19: شكل الشعار</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 20)">سؤال 20: الألوان</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 21)">سؤال 21: شعارات تعجبك</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 22)">سؤال 22: ما لا يعجبك</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 23)">سؤال 23: ما يزعجك</div>
+
+      <div class="sec-item">
+        <div class="sec-header" onclick="toggleNested(event, 'nested-3')">البصريات <span class="material-symbols-outlined expand-icon">expand_more</span></div>
+        <div class="nested-list" id="nested-3">
+          <div class="drop-item" onclick="jumpToSlide(event, 17)">سؤال 17: الطابع البصري</div>
+          <div class="drop-item" onclick="jumpToSlide(event, 18)">سؤال 18: الخطوط</div>
+          <div class="drop-item" onclick="jumpToSlide(event, 19)">سؤال 19: شكل الشعار</div>
+          <div class="drop-item" onclick="jumpToSlide(event, 20)">سؤال 20: الألوان</div>
+          <div class="drop-item" onclick="jumpToSlide(event, 21)">سؤال 21: شعارات تعجبك</div>
+          <div class="drop-item" onclick="jumpToSlide(event, 22)">سؤال 22: ما لا يعجبك</div>
+          <div class="drop-item" onclick="jumpToSlide(event, 23)">سؤال 23: ما يزعجك</div>
+        </div>
       </div>
-    </div>
-    <div class="step-item" id="step-4" onclick="toggleDropdown(event, 4)">
-      <span class="material-symbols-outlined">tune</span><span class="label">التفاصيل</span>
-      <div class="step-dropdown" id="dropdown-4">
-        <div class="drop-item" onclick="jumpToSlide(event, 24)">سؤال 24: الاستخدام</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 25)">سؤال 25: الديكور</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 26)">سؤال 26: الاسم الشخصي</div>
-        <div class="drop-item" onclick="jumpToSlide(event, 27)">سؤال 27: تفاصيل إضافية</div>
+
+      <div class="sec-item">
+        <div class="sec-header" onclick="toggleNested(event, 'nested-4')">التفاصيل <span class="material-symbols-outlined expand-icon">expand_more</span></div>
+        <div class="nested-list" id="nested-4">
+          <div class="drop-item" onclick="jumpToSlide(event, 24)">سؤال 24: الاستخدام</div>
+          <div class="drop-item" onclick="jumpToSlide(event, 25)">سؤال 25: الديكور</div>
+          <div class="drop-item" onclick="jumpToSlide(event, 26)">سؤال 26: الاسم الشخصي</div>
+          <div class="drop-item" onclick="jumpToSlide(event, 27)">سؤال 27: تفاصيل إضافية</div>
+        </div>
       </div>
+
     </div>
   </div>
-  <div class="progress-wrapper">
-    <div id="progress-text">0%</div>
-    <div class="progress-container"><div id="progress-bar" style="width: 0%"></div></div>
+
+  <div class="progress-btn-wrapper">
+    <div id="progress-btn">
+      <span id="progress-text-btn">0%</span>
+    </div>
   </div>
 </header>
 
 <div id="slides">
-
   <div class="slide slide-welcome active" data-index="0" data-section="0">
     <span class="material-symbols-outlined slide-bg-edge top-right">auto_awesome</span>
     <span class="material-symbols-outlined slide-bg-edge bottom-left">auto_awesome</span>
@@ -348,7 +392,8 @@
               <span class="material-symbols-outlined" style="font-size: 36px; color: var(--rose-gold); margin-bottom: 8px;">brush</span>
               <span style="font-size: 14px; font-weight: bold; color: var(--text-main);">متروك للمصمم</span>
             </div>
-            <span class="img-label" style="opacity: 0; height: 0;">متروك للمصمم</span> </div>
+            <span class="img-label" style="opacity: 0; height: 0;">متروك للمصمم</span>
+          </div>
           <span class="material-symbols-outlined check-icon">check_circle</span>
         </label>
       </div>
@@ -801,26 +846,35 @@
   const slides = document.querySelectorAll('.slide');
   const btnNext = document.getElementById('btn-next');
   const btnBack = document.getElementById('btn-back');
-  const progressBar = document.getElementById('progress-bar');
-  const header = document.getElementById('app-header');
+  const topNav = document.getElementById('top-nav-bar');
   const bottomNav = document.getElementById('bottom-nav');
 
-  function toggleDropdown(event, sectionNum) {
+  const sectionNames = ["", "الصالون", "السوق", "البصريات", "التفاصيل"];
+
+  function toggleSectionMenu(event) {
     event.stopPropagation();
-    document.querySelectorAll('.step-dropdown').forEach(d => {
-      if(d.id !== 'dropdown-' + sectionNum) d.classList.remove('show');
-    });
-    const dropdown = document.getElementById('dropdown-' + sectionNum);
-    if(dropdown) dropdown.classList.toggle('show');
+    document.getElementById('section-dropdown').classList.toggle('show');
+  }
+
+  function toggleNested(event, id) {
+    event.stopPropagation();
+    const list = document.getElementById(id);
+    const header = event.currentTarget;
+    
+    // إغلاق باقي القوائم المتداخلة إذا بدك (اختياري، تركناها تفتح مع بعض حالياً لراحة المستخدم)
+    
+    list.classList.toggle('show');
+    header.classList.toggle('open');
   }
 
   document.addEventListener('click', () => {
-    document.querySelectorAll('.step-dropdown').forEach(d => d.classList.remove('show'));
+    const drop = document.getElementById('section-dropdown');
+    if(drop) drop.classList.remove('show');
   });
 
   function jumpToSlide(event, index) {
     event.stopPropagation();
-    document.querySelectorAll('.step-dropdown').forEach(d => d.classList.remove('show'));
+    document.getElementById('section-dropdown').classList.remove('show');
     if (current === index) return;
     transitionTo(index);
   }
@@ -907,18 +961,22 @@
 
   function updateUI() {
     const pct = (current / TOTAL) * 100;
-    progressBar.style.width = pct + '%';
-    document.getElementById('progress-text').innerText = Math.round(pct) + '%';
+    
+    // تحديث الزر اليسار
+    const progBtn = document.getElementById('progress-btn');
+    if(progBtn) {
+      progBtn.style.setProperty('--fill-pct', pct + '%');
+      document.getElementById('progress-text-btn').innerText = Math.round(pct) + '%';
+    }
 
     const currentSlide = getSlide(current);
     const sectionNum = parseInt(currentSlide.dataset.section);
 
     if (sectionNum > 0 && sectionNum <= 4) {
-      header.style.display = 'flex';
-      document.querySelectorAll('.step-item').forEach(dot => dot.classList.remove('active'));
-      document.getElementById(`step-${sectionNum}`).classList.add('active');
+      topNav.style.display = 'flex';
+      document.getElementById('current-section-name').innerText = sectionNames[sectionNum];
     } else {
-      header.style.display = 'none';
+      topNav.style.display = 'none';
     }
 
     if (current === 0) { bottomNav.style.display = 'none'; } 
@@ -931,7 +989,7 @@
 
     if (isSuccess) {
       bottomNav.style.display = 'none';
-      header.style.display = 'none';
+      topNav.style.display = 'none';
     } else if (isLast) {
       btnNext.innerHTML = 'إرسال الاستبيان <span class="material-symbols-outlined" style="font-size: 18px;">send</span>';
       btnBack.style.display = 'flex'; 
@@ -944,7 +1002,7 @@
     }
   }
 
-function transitionTo(next) {
+  function transitionTo(next) {
     // 1. فحص إذا كان الكيبورد مفتوح وإغلاقه
     let isKeyboardOpen = false;
     if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
@@ -952,20 +1010,18 @@ function transitionTo(next) {
       isKeyboardOpen = true;
     }
 
-    // 2. إجبار المتصفح يرجع الصفحة الرئيسية لفوق (عشان يلغي الرفعة تبع الكيبورد)
+    // 2. إجبار المتصفح يرجع الصفحة الرئيسية لفوق
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
 
-    // 3. ننتظر شوي إذا الكيبورد كان مفتوح، كرمال الشاشة تاخد حجمها الطبيعي قبل انتقال السلايد
+    // 3. تأخير بسيط في حال إغلاق الكيبورد
     setTimeout(() => {
       const old = getSlide(current);
       const nw = getSlide(next);
       if (!nw) return;
 
-      // تصفير سكرول السلايد الجديد
       nw.scrollTop = 0;
-
       old.classList.add('exit-up');
       old.classList.remove('active');
       current = next;
@@ -975,11 +1031,11 @@ function transitionTo(next) {
       setTimeout(() => { 
         old.classList.remove('exit-up'); 
         nw.classList.add('active'); 
-        nw.scrollTop = 0; // تأكيد إضافي بعد ظهور السلايد
+        nw.scrollTop = 0; 
       }, 50);
       
       updateUI();
-    }, isKeyboardOpen ? 150 : 0); // تأخير 150 ملي ثانية بس بحال كان الكيبورد طالع
+    }, isKeyboardOpen ? 150 : 0);
   }
 
   function goNext() {
